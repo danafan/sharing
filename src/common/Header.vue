@@ -33,7 +33,7 @@ import resource from '../api/resource.js'
 export default{
 	props:{
 		title: {
-			default: "标题"
+			default: "标题1"
 		}
 	},
 	created(){
