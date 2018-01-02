@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>共享客</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+</head>
+<body>
+	<div id="app"></div>
+	<script type="text/javascript">
+		(function () {
+			document.addEventListener('DOMContentLoaded', function () {
+				var html = document.documentElement;
+				var windowWidth = html.clientWidth;
+				if(windowWidth > 750) {
+					console.log("请访问pc端");
+				}else{
+					html.style.fontSize = windowWidth / 7.5 + 'px';
+				}
+				
+			});
+		})();
+	</script>
+</body>
+</html>
