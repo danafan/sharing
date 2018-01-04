@@ -10,6 +10,14 @@
 	<script type="text/javascript">
 		(function () {
 			document.addEventListener('DOMContentLoaded', function () {
+				autoWidth();
+			});
+			//监听屏幕大小改变
+			window.onresize = function(){
+				autoWidth();
+			};
+			//修改适配
+			function autoWidth(){
 				var html = document.documentElement;
 				var windowWidth = html.clientWidth;
 				if(windowWidth > 750) {
@@ -17,8 +25,7 @@
 				}else{
 					html.style.fontSize = windowWidth / 7.5 + 'px';
 				}
-				
-			});
+			}
 		})();
 	</script>
 </body>
