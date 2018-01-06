@@ -216,6 +216,7 @@
 }
 </style>
 <script>
+import {mapActions, mapGetters} from 'vuex'
 export default{
 	data(){
 		return{
@@ -223,6 +224,14 @@ export default{
 			showWaiting: false,		//已提交待审核列表默认不显示
 			showGining: true,		//审核未通过列表默认不显示
 		}
+	},
+	created(){
+		this.set_route("task");
+	},
+	methods:{
+		...mapActions([
+			'set_route'
+			]),
 	}
 }
 </script>

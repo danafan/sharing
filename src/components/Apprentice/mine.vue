@@ -24,7 +24,7 @@
 				<div class="taskInfo" v-if="showTask">
 					<div class="taskItem taskItems" @click="$router.push('/recordTask')">任务记录</div>
 					<div class="taskItem taskItems" @click="$router.push('/through')">审核通过</div>
-					<div class="taskItem">审核未通过</div>
+					<div class="taskItem" @click="$router.push('/task')">审核未通过</div>
 				</div>
 				<div class="myMoney" :class="{botline:showMoney == false}" @click="showmoney">
 					<div class="infoLeft">
@@ -40,16 +40,16 @@
 							<span>本金</span>
 							<span class="money">¥234</span>
 						</div>
-						<div class="cash">提现</div>
+						<div class="cash" @click="$router.push('/cash?type=capital')">提现</div>
 					</div>
 					<div class="taskItem taskItems">
 						<div class="taskLeft">
 							<span>佣金</span>
 							<span class="money">¥22</span>
 						</div>
-						<div class="cash">提现</div>
+						<div class="cash" @click="$router.push('/cash?type=commission')">提现</div>
 					</div>
-					<div class="taskItem">资产明细</div>
+					<div class="taskItem" @click="$router.push('/property')">资产明细</div>
 				</div>
 				<div class="infoItem">
 					<div class="infoLeft">
@@ -65,7 +65,7 @@
 					</div>
 					<img class="infoRight" src="../../assets/advance.png">
 				</div>
-				<div class="infoItem">
+				<div class="infoItem" @click="$router.push('/about')">
 					<div class="infoLeft">
 						<div class="infoIcon"><img src="../../assets/about us.png"></div>
 						<div class="infoTxt">关于我们</div>
@@ -209,7 +209,7 @@
 					width: .88rem;
 					text-align: center;
 					height: .3rem;
-					line-height: .33rem;
+					line-height: .3rem;
 					font-size: .24rem;
 					color:#03abff;
 				}
@@ -238,6 +238,7 @@
 }
 </style>
 <script>
+import {mapActions, mapGetters} from 'vuex'
 export default{
 	data(){
 		return{
@@ -246,6 +247,7 @@ export default{
 		}
 	},
 	created(){
+		this.set_route("mine");
 		let showtask = sessionStorage.getItem("showTask");
 		if(!showtask){
 			this.showTask = false;
@@ -260,6 +262,9 @@ export default{
 		}
 	},
 	methods:{
+		...mapActions([
+			'set_route'
+			]),
 		// 点击我的任务
 		showtask(){
 			this.showTask = !this.showTask;

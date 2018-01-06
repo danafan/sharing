@@ -12,6 +12,10 @@ import orderCode from '@/components/Apprentice/orderCode'
 import recordTask from '@/components/Apprentice/recordTask'
 import through from '@/components/Apprentice/through'
 import mine from '@/components/Apprentice/mine'
+import cash from '@/components/Apprentice/cash'
+import cashState from '@/components/Apprentice/cashState'
+import property from '@/components/Apprentice/property'
+import about from '@/components/about'
 import master from '@/components/Master/index'
 
 Vue.use(Router);
@@ -58,6 +62,22 @@ export default new Router({
   {
     path:'/through',
     component: through
+  },
+  {
+    path:'/cash',
+    component: cash
+  },
+  {
+    path:'/cashState',
+    component: cashState
+  },
+  {
+    path:'/property',
+    component: property
+  },
+  {
+    path:'/about',
+    component: about
   },
   {
     path: '/master',

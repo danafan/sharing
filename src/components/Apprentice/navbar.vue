@@ -67,6 +67,7 @@
 }
 </style>
 <script>
+import {mapActions, mapGetters} from 'vuex'
 export default{
 	data(){
 		return{
@@ -74,21 +75,36 @@ export default{
 		}
 	},
 	created(){
-		let tab = sessionStorage.getItem("tab");
-		if(!!tab){
-			this.selected = tab;
-			this.$router.replace(`${tab}`);
-		}else{
-			this.selected = "index";
-			this.$router.replace('/index');
+		let tab = this.get_route;
+		this.selected = tab;
+		this.$router.push(`${tab}`);
+	},
+	watch: {
+		get_route: function (n, o) {
+			this.selected = n;
+			if (n == "index") {
+				this.$router.push("/index");
+			} else if(n=='task') {
+				this.$router.push("/task");
+			}else if(n=='mine'){
+				this.$router.push("/mine");
+			}
 		}
 	},
+	computed: {
+		...mapGetters([
+			'get_route'
+			])
+	},
 	methods:{
+		...mapActions([
+			'set_route'
+			]),
 		// 点击切换导航
 		tab(tab){
 			this.selected = tab;
-			sessionStorage.setItem("tab",tab);	//保存底部导航状态
-			this.$router.replace(`${tab}`);
+			this.set_route(tab);
+			this.$router.push(`${tab}`);
 		}
 	}
 }

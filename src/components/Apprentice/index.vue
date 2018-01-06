@@ -99,6 +99,7 @@
 }
 </style>
 <script>
+import {mapActions, mapGetters} from 'vuex'
 export default{
 	data(){
 		return{
@@ -155,7 +156,13 @@ export default{
 			]
 		}
 	},
+	created(){
+		this.set_route("index");
+	},
 	methods:{
+		...mapActions([
+			'set_route'
+			]),
 		// 点击进入详情
 		detail(){
 			this.$router.push('/taskDetail');

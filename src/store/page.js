@@ -2,23 +2,23 @@
 export default{
 	//当前状态
 	state:{
-		text: '默认'
+		text: 'index'
 	},
 	//异步
 	actions:{
-		set_txt(state,txt){
-			state.commit('SET_TXT',txt);
+		set_route(state,txt){
+			state.commit('SET_ROUTE',txt);
 		}
 	},
 	//同步
 	mutations:{
-		SET_TXT(state,txt){
+		SET_ROUTE(state,txt){
 			state.text = txt;
 		}
 	},
 	//状态更新
 	getters:{
-		get_txt(state){
+		get_route(state){
 			return state.text;
 		}
 	}

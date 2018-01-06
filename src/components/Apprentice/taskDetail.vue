@@ -68,7 +68,7 @@
 			</div>
 		</div>
 		<!-- 底部确认按钮 -->
-		<div class="saveSubmit" :class="{backGround: prompt == true}" @click="subOrder">商品已购买，提交订单</div>	
+		<div class="saveSubmit" :class="{backGround: prompt == true}" @click="subOrder">商品已购买，提交订单号</div>	
 	</div>
 </template>
 <style lang="less" scoped>
