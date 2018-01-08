@@ -113,6 +113,11 @@
 		font-size: .3rem;
 		color:#333333;
 		font-weight: 700;
+		.titleTxt{
+			.txtRed{
+				font-weight: 500;
+			}
+		}
 		img{
 			width: .26rem;
 			height: .26rem;

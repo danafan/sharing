@@ -35,7 +35,7 @@
 						<div class="passItem" v-for="item in passList"></div>
 					</div>
 					<div class="passTxt">
-						<div class="passItem1" v-for="item in passList2"><div class="yuan"></div></div>
+						<div class="passItem1" v-for="item in passList2"><img class="yuan" src="../../assets/point 1.png"></div>
 					</div>
 					<input type="number" unselectable="on" v-model="password">
 				</div>
@@ -45,6 +45,7 @@
 	</div>
 </template>
 <style lang="less" scoped>
+.ime-mode{ime-mode:disabled}
 // 返回按钮
 .back{
 	z-index: 1;
@@ -196,15 +197,21 @@
 			display: flex;
 			justify-content:center;
 			input{
+				border: 1px solid red;
 				position: absolute;
+				left: 50%;
+				transform: translate(-50%);
 				width: 5.06rem;
 				height: .74rem;
 				z-index: 3;
 				opacity: 0;
+				outline: none;
 			}
 			.passTxt{
 				border-left: 1px solid #f1f1f1;
 				position: absolute;
+				left: 50%;
+				transform: translate(-50%);
 				height: .74rem;
 				z-index: 3;
 				width: 5.06rem;
@@ -226,10 +233,8 @@
 					width: .84rem;
 					height: .74rem;
 					.yuan{
-						background: #000000;
 						width: .12rem;
 						height: .12rem;
-						border-radius: 50%;
 					}
 				}
 			}
@@ -276,10 +281,16 @@ export default{
 		}
 	},
 	watch:{
-		password:function(val){
-			if(this.passList2.length < 6){
-				this.passList2.push(val);
+		password:function(n,o){
+			let nLength = [...n].length;
+			let oLength = [...o].length;
+			if(this.passList2.length < 6 && nLength > oLength){
+				this.passList2.push(n);
+			}else if(this.passList2.length <= 6 && nLength < oLength){
+				this.passList2.pop();
+				this.colorId = false;
 			}
+			console.log(this.passList2);
 		},
 		passList2:function(val){
 			if(val.length == 6){
@@ -313,7 +324,8 @@ export default{
 		//点击密码确认跳转明细
 		state(){
 			if(this.colorId == true){
-				this.$router.push('/cashState');
+				console.log(this.passNum);
+				//this.$router.push('/cashState');
 			}
 		}
 	}

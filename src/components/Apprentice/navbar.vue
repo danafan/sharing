@@ -9,9 +9,14 @@
 				<img v-else src="../../assets/home page(black).png">
 				<p class="navbar_txt" :class="{select:selected == 'index'}">首页</p>
 			</div>
+			<div class="navbarItem" @click="tab('goApp')" v-if="showMaster">
+				<img v-if="selected == 'goApp'" src="../../assets/apprentice1.png">
+				<img v-else src="../../assets/apprentice.png">
+				<p class="navbar_txt" :class="{select:selected == 'goApp'}">徒弟</p>
+			</div>
 			<div class="navbarItem" @click="tab('task')">
-				<img v-if="selected == 'task'" src="../../assets/task(blue).png">
-				<img v-else src="../../assets/task(black).png">
+				<img v-if="selected == 'task'" src="../../assets/task process1.png">
+				<img v-else src="../../assets/task process.png">
 				<p class="navbar_txt" :class="{select:selected == 'task'}">任务进度</p>
 			</div>
 			<div class="navbarItem" @click="tab('mine')">
@@ -63,7 +68,6 @@
 .select{
 	color: #03abff;
 	font-weight: bold;
-
 }
 </style>
 <script>
@@ -72,9 +76,20 @@ export default{
 	data(){
 		return{
 			selected: "index",			//默认首页导航高亮
+			showMaster: false,			//默认徒弟身份，下面三个导航
 		}
 	},
 	created(){
+		//判断是师父还是徒弟
+		//let status = sessionStorage.getItem("status");
+		let status = "master";
+		if(status == "master"){//师父
+			sessionStorage.setItem("status","master");
+			this.showMaster = true;
+		}else if(status == "apprentice"){//徒弟
+			sessionStorage.setItem("status","apprentice")
+			this.showMaster = false;
+		}
 		let tab = this.get_route;
 		this.selected = tab;
 		this.$router.push(`${tab}`);
@@ -84,7 +99,9 @@ export default{
 			this.selected = n;
 			if (n == "index") {
 				this.$router.push("/index");
-			} else if(n=='task') {
+			} else if(n=='goApp') {
+				this.$router.push("/goApp");
+			}else if(n=='task') {
 				this.$router.push("/task");
 			}else if(n=='mine'){
 				this.$router.push("/mine");

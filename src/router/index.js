@@ -1,8 +1,11 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import connection from '@/components/connection'
 import login from '@/components/login'
+import registration from '@/components/registration'
 import navbar from '@/components/Apprentice/navbar'
 import index from '@/components/Apprentice/index'
+import goApp from '@/components/Apprentice/goApp'
 import task from '@/components/Apprentice/task'
 import taskDetail  from '@/components/Apprentice/taskDetail'
 import shopFull from '@/components/Apprentice/shopFull'
@@ -15,6 +18,9 @@ import mine from '@/components/Apprentice/mine'
 import cash from '@/components/Apprentice/cash'
 import cashState from '@/components/Apprentice/cashState'
 import property from '@/components/Apprentice/property'
+import updateInfo from '@/components/Apprentice/updateInfo'
+import updatePass from '@/components/Apprentice/updatePass'
+import guest from '@/components/Apprentice/guest'
 import about from '@/components/about'
 import master from '@/components/Master/index'
 
@@ -24,13 +30,22 @@ export default new Router({
   routes: [
   {
     path: '/',
+    component: connection
+  },
+  {
+    path: '/login',
     component: login
+  },
+  {
+    path: '/registration',
+    component: registration
   },
   {
     path: '/navbar',
     component: navbar,
     children:[
       { path: '/index', component: index},
+      { path: '/goApp', component: goApp},
       { path: '/task', component: task},
       { path: '/mine', component: mine},
     ]
@@ -74,6 +89,18 @@ export default new Router({
   {
     path:'/property',
     component: property
+  },
+  {
+    path:'/updateInfo',
+    component: updateInfo
+  },
+  {
+    path:'/updatePass',
+    component: updatePass
+  },
+  {
+    path:'/guest',
+    component: guest
   },
   {
     path:'/about',

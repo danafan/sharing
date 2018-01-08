@@ -51,14 +51,14 @@
 					</div>
 					<div class="taskItem" @click="$router.push('/property')">资产明细</div>
 				</div>
-				<div class="infoItem">
+				<div class="infoItem" @click="$router.push('/updateInfo')">
 					<div class="infoLeft">
 						<div class="infoIcon"><img src="../../assets/modified data.png"></div>
 						<div class="infoTxt">修改资料</div>
 					</div>
 					<img class="infoRight" src="../../assets/advance.png">
 				</div>
-				<div class="infoItem">
+				<div class="infoItem" @click="$router.push('/guest')">
 					<div class="infoLeft">
 						<div class="infoIcon"><img src="../../assets/call centre.png"></div>
 						<div class="infoTxt">客服中心</div>

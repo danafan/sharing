@@ -30,7 +30,8 @@
 				<div class="subTie">1. 打开淘宝客户端，按照以下步骤操作：</div>
 				<div class="operation">
 					<div class="operName">点击关键词复制：</div>	
-					<div class="operSubname">男士棉袄</div>
+					<div class="operSubname" v-clipboard="keyWord"
+						@success="handleSuccess">{{keyWord}}</div>
 					<div class="replace">换一换</div>	
 				</div>
 				<!-- 第一条 -->
@@ -239,6 +240,7 @@ export default{
 		return{
 			prompt: true,	//默认未通过验证，下面提示不显示
 			shop: "",		//店铺名称
+			keyWord: "男士棉袄",	//关键词
 			money: "",		//商品金额
 		}
 	},
@@ -248,6 +250,10 @@ export default{
 			if(this.prompt == true){
 				this.$router.push('/subOrder');
 			}
+		},
+		//复制关键词回调
+		handleSuccess(){
+			this.$toast("复制成功");
 		}
 	}
 }
