@@ -18,11 +18,11 @@ import mine from '@/components/Apprentice/mine'
 import cash from '@/components/Apprentice/cash'
 import cashState from '@/components/Apprentice/cashState'
 import property from '@/components/Apprentice/property'
+import raking from '@/components/Apprentice/raking'
 import updateInfo from '@/components/Apprentice/updateInfo'
 import updatePass from '@/components/Apprentice/updatePass'
 import guest from '@/components/Apprentice/guest'
 import about from '@/components/about'
-import master from '@/components/Master/index'
 
 Vue.use(Router);
 
@@ -91,6 +91,10 @@ export default new Router({
     component: property
   },
   {
+    path:'/raking',
+    component: raking
+  },
+  {
     path:'/updateInfo',
     component: updateInfo
   },
@@ -105,10 +109,6 @@ export default new Router({
   {
     path:'/about',
     component: about
-  },
-  {
-    path: '/master',
-    component: master
   }
   ]
 })

@@ -1,9 +1,7 @@
 <template>
 	<div>
 		<!-- 返回按钮 -->
-		<div class="back" @click="$router.go(-1)">
-			<img src="../../assets/hover button.png">
-		</div>
+		<back></back>
 		<!-- 输入金额 -->
 		<div class="cashBox">
 			<div class="cashCon">
@@ -20,6 +18,7 @@
 		</div>
 		<!-- 输入密码 -->
 		<div class="passMess" v-if="passMess">
+			<input id="password" type="number" unselectable="on" v-model="password">
 			<div class="passBox">
 				<div class="passTie">
 					<div class="userImg"><img src="../../assets/test2.jpg"></div>
@@ -34,10 +33,9 @@
 					<div class="passTxt">
 						<div class="passItem" v-for="item in passList"></div>
 					</div>
-					<div class="passTxt">
+					<div class="passTxt" @click="but">
 						<div class="passItem1" v-for="item in passList2"><img class="yuan" src="../../assets/point 1.png"></div>
 					</div>
-					<input type="number" unselectable="on" v-model="password">
 				</div>
 				<div class="submit" :class="{backColor:colorId == true}" @click="state">确定</div>
 			</div>
@@ -46,21 +44,6 @@
 </template>
 <style lang="less" scoped>
 .ime-mode{ime-mode:disabled}
-// 返回按钮
-.back{
-	z-index: 1;
-	position: fixed;
-	top: 50%;
-	transform:translate(-50%);
-	right: -.4rem;
-	width: .84rem;
-	height: .84rem;
-	img{
-		position: absolute;
-		width: 100%;
-		height: 100%;
-	}
-}
 // 输入金额
 .cashBox{
 	position: absolute;
@@ -133,7 +116,7 @@
 	bottom: 0;
 	width: 100%;
 	height: 100%;
-	z-index: 2;
+	z-index: 20;
 	.passBox{
 		margin: 3.73rem auto 0;
 		background: #ffffff;
@@ -196,17 +179,6 @@
 			height: .74rem;
 			display: flex;
 			justify-content:center;
-			input{
-				border: 1px solid red;
-				position: absolute;
-				left: 50%;
-				transform: translate(-50%);
-				width: 5.06rem;
-				height: .74rem;
-				z-index: 3;
-				opacity: 0;
-				outline: none;
-			}
 			.passTxt{
 				border-left: 1px solid #f1f1f1;
 				position: absolute;
@@ -262,10 +234,20 @@
 			color:#ffffff;
 		}
 	}
+	input{
+		position: absolute;
+		top: 6rem;
+		left: 0;
+		width: 0;
+		height: 0;
+		z-index: -1;
+		opacity: 0;
+		outline: none;
+	}
 }
-
 </style>
 <script>
+import back from '../../common/back.vue'
 export default{
 	data(){
 		return{
@@ -310,6 +292,10 @@ export default{
 		}
 	},
 	methods:{
+		but(){
+			console.log("but");
+			document.getElementById("password").focus();
+		},
 		//点击提现
 		subCash(){
 			//密码框显示
@@ -328,6 +314,9 @@ export default{
 				//this.$router.push('/cashState');
 			}
 		}
+	},
+	components:{
+		back
 	}
 }
 </script>

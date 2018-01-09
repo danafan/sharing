@@ -1,9 +1,7 @@
 <template>
 	<div>
 		<!-- 返回按钮 -->
-		<div class="back" @click="$router.go(-1)">
-			<img src="../../assets/hover button.png">
-		</div>
+		<back></back>
 		<div class="title">审核通过<span>(4)</span></div>
 		<recordItem v-for="(item,index) in recordList" :key="index" :state="false">
 			<div slot="icon"><img src="../../assets/test4.jpg"></div>
@@ -16,19 +14,6 @@
 	</div>
 </template>
 <style lang="less" scoped>
-.back{
-	position: fixed;
-	top: 50%;
-	transform:translate(-50%);
-	right: -.4rem;
-	width: .84rem;
-	height: .84rem;
-	img{
-		position: absolute;
-		width: 100%;
-		height: 100%;
-	}
-}
 .title{
 	padding-left: .58rem;
 	font-size: .3rem;
@@ -50,6 +35,7 @@
 </style>
 <script>
 import recordItem from '../../common/recordItem'
+import back from '../../common/back.vue'
 export default{
 	data(){
 		return{
@@ -59,7 +45,8 @@ export default{
 		}
 	},
 	components:{
-		recordItem
+		recordItem,
+		back
 	}
 }
 </script>

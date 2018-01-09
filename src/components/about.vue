@@ -1,9 +1,7 @@
 <template>
 	<div>
 		<!-- 返回按钮 -->
-		<div class="back" @click="$router.go(-1)">
-			<img src="../assets/hover button.png">
-		</div>
+		<back></back>
 		<div class="logo">
 			<img src="../assets/logo.png">
 		</div>
@@ -12,19 +10,6 @@
 	</div>
 </template>
 <style lang="less" scoped>
-.back{
-	position: fixed;
-	top: 50%;
-	transform:translate(-50%);
-	right: -.4rem;
-	width: .84rem;
-	height: .84rem;
-	img{
-		position: absolute;
-		width: 100%;
-		height: 100%;
-	}
-}
 .logo{
 	margin: 1.22rem auto 0;
 	width: 1.18rem;
@@ -49,3 +34,11 @@
 	color:#999999;
 }
 </style>
+<script>
+import back from '../common/back.vue'
+export default{
+	components:{
+		back
+	}
+}
+</script>

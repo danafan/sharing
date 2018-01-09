@@ -4,7 +4,7 @@
 		<div class="progress">
 			<!-- 头部 -->
 			<div class="title" @click="showUnsub = !showUnsub">
-				<div class="titleTxt">已接未提交<span class="txtRed">(3)</span></div>
+				<div class="titleTxt"><div><img src="../../assets/uncommitted.png"></div>已接未提交<span class="txtRed">(3)</span></div>
 				<img v-if="showUnsub == false" src="../../assets/advance.png">
 				<img v-else class="infoRight" src="../../assets/pull-down.png">
 			</div>
@@ -24,7 +24,7 @@
 					</div>
 					<div class="itemCenter txtRed">离任务完成还差一步，请提交订单编号</div>
 					<div class="itemBot">
-						<div class="giving">放弃任务</div>
+						<div class="giving" @click="giving(1)">放弃任务</div>
 						<div class="continuation">继续任务</div>
 					</div>
 				</div>
@@ -34,7 +34,7 @@
 		<div class="progress">
 			<!-- 头部 -->
 			<div class="title" @click="showWaiting = !showWaiting">
-				<div class="titleTxt">已提交待审核<span class="txtRed">(3)</span></div>
+				<div class="titleTxt"><div><img src="../../assets/check.png"></div>已提交待审核<span class="txtRed">(3)</span></div>
 				<img v-if="showWaiting == false" src="../../assets/advance.png">
 				<img v-else class="infoRight" src="../../assets/pull-down.png">
 			</div>
@@ -60,7 +60,7 @@
 		<div class="progress">
 			<!-- 头部 -->
 			<div class="title" @click="showGining = !showGining">
-				<div class="titleTxt">审核未通过<span class="txtRed">(3)</span></div>
+				<div class="titleTxt"><div><img src="../../assets/pass.png"></div>审核未通过<span class="txtRed">(3)</span></div>
 				<img v-if="showGining == false" src="../../assets/advance.png">
 				<img v-else class="infoRight" src="../../assets/pull-down.png">
 			</div>
@@ -85,16 +85,95 @@
 						</div>
 					</div>
 					<div class="itemBot">
-						<div class="giving">放弃申请</div>
+						<div class="giving" @click="giving(2)">放弃申请</div>
 						<div class="continuation">重新提交</div>
 					</div>
 				</div>
 				
 			</div>
 		</div>
+		<!-- 弹框 -->
+		<div class="stateBox" v-if="showState">
+			<!-- 审核和删除 -->
+			<div class="type1">
+				<div class="icon"><img src="../../assets/delete.png"></div>	
+				<div class="wen">{{mess}}</div>
+				<div class="buts">
+					<div class="ok" @click="ok">确认</div>
+					<div class="close" @click="showState = false">关闭</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </template>
 <style lang="less" scoped>
+// 弹框
+.stateBox{
+	background:rgba(0,0,0,.66);
+	position: fixed;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 1;
+	.type1{
+		border-radius: .17rem;
+		position: relative;
+		margin: 4rem auto 0;
+		background-color: #ffffff;
+		width: 4.71rem;
+		height: 3.2rem;
+		.icon{
+			position: absolute;
+			top: -.88rem;
+			left: 50%;
+			transform: translate(-50%);
+			width: 1.78rem;
+			height: 1.76rem;
+			img{
+				width: 100%;
+				height: 100%;
+			}
+		}
+		.wen{
+			position: absolute;
+			top: 1.28rem;
+			width: 100%;
+			text-align: center;
+			font-size: .28rem;
+			color: #03abff;
+		}
+		.buts{
+			position: absolute;
+			top: 2rem;
+			left: 50%;
+			transform: translate(-50%);
+			display: flex;
+			.ok{
+				border-radius: .04rem;
+				margin-right: .4rem;
+				background-color: #03abff;
+				width: 1.1rem;
+				text-align: center;
+				height: .4rem;
+				line-height: .4rem;
+				font-size: .26rem;
+				color:#ffffff;
+			}
+			.close{
+				border-radius: .04rem;
+				border:1px solid #03abff;
+				width: 1.1rem;
+				text-align: center;
+				height: .4rem;
+				line-height: .4rem;
+				font-size: .26rem;
+				color:#03abff;
+			}
+		}
+	}
+}
 .taskbox{
 	padding-top: .13rem;
 	padding-bottom: .2rem;
@@ -114,6 +193,17 @@
 		color:#333333;
 		font-weight: 700;
 		.titleTxt{
+			display: flex;
+			align-items:center;
+			div {
+				margin-right: .12rem;
+				display: flex;
+				align-items:center;
+				img{
+					width: .36rem;
+					height: .36rem;
+				}
+			}
 			.txtRed{
 				font-weight: 500;
 			}
@@ -127,7 +217,6 @@
 		.proItem{
 			margin-bottom:.16rem;
 			padding-bottom: .16rem;
-			// border-bottom:1px solid #e8e8e8;
 			.itemTop{
 				display: flex;
 				.topIcon{
@@ -225,8 +314,10 @@ import {mapActions, mapGetters} from 'vuex'
 export default{
 	data(){
 		return{
+			showState: false,		//弹框默认不显示
+			mess: "",	
 			showUnsub: true,		//已接未提交列表默认不显示
-			showWaiting: false,		//已提交待审核列表默认不显示
+			showWaiting: true,		//已提交待审核列表默认不显示
 			showGining: true,		//审核未通过列表默认不显示
 		}
 	},
@@ -237,6 +328,17 @@ export default{
 		...mapActions([
 			'set_route'
 			]),
+		giving(id){
+			this.showState = true;
+			if(id == 1){
+				this.mess = "确认放弃任务？";
+			}else if(id == 2){
+				this.mess = "确认放弃申请？";
+			}
+		},
+		ok(){
+			this.showState = false;
+		}
 	}
 }
 </script>

@@ -1,9 +1,7 @@
 <template>
 	<div>
 		<!-- 返回按钮 -->
-		<div class="back" @click="$router.go(-1)">
-			<img src="../../assets/hover button.png">
-		</div>
+		<back></back>
 		<div class="propertyItem" v-for="item in property">
 			<div class="itemLeft">
 				<div class="top"><span>完成任务：</span>订单编号86834768372645</div>
@@ -15,19 +13,6 @@
 	</div>
 </template>
 <style lang="less" scoped>
-.back{
-	position: fixed;
-	top: 50%;
-	transform:translate(-50%);
-	right: -.4rem;
-	width: .84rem;
-	height: .84rem;
-	img{
-		position: absolute;
-		width: 100%;
-		height: 100%;
-	}
-}
 .propertyItem{
 	border-bottom:1px solid #f4f4f4;
 	display: flex;
@@ -68,12 +53,16 @@
 }
 </style>
 <script>
+import back from '../../common/back.vue'
 export default{
 	data(){
 		return{
 			property:["","","","","","","","","","",""],
 			cor: true
 		}
+	},
+	components:{
+		back
 	}
 }
 </script>

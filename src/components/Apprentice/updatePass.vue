@@ -1,9 +1,7 @@
 <template>
 	<div>
 		<!-- 返回按钮 -->
-		<div class="back" @click="$router.go(-1)">
-			<img src="../../assets/hover button.png">
-		</div>
+		<back></back>
 		<!-- 原始密码 -->
 		<div class="passItem">
 			<div class="suo"><img src="../../assets/password.png"></div>
@@ -24,19 +22,6 @@
 	</div>
 </template>
 <style lang="less" scoped>
-.back{
-		position: fixed;
-		top: 45%;
-		transform:translate(-50%);
-		right: -.4rem;
-		width: .84rem;
-		height: .84rem;
-		img{
-			position: absolute;
-			width: 100%;
-			height: 100%;
-		}
-	}
 .passItem{
 	padding-left: .58rem;
 	padding-right: .58rem;
@@ -85,6 +70,7 @@
 }
 </style>
 <script>
+import back from '../../common/back.vue'
 export default{
 	data(){
 		return{
@@ -101,6 +87,9 @@ export default{
 		}else if(passType == "transaction"){//修改交易密码
 			this.passtype = false;
 		};
+	},
+	components:{
+		back
 	}
 }
 </script>

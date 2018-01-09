@@ -1,19 +1,17 @@
 <template>
 	<div>
 		<!-- 返回按钮 -->
-		<div class="back" @click="$router.go(-1)">
-			<img src="../../assets/hover button.png">
-		</div>
+		<back></back>
 		<div class="title">- 反馈问题类型 -</div>
 		<div class="tab">
-			<div class="tabItem" :class="{selectStyle:color == 1}" @click="color=1">功能异常</div>
+			<div class="tabItem" :class="{selectStyle:color == 1}" @click="color = 1">功能异常</div>
 			<div class="line"></div>
-			<div class="tabItem" :class="{selectStyle:color == 2}" @click="color=2">账号问题</div>
+			<div class="tabItem" :class="{selectStyle:color == 2}" @click="color = 2">账号问题</div>
 			<div class="line"></div>
-			<div class="tabItem" :class="{selectStyle:color == 3}" @click="color=3">其他问题</div>
+			<div class="tabItem" :class="{selectStyle:color == 3}" @click="color = 3">其他问题</div>
 		</div>
 		<div class="txtBox">
-			<textarea maxlength="200" rows="5" v-model="question" placeholder="请告诉我们你遇到的问题或想反馈的意见"></textarea>
+			<textarea maxlength="201" rows="5" v-model="question" placeholder="请告诉我们你遇到的问题或想反馈的意见"></textarea>
 			<div class="imgs">
 				<div class="img" v-for="(item,index) in imgList">
 					<img class="cha" src="../../assets/chacha.png" @click="deleteImg(index)">
@@ -31,19 +29,6 @@
 #img{
 	width: 1rem;
 	height: 1rem;
-}
-.back{
-	position: fixed;
-	top: 50%;
-	transform:translate(-50%);
-	right: -.4rem;
-	width: .84rem;
-	height: .84rem;
-	img{
-		position: absolute;
-		width: 100%;
-		height: 100%;
-	}
 }
 .title{
 	margin-top: .4rem;
@@ -133,8 +118,8 @@
 }
 </style>
 <script>
-import imgcart from '../../common/imgcart'
 import uploadimg from '../../common/uploadimg'
+import back from '../../common/back.vue'
 export default{
 	data(){
 		return{
@@ -148,11 +133,19 @@ export default{
 	watch:{
 		//监听问题输入的字数
 		question:function(n,o){
-			if(n.length >= 200){
+			if(n.length > 200){
 				this.$toast("不能超过200个字");
 			}else{
 				this.shu = n.length;
 			};
+		},
+		//监听tab的改变
+		color:function(n,o){
+			if(n != o){
+				this.question = "";
+				this.imgList = [];
+				this.imgObjList = [];
+			}
 		}
 	},
 	methods:{
@@ -186,8 +179,8 @@ export default{
 		}
 	},
 	components:{
-		imgcart,
-		uploadimg
+		uploadimg,
+		back
 	}
 }
 </script>

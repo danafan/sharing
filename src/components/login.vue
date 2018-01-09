@@ -1,9 +1,7 @@
 <template>
   <div>
     <!-- 返回按钮 -->
-    <div class="back" @click="$router.go(-1)">
-      <img src="../assets/hover button.png">
-    </div>
+    <back></back>
     <div class="title">关联已有共享客账号</div>
     <div class="infoItem">
       <div class="icon"><img src="../assets/username.png"></div>
@@ -19,19 +17,6 @@
 </template>
 
 <style lang="less" scoped>
-.back{
-  position: fixed;
-  top: 50%;
-  transform:translate(-50%);
-  right: -.4rem;
-  width: .84rem;
-  height: .84rem;
-  img{
-    position: absolute;
-    width: 100%;
-    height: 100%;
-  }
-}
 .title{
   margin-top: .24rem;
   padding:.12rem 0 .12rem .58rem;
@@ -85,6 +70,7 @@
 
 <script>
 import resource from '../api/resource.js'
+import back from '../common/back.vue'
 export default{
   data(){
     return{
@@ -103,6 +89,9 @@ export default{
   },
   methods:{
     
+  },
+  components:{
+    back
   }
 }
 </script>

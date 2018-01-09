@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<div class="banner" v-if="showMaster">
+		<div class="banner">
 			<swiper :options="swiperOption" ref="mySwiper">
 				<swiper-slide v-for="(item,index) in taskList" :key="index">
 					<img :src="item.img">
@@ -8,7 +8,7 @@
 				<div class="swiper-pagination" slot="pagination"></div>
 			</swiper>
 		</div>			
-		<div class="title" v-if="showMaster">
+		<div class="title">
 			～<div class="flower"><img src="../../assets/flower.png"></div>
 			<div class="txt">申请任务</div>～
 		</div>
@@ -162,7 +162,6 @@ import { swiper, swiperSlide } from "vue-awesome-swiper"
 export default{
 	data(){
 		return{
-			showMaster: false,		//默认是徒弟，轮播图不显示
 			taskList:[
 			{
 				img: require('../../assets/test1.jpg'),
@@ -210,12 +209,6 @@ export default{
 	},  
 	created(){
 		this.set_route("index");
-		let status = sessionStorage.getItem("status");
-		if(status == "master"){//师父
-			this.showMaster = true;
-		}else if(status == "apprentice"){//徒弟
-			this.showMaster = false;
-		}
 	},
 	methods:{
 		...mapActions([

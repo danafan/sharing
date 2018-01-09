@@ -1,9 +1,7 @@
 <template>
 	<div>
 		<!-- 返回按钮 -->
-		<div class="back" @click="$router.go(-1)">
-			<img src="../assets/hover button.png">
-		</div>
+		<back></back>
 		<!-- 用户名 -->
 		<div class="item">
 			<div class="itemIcon"><img src="../assets/username.png"></div>
@@ -55,19 +53,6 @@
 	</div>
 </template>
 <style lang="less" scoped>
-.back{
-	position: fixed;
-	top: 50%;
-	transform:translate(-50%);
-	right: -.4rem;
-	width: .84rem;
-	height: .84rem;
-	img{
-		position: absolute;
-		width: 100%;
-		height: 100%;
-	}
-}
 .item{
 	border-bottom: 1px solid #eeeeee;
 	padding-left: .58rem;
@@ -156,6 +141,7 @@
 }
 </style>
 <script>
+import back from '../common/back.vue'
 export default{
 	data(){
 		return{
@@ -169,6 +155,9 @@ export default{
 			recomcode: "",			//推荐人代号
 			recomname: "",			//推荐人姓名
 		}
+	},
+	components:{
+		back
 	}
 }
 </script>

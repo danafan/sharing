@@ -9,7 +9,7 @@
 				<div class="userIcon">
 					<img src="../../assets/head portrait.png">
 				</div>
-				<div class="userName">吕小白</div>
+				<div class="userName">吕小白<span v-if="showMaster">(G2)</span></div>
 			</div>
 			<!-- 信息 -->
 			<div class="infoList">
@@ -50,6 +50,13 @@
 						<div class="cash" @click="$router.push('/cash?type=commission')">提现</div>
 					</div>
 					<div class="taskItem" @click="$router.push('/property')">资产明细</div>
+				</div>
+				<div class="infoItem" @click="$router.push('/raking')" v-if="showMaster">
+					<div class="infoLeft">
+						<div class="infoIcon"><img src="../../assets/ranking list.png"></div>
+						<div class="infoTxt">佣金排行榜</div>
+					</div>
+					<img class="infoRight" src="../../assets/advance.png">
 				</div>
 				<div class="infoItem" @click="$router.push('/updateInfo')">
 					<div class="infoLeft">
@@ -244,16 +251,26 @@ export default{
 		return{
 			showTask: false,		//我的任务默认不展开
 			showMoney: false,		//我的金库默认不展开
+			showMaster: false,		//默认徒弟身份，佣金排行榜不显示
 		}
 	},
 	created(){
 		this.set_route("mine");
+		//判断用户身份佣金排行榜是否显示
+		let status = sessionStorage.getItem("status");
+		if(status == 'master'){
+			this.showMaster = true;
+		}else if(status == 'apprentice'){
+			this.showMaster = false;
+		}
+		//判断任务列表是否展开
 		let showtask = sessionStorage.getItem("showTask");
 		if(!showtask){
 			this.showTask = false;
 		}else{
 			this.showTask = JSON.parse(showtask);
 		}
+		//判断我的金库是否展开
 		let showmoney = sessionStorage.getItem("showMoney");
 		if(!showmoney){
 			this.showMoney = false;

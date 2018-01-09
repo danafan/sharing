@@ -1,9 +1,7 @@
 <template>
 	<div class="Box">
 		<!-- 返回按钮 -->
-		<div class="back" @click="$router.go(-1)">
-			<img src="../../assets/hover button.png">
-		</div>
+		<back></back>
 		<div class="infoBox">
 			<!-- 头像 -->
 			<div class="infoItem">
@@ -26,7 +24,7 @@
 				</div>
 			</div>
 			<!-- 师父代号 -->
-			<div class="infoItem">
+			<div class="infoItem" v-if="showMaster == false">
 				<div class="infoName">师父代号</div>
 				<div class="infoTxt">G2</div>
 			</div>
@@ -34,103 +32,97 @@
 			<div class="infoItem">
 				<div class="infoName">性别</div>
 				<div class="infoTxt">
-					<input type="radio" v-model="gender" value="man"/><label>男</label>  
-					<input type="radio" v-model="gender" value="woman"/><label>女</label> 
+					<div class="radio">
+						<div>
+							<input type="radio" id="radio-1" v-model="gender" value="man"/><label for="radio-1"></label><span>男</span></div>
+							<div><input type="radio" id="radio-2" v-model="gender" value="woman"/><label for="radio-2"></label><span>女</span></div>
+						</div>	
+					</div>
+				</div>
+				<!-- 出生日期 -->
+				<div class="infoItem">
+					<div class="infoName">出生日期</div>
+					<div class="infoTxt">
+						<div class="txt">{{birth}}</div>
+						<div class="icon" @click="openPicker"><img src="../../assets/amend.png"></div>	
+					</div>
+				</div>
+				<!-- 职业 -->
+				<div class="infoItem" @click="showWork = true">
+					<div class="infoName">职业</div>
+					<div class="infoTxt">
+						<div class="txt">{{work}}</div>
+						<div class="icon"><img class="pull" src="../../assets/pull-down.png"></div>	
+					</div>
+				</div>
+				<!-- 微信号 -->
+				<div class="infoItem">
+					<div class="infoName">微信号</div>
+					<div class="infoTxt">
+						<div class="txt1"><input type="text" v-model="WXcode"></div>
+						<div class="icon"><img src="../../assets/amend.png"></div>	
+					</div>
+				</div>
+				<!-- 手机号 -->
+				<div class="infoItem">
+					<div class="infoName">手机号</div>
+					<div class="infoTxt">13067882143</div>
+				</div>
+				<!-- qq号 -->
+				<div class="infoItem">
+					<div class="infoName">QQ号</div>
+					<div class="infoTxt">945647271</div>
+				</div>
+				<!-- 旺旺号 -->
+				<div class="infoItem">
+					<div class="infoName">旺旺号</div>
+					<div class="infoTxt">945647271</div>
+				</div>
+				<!-- 修改密码 -->
+				<div class="infoItem" @click="$router.push('/updatePass?passtype=password')">
+					<div class="infoName">修改密码</div>
+					<div class="infoTxt"><img class="pass" src="../../assets/advance.png"></div>
+				</div>
+				<!-- 修改交易密码 -->
+				<div class="infoItem" @click="$router.push('/updatePass?passtype=transaction')">
+					<div class="infoName">修改交易密码</div>
+					<div class="infoTxt"><img class="pass" src="../../assets/advance.png"></div>
 				</div>
 			</div>
-			<!-- 出生日期 -->
-			<div class="infoItem">
-				<div class="infoName">出生日期</div>
-				<div class="infoTxt">
-					<div class="txt">{{birth}}</div>
-					<div class="icon" @click="openPicker"><img src="../../assets/amend.png"></div>	
-				</div>
-			</div>
-			<!-- 职业 -->
-			<div class="infoItem" @click="showWork = true">
-				<div class="infoName">职业</div>
-				<div class="infoTxt">
-					<div class="txt">{{work}}</div>
-					<div class="icon"><img class="pull" src="../../assets/pull-down.png"></div>	
-				</div>
-			</div>
-			<!-- 微信号 -->
-			<div class="infoItem">
-				<div class="infoName">微信号</div>
-				<div class="infoTxt">
-					<div class="txt1"><input type="text" v-model="WXcode"></div>
-					<div class="icon"><img src="../../assets/amend.png"></div>	
-				</div>
-			</div>
-			<!-- 手机号 -->
-			<div class="infoItem">
-				<div class="infoName">手机号</div>
-				<div class="infoTxt">13067882143</div>
-			</div>
-			<!-- qq号 -->
-			<div class="infoItem">
-				<div class="infoName">QQ号</div>
-				<div class="infoTxt">945647271</div>
-			</div>
-			<!-- 旺旺号 -->
-			<div class="infoItem">
-				<div class="infoName">旺旺号</div>
-				<div class="infoTxt">945647271</div>
-			</div>
-			<!-- 修改密码 -->
-			<div class="infoItem" @click="$router.push('/updatePass?passtype=password')">
-				<div class="infoName">修改密码</div>
-				<div class="infoTxt"><img class="pass" src="../../assets/advance.png"></div>
-			</div>
-			<!-- 修改交易密码 -->
-			<div class="infoItem" @click="$router.push('/updatePass?passtype=transaction')">
-				<div class="infoName">修改交易密码</div>
-				<div class="infoTxt"><img class="pass" src="../../assets/advance.png"></div>
-			</div>
+			<!-- 提交信息按钮 -->
+			<div class="subInfo">提交信息</div>
+			<!-- 日期选择组件 -->
+			<mt-datetime-picker
+			ref="picker"
+			v-model="pickerVisible"
+			type="date"
+			:startDate="startDate"
+			:endDate="endDate"
+			@confirm="handleConfirm"
+			>
+		</mt-datetime-picker>
+		<!-- 职业选择弹框 -->
+		<div class="workBox" v-if="showWork">
+			<div class="workCon">
+				<mt-radio
+				align="left"
+				v-model="work"
+				:options="options">
+			</mt-radio>
 		</div>
-		<!-- 提交信息按钮 -->
-		<div class="subInfo">提交信息</div>
-		<!-- 日期选择组件 -->
-		<mt-datetime-picker
-		ref="picker"
-		v-model="pickerVisible"
-		type="date"
-		:startDate="startDate"
-		:endDate="endDate"
-		@confirm="handleConfirm"
-		>
-	</mt-datetime-picker>
-	<!-- 职业选择弹框 -->
-	<div class="workBox" v-if="showWork">
-		<div class="workCon">
-			<mt-radio
-			align="left"
-			v-model="work"
-			:options="options">
-		</mt-radio>
 	</div>
-</div>
 </div>
 </template>
 <style lang="less" scoped>
 .Box{
 	background: #f1f1f1;
 	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
 	width: 100%;
 	height: 100%;
-	.back{
-		position: fixed;
-		top: 45%;
-		transform:translate(-50%);
-		right: -.4rem;
-		width: .84rem;
-		height: .84rem;
-		img{
-			position: absolute;
-			width: 100%;
-			height: 100%;
-		}
-	}
+	overflow-y:scroll;
 	.infoBox{
 		background: #ffffff;
 		.infoItem{
@@ -152,8 +144,30 @@
 				align-items:center;
 				font-size: .26rem;
 				color: #999999;
-				.txt{
-					// margin-right: .03rem;
+				.radio{
+					display: flex;
+					align-items:center;
+					div{
+						position: relative;
+						display: flex;
+						align-items:center;
+						input{
+							opacity: 0;
+						}
+						label {
+							position: absolute;
+							left: .15rem;
+							top: .06rem;
+							width: .2rem;
+							height: .2rem;
+							border-radius: 50%;
+							border: 1px solid #999999;
+						}
+						input:checked+label { 
+							background-color: #03abff;
+							border: 1px solid #03abff;
+						}
+					}
 				}
 				.txt1{
 					position: absolute;
@@ -199,7 +213,7 @@
 		}
 	}
 	.subInfo{
-		margin: .32rem auto 0;
+		margin: .32rem auto;
 		background: #03abff;
 		border-radius: .04rem;
 		width: 5.86rem;
@@ -211,9 +225,10 @@
 	}
 	.workBox{
 		background: rgba(0,0,0,.66);
-		position: absolute;
+		position: fixed;
 		top: 0;
 		left: 0;
+		bottom: 0;
 		width: 100%;
 		height: 100%;
 		.workCon{
@@ -228,9 +243,11 @@
 </style>
 <script>
 import { DatetimePicker,Radio } from 'mint-ui';
+import back from '../../common/back.vue'
 export default{
 	data(){
 		return{
+			showMaster: false,					//默认徒弟身份，师父代号不显示
 			name: "李琳",						//姓名
 			gender: "man",						//选中的性别
 			pickerVisible: "",					//日期
@@ -241,6 +258,15 @@ export default{
 			options:["学生","教师","护士","程序员","工人"],//职业列表
 			work: "学生",						//选中的职业
 			WXcode: "123872",					//微信号
+		}
+	},
+	created(){
+		//判断用户身份师父代号是否显示
+		let status = sessionStorage.getItem("status");
+		if(status == 'master'){
+			this.showMaster = true;
+		}else if(status == 'apprentice'){
+			this.showMaster = false;
 		}
 	},
 	watch:{
@@ -268,7 +294,8 @@ export default{
 	},
 	components:{
 		DatetimePicker,
-		Radio
+		Radio,
+		back
 	}
 }
 </script>

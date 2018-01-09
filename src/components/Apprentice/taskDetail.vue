@@ -1,9 +1,7 @@
 <template>
 	<div>
 		<!-- 返回按钮 -->
-		<div class="back" @click="$router.go(-1)">
-			<img src="../../assets/hover button.png">
-		</div>
+		<back></back>
 		<!-- 顶部时间 -->
 		<div class="time">
 			<div class="timeIcon">
@@ -73,19 +71,6 @@
 	</div>
 </template>
 <style lang="less" scoped>
-.back{
-	position: fixed;
-	top: 50%;
-	transform:translate(-50%);
-	right: -.4rem;
-	width: .84rem;
-	height: .84rem;
-	img{
-		position: absolute;
-		width: 100%;
-		height: 100%;
-	}
-}
 .time{
 	display: flex;
 	justify-content: center;
@@ -235,6 +220,7 @@
 }
 </style>
 <script>
+import back from '../../common/back.vue'
 export default{
 	data(){
 		return{
@@ -255,6 +241,9 @@ export default{
 		handleSuccess(){
 			this.$toast("复制成功");
 		}
+	},
+	components:{
+		back
 	}
 }
 </script>

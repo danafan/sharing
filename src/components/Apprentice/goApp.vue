@@ -9,7 +9,7 @@
 		<!-- 列表 -->
 		<div class="orderList">
 			<div class="orderItem" v-for="item in orderlist">
-				<div class="userIcon"><img :src="item.img"></div>
+				<div class="userIcon" @click="detail"><img :src="item.img"></div>
 				<div class="userCon">
 					<div class="name">{{item.name}}</div>
 					<div class="conItem" v-if="colorId == 3">姓名：{{item.username}}</div>
@@ -29,19 +29,35 @@
 			</div>
 		</div>
 		<!-- 弹框 -->
-		<div class="stateBox" v-if="showState">
+		<div class="stateBox" v-if="showState" @click="closeState">
 			<!-- 审核和删除 -->
-			<div class="type1">
+			<div class="type1" v-if="type1">
 				<div class="icon"><img :src="stateImg"></div>	
 				<div class="verType" v-if="butType == true">
-					<div class="yi"><input type="radio" v-model="verType" value="1"/><label>审核通过</label> </div> 
-					<div></div><input type="radio" v-model="verType" value="0"/><label>审核未通过</label> 
+					<div class="yi"><input type="radio" id="radio-1" v-model="verType" value="1"/><label for="radio-1"></label><span>审核通过</span></div> 
+					<div><input type="radio" id="radio-2" v-model="verType" value="0"/><label for="radio-2"></label><span>审核未通过</span> </div>
 				</div>
 				<div class="wen" v-else>确认删除？</div>
 				<div class="butss">
 					<div class="ok" @click="ok">确认</div>
 					<div class="close" @click="showState = false">关闭</div>
 				</div>
+			</div>
+			<!-- 点击查看详情 -->
+			<div class="type2" v-else>
+				<div class="icon"><img src="../../assets/message.png"></div>
+				<div class="infoList">
+					<div class="infoItem">姓名：{{userObj.name}}</div>
+					<div class="infoItem">性别：{{userObj.sex}}</div>
+					<div class="infoItem">出生日期：{{userObj.dateTime}}</div>
+					<div class="infoItem">职业：{{userObj.work}}</div>
+					<div class="infoItem">旺旺号：{{userObj.wangcode}}</div>
+					<div class="infoItem">QQ号：{{userObj.qqcode}}</div>
+					<div class="infoItem">手机号：{{userObj.phone}}</div>
+					<div class="infoItem" v-if="colorId == 1">本月分得佣金：<span>¥{{userObj.benMoney}}</span></div>
+					<div class="infoItem" v-if="colorId == 1">共计分得佣金：<span>¥{{userObj.gongMoney}}</span></div>
+					<div class="infoItem">注册时间：{{userObj.time}}</div>
+				</div>	
 			</div>
 		</div>
 	</div>
@@ -131,6 +147,7 @@
 		}
 	}
 }
+// 弹框
 .stateBox{
 	background:rgba(0,0,0,.66);
 	position: fixed;
@@ -169,8 +186,25 @@
 			font-size: .28rem;
 			color:#03abff;
 			div{
+				position: relative;
 				display: flex;
 				align-items:center;
+				input{
+					opacity: 0;
+				}
+				label {
+					position: absolute;
+					left: .06rem;
+					top: .06rem;
+					width: .2rem;
+					height: .2rem;
+					border-radius: 50%;
+					border: 1px solid #999999;
+				}
+				input:checked+label { 
+					background-color: #03abff;
+					border: 1px solid #03abff;
+				}
 			}
 			.yi{
 				margin-right: .43rem;
@@ -210,6 +244,41 @@
 				line-height: .4rem;
 				font-size: .26rem;
 				color:#03abff;
+			}
+		}
+	}
+	.type2{
+		padding-top: 1.38rem;
+		padding-bottom: .4rem;
+		border-radius: .17rem;
+		position: relative;
+		margin: 3rem auto 0;
+		background-color: #ffffff;
+		width: 4.26rem;
+		.icon{
+			position: absolute;
+			top: -1rem;
+			left: 50%;
+			transform: translate(-50%);
+			width: 2.12rem;
+			height: 2.02rem;
+			img{
+				width: 100%;
+				height: 100%;
+			}
+		}
+		.infoList{
+			display: flex;
+			flex-wrap:wrap;
+			justify-content:center;
+			.infoItem{
+				margin-bottom: .1rem;
+				width: 80%;
+				font-size: .28rem;
+				color:#333333;
+				span{
+					color: #fd7c2e;
+				}
 			}
 		}
 	}
@@ -254,19 +323,37 @@ export default{
 				username: "刘大大",
 				state: "黑户"
 			},
-
 			],	
 			verType: 1,				//默认审核通过
 			showState: false,		//弹框默认不显示
+			type1: true,			//默认显示审核或删除的框
 			butType: true,			//默认点击审核
 			stateImg: require('../../assets/audit.png'),	//弹框的图片默认审核
+			userObj:{
+				name: "刘大大",
+				sex: "男",
+				dateTime: "1993-03-21",
+				work: "教师",
+				wangcode: "945647271",
+				qqcode: "1975484479",
+				phone: "13067882143",
+				benMoney: "234",
+				gongMoney: "546",
+				time: "2017-09-23"
+			}
 		}
 	},
 	methods:{
+		//点击头像查看详情
+		detail(){
+			this.showState = true;	//弹框显示
+			this.type1 = false;		//显示徒弟详情的框
+		},
 		//点击审核或删除
 		sub(type){
 			this.showState = true;	//弹框显示
-			this.butType = type;	//改变状态
+			this.type1 = true;		//显示审核或删除的框
+			this.butType = type;	//改变状态（审核或删除）
 			//改变弹框内容
 			if(type == true){//审核
 				this.stateImg = require('../../assets/audit.png');
@@ -282,7 +369,14 @@ export default{
 			}else{					//删除
 				console.log("删除");
 			}
+		},
+		//点击整个弹框关闭弹框
+		closeState(){
+			if(this.type1 == false){//如果是查看管理员详情的状态时关闭
+				this.showState = false;
+			}
 		}
+		
 	}
 }
 </script>
