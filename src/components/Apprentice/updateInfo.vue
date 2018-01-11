@@ -231,6 +231,7 @@
 		bottom: 0;
 		width: 100%;
 		height: 100%;
+		z-index: 3;
 		.workCon{
 			margin: 3rem auto 0;
 			background: #ffffff;

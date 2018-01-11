@@ -2,14 +2,16 @@
 	<div>
 		<!-- 返回按钮 -->
 		<back></back>
-		<div class="propertyItem" v-for="item in property">
-			<div class="itemLeft">
-				<div class="top"><span>完成任务：</span>订单编号86834768372645</div>
-				<div class="data">2017-12-10 10:23:34</div>
+		<div v-infinite-scroll="loadMore">
+			<div class="propertyItem" v-for="item in property">
+				<div class="itemLeft">
+					<div class="top"><span>完成任务：</span>订单编号86834768372645</div>
+					<div class="data">2017-12-10 10:23:34</div>
+				</div>
+				<div class="itemRight">+28</div>
 			</div>
-			<div class="itemRight">+28</div>
+			<div class="loadMore" @click="loadMore">查看更多</div>
 		</div>
-		<div class="loadMore">查看更多</div>
 	</div>
 </template>
 <style lang="less" scoped>
@@ -57,8 +59,15 @@ import back from '../../common/back.vue'
 export default{
 	data(){
 		return{
-			property:["","","","","","","","","","",""],
+			property:[,,,,,,,,,,],
 			cor: true
+		}
+	},
+	methods:{
+		//点击查看更多
+		loadMore(){
+			let arr = [,,,,,,,,,,];
+			this.property = this.property.concat(arr);
 		}
 	},
 	components:{

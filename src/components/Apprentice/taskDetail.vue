@@ -29,7 +29,7 @@
 				<div class="operation">
 					<div class="operName">点击关键词复制：</div>	
 					<div class="operSubname" v-clipboard="keyWord"
-						@success="handleSuccess">{{keyWord}}</div>
+					@success="$toast('复制成功');">{{keyWord}}</div>
 					<div class="replace">换一换</div>	
 				</div>
 				<!-- 第一条 -->
@@ -52,7 +52,9 @@
 					<div class="inputTxt">
 						<input type="text" v-model="shop">
 					</div>	
-					<div class="confirmation">验证</div>
+					<div class="confirmation" v-if="shopId == 0" @click="conShop">验证</div>
+					<div class="confirmation through" v-if="shopId == 1">通过</div>
+					<div class="confirmation wei" v-if="shopId == 2">失败</div>
 				</div>
 				<!-- 第一条 -->
 				<div class="subTie">4. 输入商品金额，验证金额<span @click="$router.push('/shopMoney')">如何查看商品金额>></span></div>
@@ -60,7 +62,9 @@
 					<div class="inputTxt">
 						<input type="text" v-model="money">
 					</div>	
-					<div class="confirmation">验证</div>
+					<div class="confirmation" v-if="moneyId == 0" @click="conMoney">验证</div>
+					<div class="confirmation through" v-if="moneyId == 1">通过</div>
+					<div class="confirmation wei" v-if="moneyId == 2">失败</div>
 				</div>
 				<!-- 提示 -->
 				<div class="prompt" v-if="prompt">验证通过,请用您的淘宝账号<span>1322342323</span>,拍下并付款吧！</div>
@@ -188,6 +192,12 @@
 				font-size: .26rem;
 				color:#ffffff;
 			}
+			.through{
+				background-color: green;
+			}
+			.wei{
+				background-color: red;
+			}
 		}
 		.prompt{
 			margin-top: .2rem;
@@ -224,22 +234,80 @@ import back from '../../common/back.vue'
 export default{
 	data(){
 		return{
-			prompt: true,	//默认未通过验证，下面提示不显示
-			shop: "",		//店铺名称
+			prompt: false,		//默认未通过验证，下面提示不显示
 			keyWord: "男士棉袄",	//关键词
-			money: "",		//商品金额
+			shop: "",			//输入的店铺名称
+			subShop: "",		//最终提交通过的店铺名称
+			shopId: 0,			//验证店铺按钮状态（0：验证，1:成功，2:失败）
+			money: "",			//输入的商品金额
+			subMoney: "",		//最终提交通过的金额
+			moneyId: 0,			//验证金额按钮状态（0：验证，1:成功，2:失败）
+		}
+	},
+	watch:{
+		//监听输入的店铺名称
+		shop:function(n,o){
+			if(n != o){
+				if(n == this.subShop && n != ""){//修改后的店铺名和验证通过的用户名一致
+					this.shopId = 1;
+					this.conPrompt();
+				}else{
+					this.shopId = 0;
+					this.prompt = false;
+				}
+			}
+		},
+		//监听输入的金额
+		money:function(n,o){
+			if(n != o){
+				if(n == this.subMoney && n != ""){//修改后的商品金额和验证通过的商品金额一致
+					this.moneyId = 1;
+					this.conPrompt();
+				}else{
+					this.moneyId = 0;
+					this.prompt = false;
+				}
+			}
 		}
 	},
 	methods:{
-		// 点击提交订单
-		subOrder(){
-			if(this.prompt == true){
-				this.$router.push('/subOrder');
+		//点击验证店铺名称
+		conShop(){
+			let sd = true;
+			if(sd == true){//通过验证
+				this.shopId = 1;
+				this.subShop = this.shop;	//验证通过再保存
+				this.conPrompt();
+			}else{//未通过
+				this.shopId = 2;
 			}
 		},
-		//复制关键词回调
-		handleSuccess(){
-			this.$toast("复制成功");
+		//点击验证金额
+		conMoney(){
+			let sd = true;
+			if(sd == true){//通过验证
+				this.moneyId = 1;
+				this.subMoney = this.money;	//验证通过再保存
+				this.conPrompt();
+			}else{//未通过
+				this.moneyId = 2;
+			}
+		},
+		//同时验证店铺名和金额
+		conPrompt(){
+			if(this.shopId == 1 && this.moneyId == 1){//如果店铺名和金额都通过验证
+				this.prompt = true;
+			}else{
+				this.prompt = false;
+			}
+		},
+		// 点击提交订单
+		subOrder(){
+			if(this.prompt == true){//店铺名和金额都确认通过了
+				this.$router.push('/subOrder');
+			}else{
+				this.$toast("请先通过验证！");
+			}
 		}
 	},
 	components:{

@@ -101,7 +101,7 @@
 					z-index: 1;
 					position: absolute;
 					right: .05rem;
-					bottom: .05rem;
+					bottom: .06rem;
 					border-radius: 50%;
 					background-color: red;
 					width: 1.1rem;

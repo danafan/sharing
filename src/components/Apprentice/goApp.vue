@@ -40,7 +40,7 @@
 				<div class="wen" v-else>确认删除？</div>
 				<div class="butss">
 					<div class="ok" @click="ok">确认</div>
-					<div class="close" @click="showState = false">关闭</div>
+					<div class="close" @click="showState = false">取消</div>
 				</div>
 			</div>
 			<!-- 点击查看详情 -->
@@ -322,7 +322,7 @@ export default{
 				money: "234",
 				username: "刘大大",
 				state: "黑户"
-			},
+			}
 			],	
 			verType: 1,				//默认审核通过
 			showState: false,		//弹框默认不显示
@@ -340,6 +340,13 @@ export default{
 				benMoney: "234",
 				gongMoney: "546",
 				time: "2017-09-23"
+			}
+		}
+	},
+	watch:{
+		showState:function(n,o){
+			if(n == false){
+				this.verType = 1;
 			}
 		}
 	},

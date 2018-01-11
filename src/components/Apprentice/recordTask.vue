@@ -3,15 +3,17 @@
 		<!-- 返回按钮 -->
 		<back></back>
 		<div class="title">任务记录<span>(4)</span></div>
-		<recordItem v-for="(item,index) in recordList" :key="index" :state="true">
-			<div slot="icon"><img src="../../assets/test4.jpg"></div>
-			<span slot="name">男士棉袄</span>
-			<span slot="code">3465293645837456</span>
-			<span slot="money">487</span>
-			<span slot="commission">578</span>
-			<span slot="state">未通过</span>
-		</recordItem>	
-		<div class="loadMore">查看更多</div>
+		<div v-infinite-scroll="loadMore">
+			<recordItem v-for="(item,index) in recordList" :key="index" :state="true">
+				<div slot="icon"><img src="../../assets/test4.jpg"></div>
+				<span slot="name">男士棉袄</span>
+				<span slot="code">3465293645837456</span>
+				<span slot="money">487</span>
+				<span slot="commission">578</span>
+				<span slot="state">未通过</span>
+			</recordItem>
+		</div>	
+		<div class="loadMore" @click="loadMore">查看更多</div>
 	</div>
 </template>
 <style lang="less" scoped>
@@ -40,9 +42,14 @@ import back from '../../common/back.vue'
 export default{
 	data(){
 		return{
-			recordList:[
-				{},{},{},{},{},{},{}
-			]
+			recordList:[,,,,,,,,,,],	//列表
+		}
+	},
+	methods:{
+		//点击查看更多
+		loadMore(){
+			let arr = [,,,,,,,,,,];
+			this.recordList = this.recordList.concat(arr);
 		}
 	},
 	components:{

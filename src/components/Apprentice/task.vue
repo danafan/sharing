@@ -96,11 +96,14 @@
 		<div class="stateBox" v-if="showState">
 			<!-- 审核和删除 -->
 			<div class="type1">
-				<div class="icon"><img src="../../assets/delete.png"></div>	
+				<div class="icon">
+					<img v-if="id == true" src="../../assets/abort mission.png">
+					<img v-else src="../../assets/abandon applicaton.png">
+				</div>	
 				<div class="wen">{{mess}}</div>
 				<div class="buts">
 					<div class="ok" @click="ok">确认</div>
-					<div class="close" @click="showState = false">关闭</div>
+					<div class="close" @click="showState = false">取消</div>
 				</div>
 			</div>
 		</div>
@@ -315,7 +318,8 @@ export default{
 	data(){
 		return{
 			showState: false,		//弹框默认不显示
-			mess: "",	
+			id: true,				//弹框标签默认放弃任务
+			mess: "",				//弹框提示语
 			showUnsub: true,		//已接未提交列表默认不显示
 			showWaiting: true,		//已提交待审核列表默认不显示
 			showGining: true,		//审核未通过列表默认不显示
@@ -328,12 +332,15 @@ export default{
 		...mapActions([
 			'set_route'
 			]),
+		//点击放弃任务或放弃申请
 		giving(id){
 			this.showState = true;
 			if(id == 1){
 				this.mess = "确认放弃任务？";
+				this.id = true;
 			}else if(id == 2){
 				this.mess = "确认放弃申请？";
+				this.id = false;
 			}
 		},
 		ok(){

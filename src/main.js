@@ -7,11 +7,15 @@ import store from './store'
 import MintUI from 'mint-ui'
 import 'mint-ui/lib/style.css'
 import VueClipboards from 'vue-clipboards';
+import { InfiniteScroll } from 'mint-ui';
+
+
 
 
 Vue.config.productionTip = false
 Vue.use(MintUI)
 Vue.use(VueClipboards);
+Vue.use(InfiniteScroll);
 
 /* eslint-disable no-new */
 new Vue({
