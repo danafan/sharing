@@ -98,6 +98,10 @@ export default{
 			imgSrc: ""
 		}
 	},
+	created(){
+		//作为记录查询订单编号状态，返回用
+		sessionStorage.setItem("ordercode","1");
+	},
 	methods:{
 		lookImg(id){
 			this.showImg = true;

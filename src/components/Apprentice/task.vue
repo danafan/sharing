@@ -1,96 +1,50 @@
 <template>
-	<div class="taskbox">
-		<!-- 已接未提交 -->
-		<div class="progress">
-			<!-- 头部 -->
-			<div class="title" @click="showUnsub = !showUnsub">
-				<div class="titleTxt"><div><img src="../../assets/uncommitted.png"></div>已接未提交<span class="txtRed">(3)</span></div>
-				<img v-if="showUnsub == false" src="../../assets/advance.png">
-				<img v-else class="infoRight" src="../../assets/pull-down.png">
+	<div>
+		<!-- 有任务 -->
+		<div v-if="showTask == 1">
+			<div class="taskbox">
+				<div class="backBox">
+					<div class="backImg">
+						<img :src="baseUrl + statusObj.goods_img">
+					</div>
+					<div class="meng"></div>
+				</div>
+				<div class="bottomBox"></div>
 			</div>
-			<!-- 下面列表 -->
-			<div class="progressList" v-if="showUnsub">
-				<div class="proItem">
-					<div class="itemTop">
-						<div class="topIcon">
-							<img src="../../assets/test4.jpg">
-						</div>
-						<div class="topTxt">
-							<div class="txtName">商品名称：<span class="subtxt">男士棉袄</span></div>
-							<div class="txtSub">
-								<div class="sunTxt">请在<span class="txtRed">59:43:23</span>点前完成提交任务，否则将自动放弃哦！</div>
-							</div>
-						</div>
-					</div>
-					<div class="itemCenter txtRed">离任务完成还差一步，请提交订单编号</div>
-					<div class="itemBot">
-						<div class="giving" @click="giving(1)">放弃任务</div>
-						<div class="continuation">继续任务</div>
-					</div>
+			<div class="title" v-if="statusObj.status == '0'">已接未提交</div>
+			<div class="title" v-if="statusObj.status == '1'">已提交待审核</div>
+			<div class="title" v-if="statusObj.status == '3'">审核未通过</div>
+			<!-- 上面的框 -->
+			<div class="topBox">
+				<div class="icon">
+					<img :src="baseUrl + statusObj.goods_img">
+				</div>
+				<div class="guan">关键词：<span>{{keyword}}</span></div>
+				<div class="orderCode" v-if="statusObj.status == '1' || statusObj.status == '3'">订单编号：<span>{{statusObj.order_sn}}</span></div>
+				<div class="orderCode" v-if="statusObj.status == '3'">原因：<span>{{statusObj.reason}}</span></div>
+				<div class="toast" v-if="statusObj.status == '0' || statusObj.status == '3'">请在<span>{{statusObj.end_time}}</span>前完成提交任务，</div>
+				<div class="toast" v-if="statusObj.status == '0' || statusObj.status == '3'">否则将自动放弃哦～</div>
+				<div class="hong" v-if="statusObj.status == '0'">离任务完成还差一步，请提交订单编号</div>
+				<div class="buts" v-if="statusObj.status == '0'">
+					<div class="hui" @click="giving(1)">放弃任务</div>
+					<div class="lan" @click="$router.push(`/taskDetail?id=${statusObj.usertaskid}`)">继续任务</div>
+				</div>
+				<div class="buts" v-if="statusObj.status == '1'">
+					<div class="dai">待审核</div>
+				</div>
+				<div class="buts" v-if="statusObj.status == '3'">
+					<div class="hui" @click="giving(2)">放弃申请</div>
+					<div class="lan" @click="$router.push(`/taskDetail?id=${statusObj.usertaskid}`)">重新提交</div>
 				</div>
 			</div>
 		</div>
-		<!-- 已提交待审核 -->
-		<div class="progress">
-			<!-- 头部 -->
-			<div class="title" @click="showWaiting = !showWaiting">
-				<div class="titleTxt"><div><img src="../../assets/check.png"></div>已提交待审核<span class="txtRed">(3)</span></div>
-				<img v-if="showWaiting == false" src="../../assets/advance.png">
-				<img v-else class="infoRight" src="../../assets/pull-down.png">
+		<!-- 没有任务 -->
+		<div class="untask" v-if="showTask == 2">
+			<div class="img">
+				<img src="../../assets/picture 2.png">
 			</div>
-			<!-- 下面列表 -->
-			<div class="progressList" v-if="showWaiting">
-				<div class="proItem">
-					<div class="itemTop">
-						<div class="topIcon">
-							<img src="../../assets/test4.jpg">
-						</div>
-						<div class="topTxt">
-							<div class="txtName">商品名称：<span class="subtxt">男士棉袄</span></div>
-							<div class="txtCode">
-								订单编号：<span class="subtxt">42342347862837</span>
-							</div>
-							<div class="waiting">待审核</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- 审核未通过 -->
-		<div class="progress">
-			<!-- 头部 -->
-			<div class="title" @click="showGining = !showGining">
-				<div class="titleTxt"><div><img src="../../assets/pass.png"></div>审核未通过<span class="txtRed">(3)</span></div>
-				<img v-if="showGining == false" src="../../assets/advance.png">
-				<img v-else class="infoRight" src="../../assets/pull-down.png">
-			</div>
-			<!-- 下面列表 -->
-			<div class="progressList" v-if="showGining">
-				<div class="proItem">
-					<div class="itemTop">
-						<div class="topIcon">
-							<img src="../../assets/test4.jpg">
-						</div>
-						<div class="topTxt">
-							<div class="txtName">商品名称：<span class="subtxt">男士棉袄</span></div>
-							<div class="txtCode">
-								订单编号：<span class="subtxt">42342347862837</span>
-							</div>
-							<div class="txtCode">
-								原因：<span class="subtxt">42342347862837</span>
-							</div>
-							<div class="txtSub">
-								<div class="sunTxt">请在<span class="txtRed">59:43:23</span>点前完成提交任务，否则将自动放弃哦！</div>
-							</div>
-						</div>
-					</div>
-					<div class="itemBot">
-						<div class="giving" @click="giving(2)">放弃申请</div>
-						<div class="continuation">重新提交</div>
-					</div>
-				</div>
-				
-			</div>
+			<div class="txt">没有正在执行的任务哦，马上去申请</div>
+			<div class="gotask" @click="gotask">去申请</div>
 		</div>
 		<!-- 弹框 -->
 		<div class="stateBox" v-if="showState">
@@ -119,7 +73,7 @@
 	bottom: 0;
 	width: 100%;
 	height: 100%;
-	z-index: 1;
+	z-index: 6;
 	.type1{
 		border-radius: .17rem;
 		position: relative;
@@ -178,160 +132,206 @@
 	}
 }
 .taskbox{
-	padding-top: .13rem;
-	padding-bottom: .2rem;
 	margin-bottom: .98rem;
-	height: 100%;
-}
-.progress{
-	border-bottom:1px solid #e8e8e8;
-	padding-left: .58rem;
-	padding-right: .58rem;
-	.title{
-		height: .88rem;
-		display: flex;
-		justify-content: space-between;
-		align-items:center;
-		font-size: .3rem;
-		color:#333333;
-		font-weight: 700;
-		.titleTxt{
-			display: flex;
-			align-items:center;
-			div {
-				margin-right: .12rem;
-				display: flex;
-				align-items:center;
-				img{
-					width: .36rem;
-					height: .36rem;
-				}
-			}
-			.txtRed{
-				font-weight: 500;
+	.backBox{
+		position: relative;
+		width: 100%;
+		height: 6.94rem;
+		.backImg{
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			img{
+				width: 100%;
+				height: 100%;
 			}
 		}
+		.meng{
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background-color: rgba(0,0,0,.47);
+			z-index: 1;
+		}
+	}
+	.bottomBox{
+		background-color: #f2f2f2;
+		width: 100%;
+		height: 5.45rem;
+	}
+}
+.title{
+	position: absolute;
+	top: .92rem;
+	left: 50%;
+	transform:translate(-50%);
+	font-size: .3rem;
+	color: #ffffff;
+	z-index: 2;
+}
+.topBox{
+	position: absolute;
+	top: 4.38rem;
+	left: 50%;
+	transform:translate(-50%);
+	z-index: 2;
+	border-radius: .28rem;
+	background-color: #ffffff;
+	width: 6.67rem;
+	height: 5.54rem;
+	.icon{
+		margin: -1rem auto 0;
+		border-radius: .34rem;
+		width: 2.94rem;
+		height: 2.94rem;
 		img{
-			width: .26rem;
-			height: .26rem;
+			border-radius: .34rem;
+			width: 100%;
+			height: 100%;
 		}
 	}
-	.progressList{
-		.proItem{
-			margin-bottom:.16rem;
-			padding-bottom: .16rem;
-			.itemTop{
-				display: flex;
-				.topIcon{
-					margin-right: .31rem;
-					width: 1.86rem;
-					height: 1.86rem;
-					img{
-						width: 100%;
-						height: 100%;
-					}
-				}
-				.topTxt{
-					position: relative;
-					flex:1;
-					.txtName{
-						font-size: .28rem;
-						color:#333333;
-					}
-					.txtSub{
-						margin-top: .1rem;
-						display: flex;
-						align-items:center;
-						img{
-							width: .52rem;
-							height: .52rem;
-						}
-						.sunTxt{
-							flex:1;
-							font-size: .24rem;
-						}
-					}
-					.txtCode{
-						margin-top: .1rem;
-						font-size: .28rem;
-					}
-					.waiting{
-						position: absolute;
-						right: 0;
-						bottom: 0;
-						background: #dbdbdb;
-						border:1px solid #dbdbdb;
-						border-radius: .04rem;
-						width: 1.45rem;
-						text-align: center;
-						height: .45rem;
-						line-height: .45rem;
-						font-size: .26rem;
-						color:#ffffff;
-					}
-				}
-			}
-			.itemCenter{
-				margin-top: .1rem;
-				font-size: .24rem;
-			}
-			.itemBot{
-				margin-top: .14rem;
-				display: flex;
-				justify-content: flex-end;
-				.giving{
-					border:1px solid #dbdbdb;
-					border-radius: .04rem;
-					width: 1.45rem;
-					text-align: center;
-					height: .45rem;
-					line-height: .45rem;
-					font-size: .26rem;
-					color:#d1d1d1;
-				}
-				.continuation{
-					margin-left: .18rem;
-					background: #03abff;
-					border:1px solid #03abff;
-					border-radius: .04rem;
-					width: 1.45rem;
-					text-align: center;
-					height: .45rem;
-					line-height: .45rem;
-					font-size: .26rem;
-					color:#ffffff;
-				}
-			}
+	.guan{
+		margin-top: .42rem;
+		width: 100%;
+		text-align: center;
+		font-size: .28rem;
+		color: #333333;
+		span{
+			color:#999999;
+		}
+	}
+	.orderCode{
+		margin-top: .1rem;
+		width: 100%;
+		text-align: center;
+		font-size: .28rem;
+		color: #333333;
+		span{
+			color:#999999;
+		}
+	}
+	.toast{
+		margin-top: .1rem;
+		width: 100%;
+		text-align: center;
+		font-size: .26rem;
+		color: #333333;
+		span{
+			color:#ff5858;
+		}
+	}
+	.hong{
+		margin-top: .18rem;
+		width: 100%;
+		text-align: center;
+		font-size: .24rem;
+		color: #ff5858;
+	}
+	.buts{
+		margin-top: .2rem;
+		display: flex;
+		justify-content: center;
+		div{
+			border-radius: .04rem;
+			font-size: .28rem;
+			width: 1.44rem;
+			text-align: center;
+			height: .48rem;
+			line-height: .48rem;
+		}
+		.hui{
+			margin-right: .16rem;
+			border: 1px solid #dbdbdb;
+			color: #dbdbdb;
+		}
+		.lan{
+			border: 1px solid #03abff;
+			background-color: #03abff;
+			color: #ffffff;
+		}
+		.dai{
+			background-color: #dfdfdf;
+			color: #ffffff;
 		}
 	}
 }
-.txtRed{
-	color:#ff5858;
+.untask{
+	.img{
+		margin: 2.82rem auto 0;
+		width: 4.06rem;
+		height: 3.86rem;
+		img{
+			width: 100%;
+			height: 100%;
+		}
+	}
+	.txt{
+		margin-top: .24rem;
+		width: 100%;
+		text-align: center;
+		font-size: .24rem;
+		color: #999999;
+	}
+	.gotask{
+		border-radius: .04rem;
+		background-color: #03abff;
+		margin:.24rem auto 0;
+		width: 1.96rem;
+		text-align: center;
+		height: .6rem;
+		line-height: .6rem;
+		font-size: .26rem;
+		color:#ffffff;
+	}
 }
-.subtxt{
-	color:#666666;
-}
+
 </style>
 <script>
+import resource from '../../api/resource.js'
 import {mapActions, mapGetters} from 'vuex'
 export default{
 	data(){
 		return{
+			keyword: "",			//关键词
+			showTask: 0,			//默认有任务
+			statusObj: {},			//任务进度对象
 			showState: false,		//弹框默认不显示
 			id: true,				//弹框标签默认放弃任务
 			mess: "",				//弹框提示语
-			showUnsub: true,		//已接未提交列表默认不显示
-			showWaiting: true,		//已提交待审核列表默认不显示
-			showGining: true,		//审核未通过列表默认不显示
 		}
 	},
 	created(){
 		this.set_route("task");
+		//获取任务进度
+		this.getTaskStatus();
 	},
 	methods:{
 		...mapActions([
 			'set_route'
 			]),
+		//获取任务进度
+		getTaskStatus(){
+			resource.taskStatus().then(res => {
+				if(res.data.code == "0"){
+					this.showTask = 1;
+					this.statusObj = res.data.data;
+					this.keyword = this.statusObj.keyword[0];
+				}else if(res.data.code == "1"){
+					this.showTask = 2;
+				}else{
+					this.$toast(res.data.msg);
+				}
+			});
+		},
+		//点击去申请
+		gotask(){
+			this.set_route("index");
+			this.$router.push("index");
+		},
 		//点击放弃任务或放弃申请
 		giving(id){
 			this.showState = true;
@@ -343,8 +343,17 @@ export default{
 				this.id = false;
 			}
 		},
+		//点击放弃任务或放弃申请的确定
 		ok(){
-			this.showState = false;
+			let usertaskid = this.statusObj.usertaskid;
+			resource.abandontask({usertaskid:usertaskid}).then(res => {
+				if(res.data.code == "0"){
+					this.showState = false;
+					this.getTaskStatus();
+				}else{
+					this.$toast(res.data.msg);
+				}
+			});
 		}
 	}
 }

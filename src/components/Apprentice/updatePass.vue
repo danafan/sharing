@@ -5,20 +5,20 @@
 		<!-- 原始密码 -->
 		<div class="passItem">
 			<div class="suo"><img src="../../assets/password.png"></div>
-			<div class="passInput"><input type="password" autocomplete="new-password" v-model="oldPass" :placeholder="passtype == true ? '原始密码' : '原交易密码(默认为 000000)'"></div>
+			<div class="passInput"><input type="password" autocomplete="new-password" v-model="oldPass" placeholder="原始密码"></div>
 		</div>
 		<!-- 新密码 -->
 		<div class="passItem">
 			<div class="suo"><img src="../../assets/password.png"></div>
-			<div class="passInput"><input type="password" autocomplete="new-password" v-model="newPass" :placeholder="passtype == true ? '新密码6-16位字母与数字密码' : '新交易密码6位纯数字密码'"></div>
+			<div class="passInput"><input type="password" autocomplete="new-password" v-model="newPass" placeholder="新密码6至16位字母与数字密码"></div>
 		</div>
 		<!-- 确认密码 -->
 		<div class="passItem">
 			<div class="suo"><img src="../../assets/password.png"></div>
-			<div class="passInput"><input type="password" autocomplete="new-password" v-model="okPass" :placeholder="passtype == true ? '确认新密码' : '确认新交易密码'"></div>
+			<div class="passInput"><input type="password" autocomplete="new-password" v-model="okPass" placeholder="确认新密码"></div>
 		</div>
 		<!-- 确认修改按钮 -->
-		<div class="ok">确认修改</div>
+		<div class="ok" @click="update">确认修改</div>
 	</div>
 </template>
 <style lang="less" scoped>
@@ -47,7 +47,6 @@
 		align-items:center;
 		input{
 			position: relative;
-			top: .03rem;
 			width: 100%;
 			background: 0;
 			border: none;
@@ -71,22 +70,56 @@
 </style>
 <script>
 import back from '../../common/back.vue'
+import resource from '../../api/resource.js'
 export default{
 	data(){
 		return{
-			passtype: true,							//默认修改类型是修改密码
 			oldPass: "",							//原始密码
 			newPass: "",							//新密码
 			okPass: "",								//确认新密码
 		}
 	},
-	created(){
-		let passType = this.$route.query.passtype;
-		if(passType == "password"){//修改密码
-			this.passtype = true;
-		}else if(passType == "transaction"){//修改交易密码
-			this.passtype = false;
-		};
+	methods:{
+		//点击确认修改
+		update(){
+			if(this.oldPass == ""){
+				this.$toast("原始密码不能为空!");
+			}else if(!this.judgmentName.test(this.oldPass)){
+				this.$toast("密码为6-16位，包含字母、数字、下划线、减号中的两种!");
+			}else if(this.newPass == ""){
+				this.$toast("新密码不能为空!");
+			}else if(!this.judgmentName.test(this.newPass)){
+				this.$toast("密码为6-16位，包含字母、数字、下划线、减号中的两种!");
+			}else if(this.okPass == ""){
+				this.$toast("请确认密码!");
+			}else if(!this.judgmentName.test(this.okPass)){
+				this.$toast("密码为6-16位，包含字母、数字、下划线、减号中的两种!");
+			}else if(this.newPass != this.okPass){
+				this.$toast("两次密码不一样");
+			}else{
+				let passObj = {
+					oldPass: this.oldPass,
+					newPass: this.newPass,
+					okPass: this.okPass
+				}
+				this.updatePass(passObj);
+			}
+		},
+		//修改
+		updatePass(){
+			let passObj = {
+				oldpassword: this.oldPass,
+				newpassword: this.okPass
+			}
+			resource.updatePass(passObj).then(res => {
+				if(res.data.code == "0"){
+					this.$toast("修改成功");
+					this.$router.go(-1);
+				}else{
+					this.$toast(res.data.message);
+				}
+			});
+		}
 	},
 	components:{
 		back

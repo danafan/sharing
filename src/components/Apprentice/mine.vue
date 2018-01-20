@@ -4,12 +4,12 @@
 			<!-- 上面背景图片 -->
 			<div class="topImg">
 				<div class="backImg">
-					<img src="../../assets/mineBack.jpg">
+					<img src="../../assets/background (mine).png">
 				</div>	
 				<div class="userIcon">
-					<img src="../../assets/head portrait.png">
+					<img :src="wximg">
 				</div>
-				<div class="userName">吕小白<span v-if="showMaster">(G2)</span></div>
+				<div class="userName">{{wxname}}<span v-if="showMaster">(G2)</span></div>
 			</div>
 			<!-- 信息 -->
 			<div class="infoList">
@@ -22,9 +22,9 @@
 					<img v-else class="infoRight" src="../../assets/pull-down.png">
 				</div>
 				<div class="taskInfo" v-if="showTask">
-					<div class="taskItem taskItems" @click="$router.push('/recordTask')">任务记录</div>
-					<div class="taskItem taskItems" @click="$router.push('/through')">审核通过</div>
-					<div class="taskItem" @click="$router.push('/task')">审核未通过</div>
+					<div class="taskItem taskItems" @click="$router.push('/through')">已完成</div>
+					<div class="taskItem taskItems" @click="$router.push('/recordTask')">已取消</div>
+					<!-- <div class="taskItem" @click="$router.push('/task')">审核未通过</div> -->
 				</div>
 				<div class="myMoney" :class="{botline:showMoney == false}" @click="showmoney">
 					<div class="infoLeft">
@@ -38,16 +38,16 @@
 					<div class="taskItem taskItems">
 						<div class="taskLeft">
 							<span>本金</span>
-							<span class="money">¥234</span>
+							<span class="money">¥{{principal}}</span>
 						</div>
-						<div class="cash" @click="$router.push('/cash?type=capital')">提现</div>
+						<div class="cash" @click="$router.push(`/cash?type=capital&money=${principal}`)">提现</div>
 					</div>
 					<div class="taskItem taskItems">
 						<div class="taskLeft">
 							<span>佣金</span>
-							<span class="money">¥22</span>
+							<span class="money">¥{{award}}</span>
 						</div>
-						<div class="cash" @click="$router.push('/cash?type=commission')">提现</div>
+						<div class="cash" @click="$router.push(`/cash?type=commission&money=${award}`)">提现</div>
 					</div>
 					<div class="taskItem" @click="$router.push('/property')">资产明细</div>
 				</div>
@@ -80,8 +80,6 @@
 					<img class="infoRight" src="../../assets/advance.png">
 				</div>
 			</div>	
-			<!-- 推出按钮 -->
-			<div class="loginOut">退出登录</div>
 		</div>	
 	</div>
 </template>
@@ -110,9 +108,11 @@
 			top: .74rem;
 			left: 50%;
 			transform:translate(-50%);
+			border-radius: 50%;
 			width: 1.64rem;
 			height: 1.64rem;
 			img{
+				border-radius: 50%;
 				width: 100%;
 				height: 100%;
 			}
@@ -227,17 +227,6 @@
 			}
 		}
 	}
-	.loginOut{
-		margin:.56rem auto;
-		border:1px solid #03abff;
-		border-radius: .08rem;
-		width: 5.83rem;
-		text-align: center;
-		height: .8rem;
-		line-height: .8rem;
-		font-size: .26rem;
-		color: #03abff;
-	}
 }
 // 我的任务和我的金库下面的线
 .botline{
@@ -246,21 +235,28 @@
 </style>
 <script>
 import {mapActions, mapGetters} from 'vuex'
+import resource from '../../api/resource.js'
 export default{
 	data(){
 		return{
+			wxname: "",				//微信昵称
+			wximg: "",				//微信头像
 			showTask: false,		//我的任务默认不展开
 			showMoney: false,		//我的金库默认不展开
 			showMaster: false,		//默认徒弟身份，佣金排行榜不显示
+			award: "",				//佣金
+			principal: "",			//本金
 		}
 	},
 	created(){
+		this.wxname = sessionStorage.getItem("wxname");
+		this.wximg = sessionStorage.getItem("wxIcon");
 		this.set_route("mine");
 		//判断用户身份佣金排行榜是否显示
 		let status = sessionStorage.getItem("status");
-		if(status == 'master'){
+		if(status == "0" || status == "2"){
 			this.showMaster = true;
-		}else if(status == 'apprentice'){
+		}else if(status == '1'){
 			this.showMaster = false;
 		}
 		//判断任务列表是否展开
@@ -276,6 +272,9 @@ export default{
 			this.showMoney = false;
 		}else{
 			this.showMoney = JSON.parse(showmoney);
+			if(this.showMoney == true){
+				this.getuserinfo();
+			}
 		}
 	},
 	methods:{
@@ -291,7 +290,22 @@ export default{
 		showmoney(){
 			this.showMoney = !this.showMoney;
 			sessionStorage.setItem("showMoney",JSON.stringify(this.showMoney));
-		}
+			if(this.showMoney == true){
+				this.getuserinfo();
+			}
+		},
+		//获取用户信息
+		getuserinfo(){
+			resource.getUserInfo().then(res => {
+				if(res.data.code == "0"){
+					let userInfo = res.data.data;
+					this.award = userInfo.award/100;			//佣金
+					this.principal = userInfo.principal/100;	//本金
+				}else{
+					this.$toast(res.data.message);
+				}
+			});
+		},
 	}
 }
 </script>

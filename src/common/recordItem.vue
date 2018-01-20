@@ -7,11 +7,10 @@
 				</slot>
 			</div>
 			<div class="itemCon">
-				<div class="name">商品名称：<span><slot name="name"></slot></span></div>
+				<div class="name">关键词：<span><slot name="name"></slot></span></div>
 				<div class="name">订单编号：<span><slot name="code"></slot></span></div>
 				<div class="name">付款金额：<span><slot name="money"></slot></span></div>
 				<div class="name">佣金：<span><slot name="commission"></slot></span></div>
-				<div class="name" v-if="state">状态：<span><slot name="state"></slot></span></div>
 			</div>
 		</div>
 	</div>
@@ -49,11 +48,6 @@
 </style>
 <script>
 export default{
-	props:{
-		state:{
-			type: Boolean,
-			default: true
-		}
-	}
+	
 }
 </script>

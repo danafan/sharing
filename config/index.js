@@ -29,11 +29,12 @@ dev: {
     assetsPublicPath: '/',
     proxyTable: {
         //开发环境
-        '/api': {
-        target: 'http://52gxk.com',
+        '/weiapi': {
+        target: 'http://gxke88.com',
+        //target: 'http://52gxk.com',
         changeOrigin: true,
         pathRewrite: {
-          '^/api': '/api'
+          '^/weiapi': '/weiapi'
       }
   }
 },

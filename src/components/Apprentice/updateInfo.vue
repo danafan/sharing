@@ -7,13 +7,13 @@
 			<div class="infoItem">
 				<div class="infoName">头像</div>
 				<div class="infoTxt">
-					<img class="userImg" src="../../assets/head portrait.png">
+					<img class="userImg" :src="userInfo.headimgurl">
 				</div>
 			</div>
 			<!-- 用户名 -->
 			<div class="infoItem">
 				<div class="infoName">用户名</div>
-				<div class="infoTxt">吕小白</div>
+				<div class="infoTxt">{{userInfo.username}}</div>
 			</div>
 			<!-- 姓名 -->
 			<div class="infoItem">
@@ -34,8 +34,8 @@
 				<div class="infoTxt">
 					<div class="radio">
 						<div>
-							<input type="radio" id="radio-1" v-model="gender" value="man"/><label for="radio-1"></label><span>男</span></div>
-							<div><input type="radio" id="radio-2" v-model="gender" value="woman"/><label for="radio-2"></label><span>女</span></div>
+							<input type="radio" id="radio-1" v-model="gender" value="0"/><label for="radio-1"></label><span>男</span></div>
+							<div><input type="radio" id="radio-2" v-model="gender" value="1"/><label for="radio-2"></label><span>女</span></div>
 						</div>	
 					</div>
 				</div>
@@ -66,31 +66,26 @@
 				<!-- 手机号 -->
 				<div class="infoItem">
 					<div class="infoName">手机号</div>
-					<div class="infoTxt">13067882143</div>
+					<div class="infoTxt">{{userInfo.phone}}</div>
 				</div>
 				<!-- qq号 -->
 				<div class="infoItem">
 					<div class="infoName">QQ号</div>
-					<div class="infoTxt">945647271</div>
+					<div class="infoTxt">{{userInfo.qq}}</div>
 				</div>
 				<!-- 旺旺号 -->
 				<div class="infoItem">
 					<div class="infoName">旺旺号</div>
-					<div class="infoTxt">945647271</div>
+					<div class="infoTxt">{{userInfo.wangwang}}</div>
 				</div>
 				<!-- 修改密码 -->
-				<div class="infoItem" @click="$router.push('/updatePass?passtype=password')">
+				<div class="infoItem" @click="$router.push('/updatePass')">
 					<div class="infoName">修改密码</div>
-					<div class="infoTxt"><img class="pass" src="../../assets/advance.png"></div>
-				</div>
-				<!-- 修改交易密码 -->
-				<div class="infoItem" @click="$router.push('/updatePass?passtype=transaction')">
-					<div class="infoName">修改交易密码</div>
 					<div class="infoTxt"><img class="pass" src="../../assets/advance.png"></div>
 				</div>
 			</div>
 			<!-- 提交信息按钮 -->
-			<div class="subInfo">提交信息</div>
+			<div class="subInfo" @click="subInfo">提交信息</div>
 			<!-- 日期选择组件 -->
 			<mt-datetime-picker
 			ref="picker"
@@ -102,16 +97,12 @@
 			>
 		</mt-datetime-picker>
 		<!-- 职业选择弹框 -->
-		<div class="workBox" v-if="showWork">
-			<div class="workCon">
-				<mt-radio
-				align="left"
-				v-model="work"
-				:options="options">
-			</mt-radio>
+		<div class="workBox" v-if="showWork" @click="showWork = false">
+			<div class="workCon" @click.stop>
+				<div v-for="item in options" @click="checkWork(item.job_id,item.job_name)"><input type="radio" id="works"/><label for="works"></label><span>{{item.job_name}}</span></div>
+			</div>
 		</div>
 	</div>
-</div>
 </template>
 <style lang="less" scoped>
 .Box{
@@ -241,47 +232,126 @@
 		}
 	}
 }
+.workBox{
+	background: rgba(0,0,0,.66);
+	position: fixed;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 3;
+	.workCon{
+		margin: 3rem auto 0;
+		background: #ffffff;
+		width: 5rem;
+		height: 7rem;
+		overflow-y: scroll;
+		div{
+			border-bottom: 1px solid #f0f0f0;
+			height: .8rem;
+			position: relative;
+			display: flex;
+			align-items:center;
+			input{
+				opacity: 0;
+			}
+			label {
+				position: absolute;
+				left: 30%;
+				width: .2rem;
+				height: .2rem;
+				border-radius: 50%;
+				border: 1px solid #999999;
+			}
+			input:checked+label { 
+				background-color: #03abff;
+				border: 1px solid #03abff;
+			}
+			span{
+				position: absolute;
+				left: 40%;
+				font-size: .26rem;
+				color:#999999;
+			}
+		}
+	}
+}
 </style>
 <script>
-import { DatetimePicker,Radio } from 'mint-ui';
+import { DatetimePicker } from 'mint-ui';
 import back from '../../common/back.vue'
+import resource from '../../api/resource.js'
 export default{
 	data(){
 		return{
 			showMaster: false,					//默认徒弟身份，师父代号不显示
-			name: "李琳",						//姓名
-			gender: "man",						//选中的性别
+			userInfo:{},
+			name: "",							//姓名
+			gender: "0",						//选中的性别（默认男）
 			pickerVisible: "",					//日期
-			birth: "1993-03-21",				//显示的出生日期
-			startDate: new Date('1960-01-01'),	//最小日期
+			birth: "1980-01-01",							//显示的出生日期
+			startDate: new Date('1980-01-01'),	//最小日期
 			endDate: new Date(),				//最大日期
 			showWork: false,					//选择职业弹框默认不显示
-			options:["学生","教师","护士","程序员","工人"],//职业列表
-			work: "学生",						//选中的职业
-			WXcode: "123872",					//微信号
+			options:[],							//职业列表
+			work: "",							//显示的职业
+			workId: "",							//选择职业的id
+			WXcode: "",							//微信号
 		}
 	},
 	created(){
 		//判断用户身份师父代号是否显示
 		let status = sessionStorage.getItem("status");
-		if(status == 'master'){
+		if(status == '0'){
 			this.showMaster = true;
-		}else if(status == 'apprentice'){
+		}else if(status == '1'){
 			this.showMaster = false;
 		}
+		//获取用户信息
+		this.getuserinfo();
 	},
 	watch:{
-		// 性别
-		gender:function(n,o){
-			console.log(this.gender);
-		},
 		//职业
-		work:function(n,o){
-			this.showWork = false;
-			console.log(this.work);
+		showWork:function(n,o){
+			if(n == true){
+				//获取工作类型列表
+				this.Worklist();
+			}
 		}
 	},
 	methods:{
+		//获取用户信息
+		getuserinfo(){
+			resource.getUserInfo().then(res => {
+				if(res.data.code == "0"){
+					this.userInfo = res.data.data;
+					this.name = this.userInfo.real_name;	//姓名
+					this.gender = this.userInfo.sex;		//性别
+					this.WXcode = this.userInfo.wechat;		//微信号
+					this.work = this.userInfo.job_id;		//工作
+					this.birth = this.userInfo.birth;
+				}else{
+					this.$toast(res.data.message);
+				}
+			});
+		},
+		//获取工作类型列表
+		Worklist(){
+			resource.getWorklist().then(res => {
+				if(res.data.code == '0'){	
+					this.options = res.data.data;
+				}else{
+					this.$toast(res.data.message);
+				}
+			});
+		},
+		//选中某个工作
+		checkWork(id,name){
+			this.showWork = false;
+			this.work = name;
+			this.workId = id;
+		},
 		//点击打开日期选择器
 		openPicker() {
 			this.$refs.picker.open();
@@ -290,12 +360,40 @@ export default{
 		handleConfirm(){
 			let date = new Date(this.pickerVisible);
 			this.birth = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
-			console.log(this.birth);
+		},
+		//点击提交信息
+		subInfo(){
+			if(this.name == ""){
+				this.$toast("请填写姓名!");
+			}else if(this.birth == ""){
+				this.$toast("请选择出生日期!");
+			}else if(this.WXcode == ""){
+				this.$toast("请填写微信号!");
+			}else{
+				let userInfo = {
+					username: this.name,
+					sex: this.gender,
+					birth: this.birth,
+					job_id: this.work,
+					wechat: this.WXcode
+				}
+				this.updateInfo(userInfo);
+			}
+		},
+		//修改
+		updateInfo(userInfo){
+			resource.updateUserInfo(userInfo).then(res => {
+				if(res.data.code == "0"){
+					this.$toast("修改成功");
+					this.$router.go(-1);
+				}else{
+					this.$toast(res.data.message);
+				}
+			});
 		}
 	},
 	components:{
 		DatetimePicker,
-		Radio,
 		back
 	}
 }

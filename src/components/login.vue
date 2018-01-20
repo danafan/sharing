@@ -5,14 +5,14 @@
     <div class="title">关联已有共享客账号</div>
     <div class="infoItem">
       <div class="icon"><img src="../assets/username.png"></div>
-      <div class="txtInput"><input type="number" placeholder="请输入用户名" v-model="username"></div>
+      <div class="txtInput"><input type="text" placeholder="请输入用户名" v-model="username"></div>
     </div>
     <div class="infoItem">
-      <div class="icon"><img src="../assets/passpord.png" height="200" width="200"></div>
-      <div class="txtInput"><input type="number" placeholder="请输入密码" v-model="password"></div>
+      <div class="icon"><img src="../assets/password.png"></div>
+      <div class="txtInput"><input type="password" placeholder="请输入密码" v-model="password"></div>
     </div>
     <div class="toast">关联后，您的微信账号和共享客账号都可以登录</div>
-    <div class="login">登录</div>
+    <div class="login" @click="login">登录</div>
   </div>
 </template>
 
@@ -42,7 +42,9 @@
   .txtInput{
     display: flex;
     align-items:center;
+    flex:1;
     input{
+      width: 100%;
       font-size: .28rem;
       border: none;
       outline: none;
@@ -74,24 +76,61 @@ import back from '../common/back.vue'
 export default{
   data(){
     return{
+      openid: "",         //openid
+      headimgurl: "",     //微信头像
+      nickname: "",       //微信昵称
       username: "",       //用户名
       password: "",       //密码
     }
   },
   created(){
-    // resource.homeList({id:3153}).then(res => {
-    //   if (res.data.code == 0) {
-    //     console.log(res);
-    //   }else{
-    //     console.log(res.data.msg);
-    //   }
-    // })
+    //获取openid
+    this.openid = sessionStorage.getItem("openid");
+    this.headimgurl = sessionStorage.getItem("wxIcon");
+    this.nickname = sessionStorage.getItem("wxname");
   },
   methods:{
-    
-  },
-  components:{
-    back
+      //点击登录
+      login(){
+        if(this.username == ""){
+          this.$toast("用户名不能为空!");
+        }else if(this.password == ""){
+          this.$toast("密码不能为空!");
+        }else{
+          let userInfo = {
+            openid: this.openid,        //openid
+            headimgurl: this.headimgurl,//微信头像
+            nickname: this.nickname,    //微信昵称
+            username: this.username,    //用户名
+            password: this.password     //密码
+          }
+          //用户关联
+          this.connection(userInfo);
+        }
+      },
+      //用户关联
+      connection(userInfo){
+        resource.connection(userInfo).then(res => {
+          if(res.data.code == '0'){ //关联成功
+            //获取用户ID和身份
+            let uid = res.data.data.id;
+            let status = res.data.data.identity;
+            sessionStorage.setItem("uid",uid);
+            sessionStorage.setItem("status",status);
+            this.$toast("关联成功！");
+            this.$router.replace('/navbar');
+          }else if(res.data.code == '4'){//正在审核
+            let msg = res.data.message;
+            this.$router.push(`/verification?mess=${msg}`);
+          }else{
+            this.$toast(res.data.message);
+          }
+        });
+      }
+
+    },
+    components:{
+      back
+    }
   }
-}
-</script>
+  </script>

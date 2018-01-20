@@ -17,6 +17,10 @@ Vue.use(MintUI)
 Vue.use(VueClipboards);
 Vue.use(InfiniteScroll);
 
+Vue.prototype.baseUrl = "http://gxke88.com/uploads/"
+Vue.prototype.judgmentPhone = /^1[34578]\d{9}$/;		//手机号正则
+Vue.prototype.judgmentName = /^[A-Za-z0-9_]{4,16}$/;	//用户名正则
+Vue.prototype.judgmentPassword = /^(?![\d]+$)(?![a-zA-Z]+$)(?![_]+$)[\da-zA-Z_]{6,16}$/;  //密码正则
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

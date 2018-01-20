@@ -2,12 +2,19 @@ import axios from './index'
 
 export default {
   post(path, params={}){
+    // let target = {
+    //   userid: "122"
+    // };
     let target = {};
+    let uid = sessionStorage.getItem("uid");
+    if(!!uid){
+      target.userid = uid;
+    }
     Object.assign(params, target);
     let form = new FormData();
     let arr = [];
     let str = '';
-    for(let a of Object.keys(params)){
+    for(let a of Object.keys(params)){ 
       arr.push(a);
     }
     let arrSort = arr.sort(); //参数按照键名排序
@@ -19,7 +26,14 @@ export default {
     return axios.post(`${path}`, form);
   },
   get(path, params={}){
+    // let target = {
+    //   userid: "122"
+    // };
     let target = {};
+    let uid = sessionStorage.getItem("uid");
+    if(!!uid){
+      target.userid = uid;
+    }
     Object.assign(params, target);
     let arr = [];
     let str = '';
@@ -31,6 +45,11 @@ export default {
       let val = params[b];
       str += `${b}=${val}&`;
     }
-    return axios.get(`${path}?${str}`);
+    if(!!str){
+      return axios.get(`${path}?${str}`);
+    }else{
+      return axios.get(`${path}`);
+    }
+    
   }
 }

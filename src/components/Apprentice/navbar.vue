@@ -81,13 +81,10 @@ export default{
 	},
 	created(){
 		//判断是师父还是徒弟
-		//let status = sessionStorage.getItem("status");
-		let status = "master";
-		if(status == "master"){//师父
-			sessionStorage.setItem("status","master");
+		let status = sessionStorage.getItem("status");
+		if(status == "0" || status == "2"){//师父
 			this.showMaster = true;
-		}else if(status == "apprentice"){//徒弟
-			sessionStorage.setItem("status","apprentice")
+		}else if(status == "1"){//徒弟
 			this.showMaster = false;
 		}
 		let tab = this.get_route;
