@@ -23,7 +23,9 @@ let path = {
 	getUserInfo: 'index/getuserinfo',		//获取用户信息
 	updateUserInfo: 'index/changepersonziliao',	//修改用户信息
 	getUserTask: 'index/usertask',			//获取用户任务列表（已完成或已取消）
-	userPay: 'pay/pay',						//用户体现
+	userPay: 'pay/pay',						//用户提现
+	payHistory: 'my/assetchange',				//用户交易明细
+	getMasterList: 'index/ranking_list',	//师父排行榜
 }
 export default{
 	//authUrl
@@ -121,5 +123,13 @@ export default{
 	//用户提现
 	userPay(params){
 		return http.get(path.userPay, params)
+	},
+	//用户交易明细
+	payHistory(params){
+		return http.post(path.payHistory, params)
+	},
+	//师父排行榜
+	getMasterList(params){
+		return http.get(path.getMasterList, params)
 	},
 }

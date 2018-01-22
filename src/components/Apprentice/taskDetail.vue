@@ -18,7 +18,8 @@
 					<div class="taskIcon">
 						<img :src="baseUrl + taskDetail.goods_img">
 					</div>
-					<div class="taskSubname">请在<span class="txtRed">{{taskDetail.end_time}}</span>前完成一下操作，否则任务将自动作废哦！</div>
+					<div class="taskSubname">请在<span class="txtRed">{{taskDetail.end_time}}</span>前完成以下操作</div>
+					<div class="taskSubname">否则任务将自动作废哦！</div>
 				</div>
 				<!-- 下面部分 -->
 				<div class="taskCon">
@@ -132,7 +133,7 @@
 			color: #333333;
 		}
 		.taskIcon{
-			margin: .22rem auto 0;
+			margin: .22rem auto .3rem;
 			width: 2.24rem;
 			height: 2.24rem;
 			img{
@@ -141,8 +142,7 @@
 			}
 		}
 		.taskSubname{
-			margin-top: .3rem;
-			margin-bottom: .24rem; 
+			margin-bottom: .1rem; 
 			text-align: center;
 			font-size:.24rem;
 			color:#333333;
@@ -364,6 +364,7 @@ export default{
 			])
 	},
 	created(){
+		document.title = "申请任务";
 		// 判断是不是查询订单编号页进来的
 		let ordercode = sessionStorage.getItem("ordercode");
 		if(!!ordercode){

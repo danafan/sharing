@@ -26,7 +26,7 @@
 			<!-- 师父代号 -->
 			<div class="infoItem" v-if="showMaster == false">
 				<div class="infoName">师父代号</div>
-				<div class="infoTxt">G2</div>
+				<div class="infoTxt">{{masterCode}}</div>
 			</div>
 			<!-- 性别 -->
 			<div class="infoItem">
@@ -289,6 +289,7 @@ export default{
 			userInfo:{},
 			name: "",							//姓名
 			gender: "0",						//选中的性别（默认男）
+			masterCode: "",						//师父代号
 			pickerVisible: "",					//日期
 			birth: "1980-01-01",							//显示的出生日期
 			startDate: new Date('1980-01-01'),	//最小日期
@@ -301,6 +302,7 @@ export default{
 		}
 	},
 	created(){
+		document.title = "修改资料";
 		//判断用户身份师父代号是否显示
 		let status = sessionStorage.getItem("status");
 		if(status == '0'){
@@ -328,6 +330,7 @@ export default{
 					this.userInfo = res.data.data;
 					this.name = this.userInfo.real_name;	//姓名
 					this.gender = this.userInfo.sex;		//性别
+					this.masterCode = this.userInfo.code;			//师父代号
 					this.WXcode = this.userInfo.wechat;		//微信号
 					this.work = this.userInfo.job_id;		//工作
 					this.birth = this.userInfo.birth;

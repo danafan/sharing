@@ -302,6 +302,7 @@ export default{
 		}
 	},
 	created(){
+		document.title = "用户注册";
 		//获取工作类型列表
 		this.Worklist();
 	},

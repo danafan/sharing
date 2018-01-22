@@ -2,14 +2,15 @@
 	<div>
 		<!-- 返回按钮 -->
 		<back></back>
-		<div class="title">已取消<span>({{count}})</span></div>
+		<div class="title" v-show="showTask">已取消<span>({{count}})</span></div>
 		<div v-infinite-scroll="loadMore" v-if="showTask">
 			<recordItem v-for="(item,index) in recordList" :key="index">
 				<div slot="icon"><img :src="baseUrl + item.goods_img"></div>
 				<span slot="name">{{item.keyword.split(',')[0]}}</span>
 				<span slot="code">{{item.order_sn}}</span>
-				<span slot="money">{{item.award/100}}</span>
-				<span slot="commission">{{item.payment/100}}</span>
+				<span slot="money">{{item.payment/100}}</span>
+				<span slot="commission">{{item.award/100}}</span>
+				<span slot="time">{{item.apply_time}}</span>
 			</recordItem>
 		</div>	
 		<!-- 没有任务 -->
@@ -65,6 +66,9 @@ export default{
 			recordList:[],				//列表
 		}
 	},
+	created(){
+		document.title = "已取消任务";
+	},	
 	methods:{
 		//点击查看更多
 		loadMore(){

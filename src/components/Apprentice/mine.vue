@@ -9,7 +9,7 @@
 				<div class="userIcon">
 					<img :src="wximg">
 				</div>
-				<div class="userName">{{wxname}}<span v-if="showMaster">(G2)</span></div>
+				<div class="userName">{{wxname}}<span v-if="showMaster">({{usercode}})</span></div>
 			</div>
 			<!-- 信息 -->
 			<div class="infoList">
@@ -22,9 +22,14 @@
 					<img v-else class="infoRight" src="../../assets/pull-down.png">
 				</div>
 				<div class="taskInfo" v-if="showTask">
-					<div class="taskItem taskItems" @click="$router.push('/through')">已完成</div>
-					<div class="taskItem taskItems" @click="$router.push('/recordTask')">已取消</div>
-					<!-- <div class="taskItem" @click="$router.push('/task')">审核未通过</div> -->
+					<div class="taskItem taskItems" @click="$router.push('/through')">
+						已完成
+						<img class="infoRight" src="../../assets/advance.png">
+					</div>
+					<div class="taskItem taskItems sd" @click="$router.push('/recordTask')">
+						已取消
+						<img class="infoRight" src="../../assets/advance.png">
+					</div>
 				</div>
 				<div class="myMoney" :class="{botline:showMoney == false}" @click="showmoney">
 					<div class="infoLeft">
@@ -40,16 +45,25 @@
 							<span>本金</span>
 							<span class="money">¥{{principal}}</span>
 						</div>
-						<div class="cash" @click="$router.push(`/cash?type=capital&money=${principal}`)">提现</div>
+						<div class="cash" @click="goprincipal">提现</div>
 					</div>
 					<div class="taskItem taskItems">
 						<div class="taskLeft">
 							<span>佣金</span>
 							<span class="money">¥{{award}}</span>
 						</div>
-						<div class="cash" @click="$router.push(`/cash?type=commission&money=${award}`)">提现</div>
+						<div class="cash" @click="goaward">提现</div>
 					</div>
-					<div class="taskItem" @click="$router.push('/property')">资产明细</div>
+					<div class="taskItem taskItems" :class="{sd:isFreeze == false}" @click="$router.push('/property')">
+						资产明细
+						<img class="infoRight" src="../../assets/advance.png">
+					</div>
+					<div class="taskItem taskItems sd" v-if="isFreeze">
+						<div class="taskLeft">
+							<span>冻结资金</span>
+							<span class="money">¥{{freeze}}</span>
+						</div>
+					</div>
 				</div>
 				<div class="infoItem" @click="$router.push('/raking')" v-if="showMaster">
 					<div class="infoLeft">
@@ -204,6 +218,10 @@
 				color:#999999;
 				height: .88rem;
 				line-height: .88rem;
+				.infoRight{
+					width: .26rem;
+					height: .26rem;
+				}
 			}
 			.taskItems{
 				border-bottom:1px solid #f4f4f4;
@@ -225,6 +243,9 @@
 					font-size: .24rem;
 				}
 			}
+			.sd{
+				border: none;
+			}
 		}
 	}
 }
@@ -241,16 +262,21 @@ export default{
 		return{
 			wxname: "",				//微信昵称
 			wximg: "",				//微信头像
+			usercode: "",			//师父代号
 			showTask: false,		//我的任务默认不展开
 			showMoney: false,		//我的金库默认不展开
 			showMaster: false,		//默认徒弟身份，佣金排行榜不显示
 			award: "",				//佣金
 			principal: "",			//本金
+			freeze:"",				//冻结资金
+			isFreeze: false,		//默认冻结资金栏不展示
 		}
 	},
 	created(){
+		document.title = "我的";
 		this.wxname = sessionStorage.getItem("wxname");
 		this.wximg = sessionStorage.getItem("wxIcon");
+		this.usercode = sessionStorage.getItem("usercode");
 		this.set_route("mine");
 		//判断用户身份佣金排行榜是否显示
 		let status = sessionStorage.getItem("status");
@@ -294,6 +320,22 @@ export default{
 				this.getuserinfo();
 			}
 		},
+		//点击本金提现
+		goprincipal(){
+			if(this.principal == "0"){
+				this.$toast("您暂时还没有可提现的本金哦～");
+			}else{
+				this.$router.push(`/cash?type=capital&money=${this.principal}`)
+			}
+		},
+		//点击本金提现
+		goaward(){
+			if(this.award == "0"){
+				this.$toast("您暂时还没有可提现的佣金哦～");
+			}else{
+				this.$router.push(`/cash?type=commission&money=${this.award}`)
+			}
+		},
 		//获取用户信息
 		getuserinfo(){
 			resource.getUserInfo().then(res => {
@@ -301,6 +343,10 @@ export default{
 					let userInfo = res.data.data;
 					this.award = userInfo.award/100;			//佣金
 					this.principal = userInfo.principal/100;	//本金
+					if(userInfo.freeze != "0"){					//冻结资金
+						this.isFreeze = true;
+						this.freeze = userInfo.freeze;
+					}
 				}else{
 					this.$toast(res.data.message);
 				}

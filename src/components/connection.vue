@@ -75,6 +75,7 @@ export default{
 		}
 	},
 	created(){
+		document.title = "关联账号";
 		this.wxName = sessionStorage.getItem("wxname");
 		this.wxIcon = sessionStorage.getItem("wxIcon");
 	}

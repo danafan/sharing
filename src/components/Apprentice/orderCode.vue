@@ -99,6 +99,7 @@ export default{
 		}
 	},
 	created(){
+		document.title = "查看订单编号";
 		//作为记录查询订单编号状态，返回用
 		sessionStorage.setItem("ordercode","1");
 	},

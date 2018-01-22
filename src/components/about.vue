@@ -37,6 +37,9 @@
 <script>
 import back from '../common/back.vue'
 export default{
+	created(){
+		document.title = "关于我们";
+	},	
 	components:{
 		back
 	}

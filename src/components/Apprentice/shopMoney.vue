@@ -86,6 +86,9 @@ export default{
 			imgSrc: ""
 		}
 	},
+	created(){
+		document.title = "查看商品金额";
+	},
 	methods:{
 		lookImg(){
 			this.showImg = true;

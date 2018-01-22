@@ -210,6 +210,11 @@
 		text-align: center;
 		font-size: .28rem;
 		color: #333333;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		display: -webkit-box;
+		-webkit-line-clamp: 1;
+		-webkit-box-orient: vertical;
 		span{
 			color:#999999;
 		}
@@ -305,6 +310,7 @@ export default{
 		}
 	},
 	created(){
+		document.title = "任务进度";
 		this.set_route("task");
 		//获取任务进度
 		this.getTaskStatus();

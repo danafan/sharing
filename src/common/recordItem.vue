@@ -2,15 +2,14 @@
 	<div>
 		<div class="Item">
 			<div class="itemIcon">
-				<slot name="icon">
-					<img src="../assets/test4.jpg">
-				</slot>
+				<slot name="icon"></slot>
 			</div>
 			<div class="itemCon">
 				<div class="name">关键词：<span><slot name="name"></slot></span></div>
 				<div class="name">订单编号：<span><slot name="code"></slot></span></div>
 				<div class="name">付款金额：<span><slot name="money"></slot></span></div>
 				<div class="name">佣金：<span><slot name="commission"></slot></span></div>
+				<div class="name">时间：<span><slot name="time"></slot></span></div>
 			</div>
 		</div>
 	</div>

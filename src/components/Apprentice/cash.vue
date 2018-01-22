@@ -166,6 +166,7 @@ import resource from '../../api/resource.js'
 export default{
 	data(){
 		return{
+			isPay: true,			//可提现
 			openid: "",				//openid
 			moneyType: "",			//体现类型
 			money: "",				//输入的金额
@@ -181,9 +182,11 @@ export default{
 		this.shu = money;					//总金额
 		// 判断输入金额显示类型
 		if(types == "capital"){
+			document.title = "本金提现";
 			this.type = "本金";
 			this.moneyType = "0";
 		}else if(types == "commission"){
+			document.title = "佣金提现";
 			this.type = "佣金";
 			this.moneyType = "1";
 		}
@@ -209,14 +212,20 @@ export default{
 				amount: this.money,
 				type: this.moneyType
 			}
-			resource.userPay(moneyObj).then(res => {
-				if(res.data.code == "0"){
-					this.$toast("提现成功");
-					this.$router.replace('/property');
-				}else{
-					this.$toast(res.data.message);
-				}
-			});
+			if(this.isPay == true){
+				this.isPay = false;
+				resource.userPay(moneyObj).then(res => {
+					if(res.data.code == "0"){
+						this.$toast("提现成功");
+						this.$router.replace('/property');
+					}else if(res.data.code == "9"){
+						this.passMess = false;
+						this.$toast(res.data.message);
+					}else{
+						this.$toast(res.data.message.err_code_des);
+					}
+				});
+			}
 		}
 	},
 	components:{

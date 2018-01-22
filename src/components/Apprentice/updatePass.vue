@@ -45,6 +45,21 @@
 		display: flex;
 		flex:1;
 		align-items:center;
+		:-moz-placeholder { 
+			color: #999999;
+		}
+
+		::-moz-placeholder { 
+			color: #999999;
+		}
+
+		input:-ms-input-placeholder{
+			color: #999999;
+		}
+
+		input::-webkit-input-placeholder{
+			color: #999999;
+		}
 		input{
 			position: relative;
 			width: 100%;
@@ -52,7 +67,7 @@
 			border: none;
 			outline: none;
 			font-size: .28rem;
-			color: #999999;
+			color: #333333;
 		}
 	}
 }
@@ -78,6 +93,9 @@ export default{
 			newPass: "",							//新密码
 			okPass: "",								//确认新密码
 		}
+	},
+	created(){
+		document.title = "修改密码";
 	},
 	methods:{
 		//点击确认修改

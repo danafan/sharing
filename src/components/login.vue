@@ -115,8 +115,10 @@ export default{
             //获取用户ID和身份
             let uid = res.data.data.id;
             let status = res.data.data.identity;
+            let usercode = res.data.data.code;
             sessionStorage.setItem("uid",uid);
             sessionStorage.setItem("status",status);
+            sessionStorage.setItem("usercode",usercode);
             this.$toast("关联成功！");
             this.$router.replace('/navbar');
           }else if(res.data.code == '4'){//正在审核

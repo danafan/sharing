@@ -17,7 +17,8 @@
 				<div class="listNull" v-if="listNull">
 					<div class="img"><img src="../../assets/mascot.png"></div>
 					<!-- 系统无任务，有时间 -->
-					<div class="txt" v-if="toastTxt == '0'">您当前任务已被领完，下一波任务来临时间为{{time}}</div>
+					<div class="txt" v-if="toastTxt == '0'">您当前任务已被领完，下一波</div>
+					<div class="txt" v-if="toastTxt == '0'">任务来临时间为{{time}}</div>
 					<div class="txt" v-if="toastTxt == '0'">任务数量为{{could}}个，请提前做好准备哦～</div>
 					<!-- 已领取任务 -->
 					<div class="txt" v-if="toastTxt == '1'">系统检测到您三天之内有接过任务或有未完成任务</div>
@@ -45,7 +46,7 @@
 							<!-- 右侧 -->
 							<div class="txtRight">
 								<div class="application">申请任务</div>
-								<div class="residual">剩余<span>{{item.residue_num}}</span>次</div>
+								<div class="residual">剩余<span>{{item.residue_num}}</span>份</div>
 							</div>
 						</div>
 					</div>
@@ -73,6 +74,7 @@
 	}
 }
 .title{
+	font-family: "Source Han Sans";
 	margin-top: .34rem;
 	display: flex;
 	justify-content:center;
@@ -102,6 +104,7 @@
 	}
 }
 .taskList{
+	font-family: "Source Han Sans";
 	box-sizing: border-box;
 	padding: .4rem .24rem .15rem .24rem;
 	margin-bottom: .98rem;
@@ -117,6 +120,7 @@
 			}
 		}
 		.txt{
+			margin-bottom: .1rem;
 			text-align: center;
 			font-size: .26rem;
 			color:#999999;
@@ -221,6 +225,7 @@ export default{
 		}
 	},  
 	created(){
+		document.title = "共享客";
 		this.set_route("index");
 	},
 	methods:{
@@ -249,7 +254,7 @@ export default{
 					this.listNull = true;
 					this.toastTxt = "0";
 					this.time = res.data.data.start_time;
-					this.could = res.data.data.task_num;
+					this.could = res.data.data.num;
 				}else if(res.data.code == "3"){//系统无任务
 					this.listNull = true;
 					this.toastTxt = "2";
@@ -287,7 +292,6 @@ export default{
 				console.log("没有更多");
 			}
 		}
-		
 	},
 	components:{
 		swiper,

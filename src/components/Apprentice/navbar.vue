@@ -36,6 +36,7 @@
 	width: 100%;
 }
 .navbar{
+	font-family: "Source Han Sans";
 	position: fixed;
 	left: 0;
 	bottom: 0;

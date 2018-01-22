@@ -63,12 +63,14 @@ methods:{
 				headimgurl: wxIcon
 			}
 			resource.getUserState(wxObj).then(res => {
-				if(res.data.code == "0"){						//关联过,跳转首页
+				if(res.data.code == "0"){							//关联过,跳转首页
 					//获取用户id和身份
 					let uid = res.data.data.userinfo.id;
 					let status = res.data.data.userinfo.identity;
-					sessionStorage.setItem("uid",uid);
-					sessionStorage.setItem("status",status);
+					let usercode = res.data.data.userinfo.code;
+					sessionStorage.setItem("uid",uid);				//用户id
+					sessionStorage.setItem("status",status);		//用户身份
+					sessionStorage.setItem("usercode",usercode);	//用户身份
 					this.$router.replace('/navbar');	
 				}else if(res.data.code == "2"){					//未关联,跳转关联或注册页
 					this.$router.replace('/connection');

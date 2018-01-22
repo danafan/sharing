@@ -2,50 +2,50 @@
 	<div>
 		<back></back>
 		<div class="tab">
-			<div class="dayRaking" :class="{selTab:backId == 1}" @click="backId = 1">日榜</div>
-			<div class="monRaking" :class="{selTab:backId == 2}" @click="backId = 2">月榜</div>
+			<div class="dayRaking" :class="{selTab:backId == 0}" @click="backId = 0">日榜</div>
+			<div class="monRaking" :class="{selTab:backId == 1}" @click="backId = 1">月榜</div>
 		</div>
 		<div class="icon">
 			<div class="iconItem two">
 				<div class="img">
 					<div class="div1">
-						<div class="userimg"><img src="../../assets/test1.jpg"></div>
+						<div class="userimg"><img :src="numberOne.headimgurl"></div>
 						<img src="../../assets/Second.png">
 					</div>
 				</div>
-				<div class="code">C63</div>
-				<div class="money">¥345</div>
+				<div class="code">{{numberOne.master_code}}</div>
+				<div class="money">¥{{numberOne.sum/100}}</div>
 			</div>
 			<div class="iconItem one">
 				<div class="img">
 					<div class="div2">
-						<div class="userimg"><img src="../../assets/test2.jpg"></div>
+						<div class="userimg"><img :src="numberTwo.headimgurl"></div>
 						<img src="../../assets/First.png">
 					</div>
 				</div>
-				<div class="code code1">G20</div>
-				<div class="money">¥345</div>
+				<div class="code code1">{{numberTwo.master_code}}</div>
+				<div class="money">¥{{numberTwo.sum/100}}</div>
 			</div>
 			<div class="iconItem three">
 				<div class="img">
 					<div class="div3">
-						<div class="userimg"><img src="../../assets/test4.jpg"></div>
+						<div class="userimg"><img :src="numberThree.headimgurl"></div>
 						<img src="../../assets/Third.png">
 					</div>
 				</div>
-				<div class="code">F08</div>
-				<div class="money">¥345</div>
+				<div class="code">{{numberThree.master_code}}</div>
+				<div class="money">¥{{numberThree.sum/100}}</div>
 			</div>
 		</div>
 		<div class="rakList">
-			<div class="rakItem" v-for="item in rakingList">
-				<div class="itemLeft">1</div>
+			<div class="rakItem" v-for="(item,index) in rakingList">
+				<div class="itemLeft">{{index + 4}}</div>
 				<div class="itemRight">
 					<div class="user">
-						<div class="userIcon"><img src="../../assets/test1.jpg"></div>
-						<div class="userCode">G20</div>
+						<div class="userIcon"><img :src="item.headimgurl"></div>
+						<div class="userCode">{{item.master_code}}</div>
 					</div>
-					<div class="money">¥235</div>
+					<div class="money">¥{{item.sum/100}}</div>
 				</div>
 			</div>
 		</div>
@@ -103,7 +103,6 @@
 					right: .05rem;
 					bottom: .06rem;
 					border-radius: 50%;
-					background-color: red;
 					width: 1.1rem;
 					height: 1.1rem;
 					img{
@@ -130,7 +129,6 @@
 					right: .06rem;
 					bottom: .053rem;
 					border-radius: 50%;
-					background-color: red;
 					width: 1.25rem;
 					height: 1.25rem;
 					img{
@@ -154,7 +152,6 @@
 					left: .07rem;
 					bottom: .07rem;
 					border-radius: 50%;
-					background-color: red;
 					width: 1.12rem;
 					height: 1.12rem;
 					img{
@@ -244,12 +241,56 @@
 }
 </style>
 <script>
+import resource from '../../api/resource.js'
 import back from '../../common/back.vue'
 export default{
 	data(){
 		return{
-			rakingList: ['','','','','','','','','',''],
-			backId: 1,			//默认显示日榜
+			rakingList: [],		//所有列表
+			numberOne: {},		//第一名
+			numberTwo: {},		//第二名
+			numberThree: {},	//第三名
+			backId: 0,			//默认显示日榜
+			usercode: "",		//师父代号
+		}
+	},
+	created(){
+		document.title = "佣金排行榜";
+		//获取师父代号
+		this.usercode = sessionStorage.getItem("usercode");
+		this.getmaster(this.backId);
+	},
+	watch:{
+		backId:function(n,o){
+			this.getmaster(n);
+		}
+	},
+	methods:{
+		getmaster(type){
+			resource.getMasterList({type: type}).then(res =>{
+				if(res.data.code == "0"){
+					let rakingList = res.data.data;
+					let diff = 100 - rakingList.length;	//和100做对比
+					if(diff > 0){
+						let rakObj = {
+							"headimgurl":"http://www.gxke88.com/uploads/touxiang/tx.png",
+							"master_code":"虚位以待",
+							"sum":"0"
+						}
+						for (let i = 0; i < diff; i++) {
+							rakingList.push(rakObj);
+						}
+						this.rakingList = rakingList.slice(3,100);
+					}else if(diff == 0){
+						this.rakingList = rakingList;
+					}
+					this.numberOne = rakingList[0];	//第一名
+					this.numberTwo = rakingList[1];	//第二名
+					this.numberThree = rakingList[2];	//第三名
+				}else{
+					this.$toast(res.data.message);
+				}
+			});
 		}
 	},
 	components:{

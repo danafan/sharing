@@ -66,10 +66,10 @@
 			</div>
 		</div>
 	</div>
-</div>
 </template>
 <style lang="less" scoped>
 .tab{
+	font-family: "Source Han Sans";
 	position: fixed;
 	left: 0;
 	top: 0;
@@ -93,8 +93,7 @@
 	}
 }
 .orderList{
-	overflow-y: scroll;
-	margin-top: 1.05rem;
+	padding-top: 1.05rem;
 	margin-bottom: .98rem;
 	.orderItem{
 		border-bottom:1px solid #e8e8e8;
@@ -153,11 +152,12 @@
 	}
 }
 .nullList{
+	font-family: "Source Han Sans";
 	margin-top: 1.05rem;
 	margin-bottom: .98rem;
 	.toastImg{
-		margin: 2.26rem auto .32rem;
-		width: 4.04rem;
+		margin: 3.26rem auto .32rem;
+		width: 4.84rem;
 		height: 4.04rem;
 		img{
 			width: 100%;
@@ -324,8 +324,8 @@ export default{
 		return{
 			nullList: false,		//默认列表不为空
 			toastTxt: "",			//列表为空提示文字
-			page: 0,				//页码为0
-			isLoad: true,			//默认可以加载
+			page: 1,				//页码为0
+			isLoad: false,			//默认可以加载
 			waitCode: "",			//待审核徒弟的数量
 			checkCode: "",			//已激活徒弟的数量
 			blackCode: "",			//黑名单徒弟的数量
@@ -340,6 +340,10 @@ export default{
 			stateImg: require('../../assets/audit.png'),	//弹框的图片默认审核
 			userObj:{},				//徒弟详情对象
 		}
+	},
+	created(){
+		document.title = "徒弟";
+		this.waitTab();
 	},
 	watch:{
 		showState:function(n,o){
@@ -372,8 +376,6 @@ export default{
 				}else if(this.colorId == "3"){
 					this.blackTab();
 				}
-			}else{
-				console.log("没有更多");
 			}
 		},
 		//点击切换导航
@@ -397,6 +399,7 @@ export default{
 						this.isLoad = false;
 						this.orderlist = this.orderlist.concat(Array.from(orderlist));
 					}else{								//正常
+						this.isLoad = true;
 						this.orderlist = this.orderlist.concat(Array.from(orderlist));
 					}
 				}else{
@@ -418,6 +421,7 @@ export default{
 						this.isLoad = false;
 						this.orderlist = this.orderlist.concat(Array.from(orderlist));
 					}else{								//正常
+						this.isLoad = true;
 						this.orderlist = this.orderlist.concat(Array.from(orderlist));
 					}
 				}else{
@@ -439,6 +443,7 @@ export default{
 						this.isLoad = false;
 						this.orderlist = this.orderlist.concat(Array.from(orderlist));
 					}else{								//正常
+						this.isLoad = true;
 						this.orderlist = this.orderlist.concat(Array.from(orderlist));
 					}
 				}else{

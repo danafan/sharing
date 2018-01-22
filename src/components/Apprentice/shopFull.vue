@@ -92,6 +92,9 @@ export default{
 			imgSrc: ""
 		}
 	},
+	created(){
+		document.title = "查看店铺名称";
+	},
 	methods:{
 		lookImg(id){
 			this.showImg = true;

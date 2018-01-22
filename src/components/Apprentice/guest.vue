@@ -138,15 +138,10 @@ export default{
 			}else{
 				this.shu = n.length;
 			};
-		},
-		//监听tab的改变
-		color:function(n,o){
-			if(n != o){
-				this.question = "";
-				this.imgList = [];
-				this.imgObjList = [];
-			}
 		}
+	},
+	created(){
+		document.title = "客服中心";
 	},
 	methods:{
 		//上传图片成功的回调
