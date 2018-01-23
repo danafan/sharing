@@ -8,8 +8,8 @@
 				<div slot="icon"><img :src="baseUrl + item.goods_img"></div>
 				<span slot="name">{{item.keyword.split(',')[0]}}</span>
 				<span slot="code">{{item.order_sn}}</span>
-				<span slot="money">{{item.payment/100}}</span>
-				<span slot="commission">{{item.award/100}}</span>
+				<span slot="money">¥{{item.payment/100}}</span>
+				<span slot="commission">¥{{item.award/100}}</span>
 				<span slot="time">{{item.apply_time}}</span>
 			</recordItem>	
 		</div>
@@ -62,7 +62,7 @@ export default{
 			isLoad: true,				//默认可加载
 			count: "",					//总条数
 			page: 0,					//页码
-			showTask: true,				//默认列表不为空
+			showTask: true,			//默认列表不为空
 			recordList:[],				//列表
 		}
 	},
@@ -85,10 +85,10 @@ export default{
 			}
 			resource.getUserTask(taskObj).then(res => {
 				if(res.data.code == "0"){
-					this.count = res.data.count;	//总条数
-					if(this.count == "0"){
+					this.count = res.data.count;	
+					if(this.count == "0"){					//总条数为0
 						this.showTask = false;
-					}else{
+					}else{									//总条数不为0
 						let recordList = res.data.data;
 						if(recordList.length < "12"){		// 某一页不足12条
 							this.isLoad = false;

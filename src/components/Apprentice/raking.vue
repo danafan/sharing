@@ -9,22 +9,22 @@
 			<div class="iconItem two">
 				<div class="img">
 					<div class="div1">
-						<div class="userimg"><img :src="numberOne.headimgurl"></div>
+						<div class="userimg"><img :src="numberTwo.headimgurl"></div>
 						<img src="../../assets/Second.png">
 					</div>
 				</div>
-				<div class="code">{{numberOne.master_code}}</div>
-				<div class="money">¥{{numberOne.sum/100}}</div>
+				<div class="code">{{numberTwo.master_code}}</div>
+				<div class="money">¥{{numberTwo.sum/100}}</div>
 			</div>
 			<div class="iconItem one">
 				<div class="img">
 					<div class="div2">
-						<div class="userimg"><img :src="numberTwo.headimgurl"></div>
+						<div class="userimg"><img :src="numberOne.headimgurl"></div>
 						<img src="../../assets/First.png">
 					</div>
 				</div>
-				<div class="code code1">{{numberTwo.master_code}}</div>
-				<div class="money">¥{{numberTwo.sum/100}}</div>
+				<div class="code code1">{{numberOne.master_code}}</div>
+				<div class="money">¥{{numberOne.sum/100}}</div>
 			</div>
 			<div class="iconItem three">
 				<div class="img">

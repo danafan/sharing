@@ -20,6 +20,12 @@
 					<div class="txt" v-if="toastTxt == '0'">您当前任务已被领完，下一波</div>
 					<div class="txt" v-if="toastTxt == '0'">任务来临时间为{{time}}</div>
 					<div class="txt" v-if="toastTxt == '0'">任务数量为{{could}}个，请提前做好准备哦～</div>
+					<div v-if="toastTxt == '0'">
+						<div class="reload" v-if="reload" @click="reloads">轻触刷新</div>	
+						<div class="zhuan" v-else>
+							<mt-spinner :type="3" color="#03abff"></mt-spinner>	
+						</div>
+					</div>
 					<!-- 已领取任务 -->
 					<div class="txt" v-if="toastTxt == '1'">系统检测到您三天之内有接过任务或有未完成任务</div>
 					<div class="txt" v-if="toastTxt == '1'">暂时不能接新任务哦～</div>
@@ -125,6 +131,21 @@
 			font-size: .26rem;
 			color:#999999;
 		}
+		.reload{
+			margin: .5rem auto 0;
+			border: 1px solid #999999;
+			width: 2rem;
+			text-align: center;
+			height: .8rem;
+			line-height: .8rem;
+			font-size: .28rem;
+			color: #999999;
+		}
+		.zhuan{
+			margin-top: .5rem;
+			display: flex;
+			justify-content: center;
+		}
 	}
 	.listshow{
 		display: flex;
@@ -199,6 +220,7 @@
 import {mapActions, mapGetters} from 'vuex'
 import { swiper, swiperSlide } from "vue-awesome-swiper"
 import resource from '../../api/resource.js'
+import { Spinner } from 'mint-ui';
 export default{
 	data(){
 		return{		
@@ -222,6 +244,7 @@ export default{
 		    },
 		    time: "",						 		 //下一波任务来临时间
 		    could: "",								 //任务数量
+		    reload: true,							 //默认显示刷新字
 		}
 	},  
 	created(){
@@ -232,42 +255,40 @@ export default{
 		...mapActions([
 			'set_route'
 			]),
+		//点击刷新
+		reloads(){
+			this.reload = false;	//开始转
+			this.page = 1;
+			this.getTaskList(this.page);
+		},
 		//获取任务列表
-		getTaskList(page,type){
+		getTaskList(page){
 			resource.taskList({page:page}).then(res => {
+				this.reload = true;	//结束转
 				if(res.data.code == "0"){
 					let taskList = res.data.data.data;
-					if(type == "0"){
-						if(taskList.length < "12"){	// 某一页不足12条
-							this.isLoad = false;
-							this.taskList = this.taskList.concat(Array.from(taskList));
-						}else{								//正常
-							this.taskList = this.taskList.concat(Array.from(taskList));
-						}
-					}else{
-						this.taskList = taskList
+					if(taskList.length < "12"){	// 某一页不足12条
+						this.isLoad = false;
+						this.taskList = this.taskList.concat(Array.from(taskList));
+					}else{								//正常
+						this.taskList = this.taskList.concat(Array.from(taskList));
 					}
 				}else if(res.data.code == "1"){//三天之内已经接过任务
+					this.isLoad = false;
 					this.listNull = true;
 					this.toastTxt = "1";
 				}else if(res.data.code == "2"){//有任务和时间
+					this.isLoad = false;
 					this.listNull = true;
 					this.toastTxt = "0";
 					this.time = res.data.data.start_time;
 					this.could = res.data.data.num;
 				}else if(res.data.code == "3"){//系统无任务
+					this.isLoad = false;
 					this.listNull = true;
 					this.toastTxt = "2";
 				}else{
 					this.$toast(res.data.msg);
-				}
-				if(type == "1"){
-					this.updateTxt = "刷新成功";
-					let _this = this;
-					setTimeout(function(){
-						_this.update = false;
-						_this.updateTxt = "松开刷新";
-					},2000);
 				}
 			})
 		},
@@ -285,9 +306,9 @@ export default{
 		//上拉加载
 		loadMore(){
 			//获取任务列表
-			this.page += 1;
 			if(this.isLoad == true){
-				this.getTaskList(this.page,"0");
+				this.page += 1;
+				this.getTaskList(this.page);
 			}else{
 				console.log("没有更多");
 			}
@@ -295,7 +316,8 @@ export default{
 	},
 	components:{
 		swiper,
-		swiperSlide
+		swiperSlide,
+		Spinner
 	}
 }
 </script>

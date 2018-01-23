@@ -75,7 +75,7 @@
 		}
 		.subTxt{
 			padding-top: .08rem;
-			margin-top: .56rem;
+			margin-top: .2rem;
 			border-top: 1px solid #dadada;
 			font-size: .24rem;
 			color: #999999;

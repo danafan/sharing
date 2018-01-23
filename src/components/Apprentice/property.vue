@@ -102,16 +102,15 @@ export default{
 			resource.payHistory({page: this.page}).then(res => {
 				if(res.data.code == "0"){
 					let property = res.data.data;
-					//this.property = Array.from(property);
-					// if(res.data.count == "0"){
-					// 	this.isHistory = false;
-					// }
 					if(property.length < 12){
 						this.isLoad = false;
 						this.property = this.property.concat(Array.from(property));
 					}else{
 						this.property = this.property.concat(Array.from(property));
 					}
+				}else if(res.data.code == "1"){//没有记录
+					this.isHistory = false;
+					this.isLoad == false;
 				}else{
 					this.$toast(res.data.message);
 				}
