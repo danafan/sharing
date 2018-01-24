@@ -3,7 +3,7 @@
 		<!-- 返回按钮 -->
 		<back></back>
 		<div class="title" v-show="showTask">已完成<span>({{count}})</span></div>
-		<div v-infinite-scroll="loadMore" v-if="showTask">
+		<div class="loadmore" v-infinite-scroll="loadMore" v-if="showTask">
 			<recordItem v-for="(item,index) in recordList" :key="index">
 				<div slot="icon"><img :src="baseUrl + item.goods_img"></div>
 				<span slot="name">{{item.keyword.split(',')[0]}}</span>
@@ -24,14 +24,24 @@
 </template>
 <style lang="less" scoped>
 .title{
+	z-index: 1;
+	background: #ffffff;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
 	padding-left: .58rem;
 	font-size: .3rem;
 	color:#333333;
 	font-weight: 700;
-	margin-top: .24rem;
+	padding-top: .24rem;
+	padding-bottom: .24rem;
 	span{
 		color:#ff5858;
 	}
+}
+.loadmore{
+	padding-top: .64rem;
 }
 .untask{
 	.img{
@@ -88,6 +98,10 @@ export default{
 					this.count = res.data.count;	
 					if(this.count == "0"){					//总条数为0
 						this.showTask = false;
+					}else if(this.count == 12){				//总数为12就不翻页
+						this.isLoad = false;
+						let recordList = res.data.data;
+						this.recordList = this.recordList.concat(Array.from(recordList));
 					}else{									//总条数不为0
 						let recordList = res.data.data;
 						if(recordList.length < "12"){		// 某一页不足12条

@@ -10,7 +10,7 @@
 		<!-- 新密码 -->
 		<div class="passItem">
 			<div class="suo"><img src="../../assets/password.png"></div>
-			<div class="passInput"><input type="password" autocomplete="new-password" v-model="newPass" placeholder="新密码6至16位字母与数字密码"></div>
+			<div class="passInput"><input type="password" autocomplete="new-password" v-model="newPass" placeholder="6至16位字母、数字或下划线中的两种"></div>
 		</div>
 		<!-- 确认密码 -->
 		<div class="passItem">
@@ -103,15 +103,15 @@ export default{
 			if(this.oldPass == ""){
 				this.$toast("原始密码不能为空!");
 			}else if(!this.judgmentName.test(this.oldPass)){
-				this.$toast("密码为6-16位，包含字母、数字、下划线、减号中的两种!");
+				this.$toast("密码为6-16位，包含字母、数字、下划线中的两种!");
 			}else if(this.newPass == ""){
 				this.$toast("新密码不能为空!");
 			}else if(!this.judgmentName.test(this.newPass)){
-				this.$toast("密码为6-16位，包含字母、数字、下划线、减号中的两种!");
+				this.$toast("密码为6-16位，包含字母、数字、下划线中的两种!");
 			}else if(this.okPass == ""){
 				this.$toast("请确认密码!");
 			}else if(!this.judgmentName.test(this.okPass)){
-				this.$toast("密码为6-16位，包含字母、数字、下划线、减号中的两种!");
+				this.$toast("密码为6-16位，包含字母、数字、下划线中的两种!");
 			}else if(this.newPass != this.okPass){
 				this.$toast("两次密码不一样");
 			}else{

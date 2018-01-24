@@ -325,7 +325,7 @@ export default{
 			nullList: false,		//默认列表不为空
 			toastTxt: "",			//列表为空提示文字
 			page: 1,				//页码为0
-			isLoad: false,			//默认可以加载
+			isLoad: true,			//默认可以加载
 			waitCode: "",			//待审核徒弟的数量
 			checkCode: "",			//已激活徒弟的数量
 			blackCode: "",			//黑名单徒弟的数量
@@ -392,10 +392,11 @@ export default{
 					this.waitCode = res.data.data.total;
 					//判断任务列表是否为空
 					if(this.waitCode == "0"){
+						this.isLoad = false;
 						this.nullList = true;
 						this.toastTxt = "您这里暂时没有要审核的徒弟哦";
 					}
-					if(orderlist.length < "12"){		// 某一页不足12条
+					if(orderlist.length < "12" || this.waitCode == "12"){		// 某一页不足12条
 						this.isLoad = false;
 						this.orderlist = this.orderlist.concat(Array.from(orderlist));
 					}else{								//正常
@@ -417,7 +418,7 @@ export default{
 						this.nullList = true;
 						this.toastTxt = "您这里一个徒弟也没有，赶紧去邀请吧";
 					}
-					if(orderlist.length < "12"){			// 某一页不足12条
+					if(orderlist.length < "12" || this.checkCode == "12"){			// 某一页不足12条
 						this.isLoad = false;
 						this.orderlist = this.orderlist.concat(Array.from(orderlist));
 					}else{								//正常
@@ -439,7 +440,7 @@ export default{
 						this.nullList = true;
 						this.toastTxt = "呦吼，您的徒弟表现都不错哦，继续努力吧";
 					}
-					if(orderlist.length < "12"){			// 某一页不足12条
+					if(orderlist.length < "12" || this.blackCode == "12"){// 某一页不足12条
 						this.isLoad = false;
 						this.orderlist = this.orderlist.concat(Array.from(orderlist));
 					}else{								//正常
@@ -478,7 +479,7 @@ export default{
 			this.id = id;
 			this.showState = true;	//弹框显示
 			this.type1 = true;		//显示审核或删除的框
-			this.butType = "1";		//改变状态（拒绝）
+			this.butType = "0";		//改变状态（拒绝）
 			//改变弹框图片
 			this.stateImg = require('../../assets/delete.png');
 			this.toast = "确认拒绝？"

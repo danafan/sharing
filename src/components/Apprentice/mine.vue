@@ -345,7 +345,7 @@ export default{
 					this.principal = userInfo.principal/100;	//本金
 					if(userInfo.freeze != "0"){					//冻结资金
 						this.isFreeze = true;
-						this.freeze = userInfo.freeze;
+						this.freeze = userInfo.freeze/100;
 					}
 				}else{
 					this.$toast(res.data.message);

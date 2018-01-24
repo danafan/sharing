@@ -29,7 +29,7 @@
 					<div class="operation">
 						<div class="operName">点击关键词复制：</div>	
 						<div class="operSubname" v-clipboard="keyWord"
-						@success="$toast('复制成功');">{{keyWord}}</div>
+						@success="$toast('复制成功');">{{keyword[keynum]}}</div>
 						<div class="replace" @click="trading">换一换</div>	
 					</div>
 					<!-- 第一条 -->
@@ -150,6 +150,7 @@
 	}
 	.taskCon{
 		padding-left: .58rem;
+		padding-bottom: 1rem;
 		.title{
 			margin-top: .32rem;
 			margin-bottom: .22rem;
@@ -178,6 +179,12 @@
 			}
 			.operSubname{
 				color:#ff5858;
+				width: 2rem;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				display: -webkit-box;
+				-webkit-line-clamp: 1;
+				-webkit-box-orient: vertical;
 			}
 			.replace{
 				margin-left: .3rem;
@@ -319,6 +326,7 @@ export default{
 			id: "",				//任务id
 			taskDetail:{},		//任务详情对象
 			keyword: [],		//关键词数组
+			keynum: 0,			//默认第一个关键词
 			time: "",			//剩余时间
 			prompt: false,		//默认未通过验证，下面提示不显示
 			keyWord: "",		//关键词
@@ -388,10 +396,12 @@ export default{
 					this.wangwang = res.data.data.wangwang;	//淘宝账号
 					this.trading();							//选择一个关键词
 					let time = res.data.data.end_time;		//任务截止时间
-					let nyr = time.split(" ")[0];			//可传的年月日
-					let sfm = time.split(" ")[1];			//可传的时分秒
+					let time1 = time.replace(/-/g, '/');
 					//执行倒数函数
-					this.timeDown(nyr + " " + sfm);
+					this.timeDown(time1);
+				}else if(res.data.code == "1"){
+					this.$router.go(-1);
+					this.$toast(res.data.msg);
 				}else{
 					this.$toast(res.data.msg);
 				}		
@@ -399,32 +409,36 @@ export default{
 		},
 		//时间倒数
 		timeDown(endDateStr) {
-			    //结束时间
-			    var endDate = new Date(endDateStr);
-			    //当前时间
-			    var nowDate = new Date();
-			    //相差的总秒数
-			    var totalSeconds = parseInt((endDate - nowDate) / 1000);
-			    //取模（余数）
-			    var modulo = totalSeconds % (60 * 60 * 24);
+			    //相差的总豪秒数
+			    var totalSeconds = (new Date(endDateStr) - new Date());
 			    //小时数
-			    var hours = Math.floor(modulo / (60 * 60));
-			    modulo = modulo % (60 * 60);
+			    var hours = parseInt(totalSeconds / 1000 / 60 / 60 % 24 , 10); //计算剩余的小时
 			    //分钟
-			    var minutes = Math.floor(modulo / 60);
+			    var minutes = parseInt(totalSeconds / 1000 / 60 % 60, 10);//计算剩余的分钟
 			    //秒
-			    var seconds = modulo % 60;
+			    var seconds = parseInt(totalSeconds / 1000 % 60, 10);//计算剩余的秒数 
 			    //输出到页面
-			    this.time = hours + ":" + minutes + ":" + seconds;
+			    this.time = this.checkTime(hours) + ":" + this.checkTime(minutes) + ":" + this.checkTime(seconds);
 			    let _this = this;
 			    setTimeout(function () {
 			    	_this.timeDown(endDateStr);
-			    }, 1000)
+			    }, 1000);
 			},
+			checkTime(i){ 
+				if(i<10){ 
+					i = "0" + i; 
+				} 
+				return i; 
+			}, 
 		//点击换一换
 		trading(){
-			let n = Math.floor(Math.random() * this.keyword.length + 1) - 1;
-			this.keyWord = this.keyword[n];
+			let keyLength = this.keyword.length - 1;
+			if(this.keynum < keyLength){
+				this.keynum += 1;
+			}else{
+				this.keynum = 0;
+			}
+			this.keyWord = this.keyword[this.keynum];
 		},
 		//点击验证店铺名称
 		conShop(){
@@ -488,6 +502,8 @@ export default{
 		subOrder(){               
 			if(this.orderCode == ""){
 				this.$toast("请输入您付款的订单编号");
+			}else if(!this.judgmentShopNum.test(this.orderCode)){
+				this.$toast("订单编号格式不正确");
 			}else{
 				let orderObj = {
 					usertaskid: this.id,

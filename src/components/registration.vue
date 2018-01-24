@@ -10,12 +10,12 @@
 		<!-- 密码 -->
 		<div class="item">
 			<div class="itemIcon"><img src="../assets/password.png"></div>
-			<div class="itemInput"><input type="password" v-model="oldPass" placeholder="密码（6-16位）"></div>
+			<div class="itemInput"><input type="password" v-model="oldPass" placeholder="密码（6至16位字母、数字或下划线中的两种）"></div>
 		</div>
 		<!-- 确认密码 -->
 		<div class="item">
 			<div class="itemIcon"><img src="../assets/password.png"></div>
-			<div class="itemInput"><input type="password" v-model="newPass" placeholder="确认密码（6-16位）"></div>
+			<div class="itemInput"><input type="password" v-model="newPass" placeholder="确认密码（6至16位字母、数字或下划线中的两种）"></div>
 		</div>
 		<!-- 旺旺号 -->
 		<div class="item">
@@ -364,8 +364,10 @@ export default{
 				this.$toast("请选择职业!");
 			}else if(this.status == "1" && this.recomcode == ""){
 				this.$toast("请填写推荐人代号!");
+			}else if(this.status == "1" && !this.judgmentCode.test(this.recomcode)){
+				this.$toast("推荐人代号格式不正确!");
 			}else if(this.status == "1" && this.recomname == ""){
-				this.$toast("请填写推荐人姓名!");
+				this.$toast("请填写推荐人用户名!");
 			}else{
 				let userObj = {
 					username: this.username,	//用户名

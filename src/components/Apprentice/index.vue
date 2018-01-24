@@ -33,7 +33,7 @@
 					<div class="txt" v-if="toastTxt == '2'">系统暂时没有发布新任务哦～</div>
 				</div>
 				<div class="listshow" v-else>
-					<div class="taskItem" v-for="item in taskList" @click="detail(item.task_id)">
+					<div class="taskItem" v-for="item in taskList">
 						<!-- 大图 -->
 						<div class="itemImg">
 							<img class="taskImg" :src="baseUrl + item.goods_img">
@@ -51,7 +51,7 @@
 							</div>
 							<!-- 右侧 -->
 							<div class="txtRight">
-								<div class="application">申请任务</div>
+								<div class="application" @click="detail(item.task_id)">申请任务</div>
 								<div class="residual">剩余<span>{{item.residue_num}}</span>份</div>
 							</div>
 						</div>
@@ -168,6 +168,13 @@
 				justify-content: space-between;
 				.txtLeft{
 					.leftName{
+						line-height: 1.6;
+						width: 2rem;
+						overflow: hidden;
+						text-overflow: ellipsis;
+						display: -webkit-box;
+						-webkit-line-clamp: 1;
+						-webkit-box-orient: vertical;
 						font-size: .28rem;
 						color: #333333;
 						img{
@@ -224,6 +231,7 @@ import { Spinner } from 'mint-ui';
 export default{
 	data(){
 		return{		
+			subClick: true,						//默认按钮可点击一次
 			banner: [
 			require('../../assets/background1.png'),
 			require('../../assets/background2.png')
@@ -266,8 +274,11 @@ export default{
 			resource.taskList({page:page}).then(res => {
 				this.reload = true;	//结束转
 				if(res.data.code == "0"){
+					this.listNull = false;
 					let taskList = res.data.data.data;
-					if(taskList.length < "12"){	// 某一页不足12条
+					let total = res.data.data.total;
+					let lastPage = res.data.data.last_page;
+					if(taskList.length < "12" || total == "12" || lastPage == this.page){	// 某一页不足12条
 						this.isLoad = false;
 						this.taskList = this.taskList.concat(Array.from(taskList));
 					}else{								//正常
@@ -294,14 +305,18 @@ export default{
 		},
 		// 点击申请任务成功后进入详情
 		detail(id){
-			resource.taskDetail({taskid:id}).then(res => {
-				if(res.data.code == "0"){
-					let taskid = res.data.usertaskid;
-					this.$router.push(`/taskDetail?id=${taskid}`);
-				}else{
-					this.$toast(res.data.msg);
-				}		
-			});
+			if(this.subClick == true){
+				this.subClick = false;
+				resource.taskDetail({taskid:id}).then(res => {
+					if(res.data.code == "0"){
+						let taskid = res.data.usertaskid;
+						this.$router.push(`/taskDetail?id=${taskid}`);
+					}else{
+						this.$toast(res.data.msg);
+						this.subClick = true;	
+					}		
+				});
+			}
 		},
 		//上拉加载
 		loadMore(){

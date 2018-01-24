@@ -34,10 +34,20 @@
 	}
 	.itemCon{
 		flex:1;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		display: -webkit-box;
+		-webkit-line-clamp: 1;
+		-webkit-box-orient: vertical;
 		.name{
 			font-size: .28rem;
 			color: #333333;
 			margin-bottom: .02rem;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			display: -webkit-box;
+			-webkit-line-clamp: 1;
+			-webkit-box-orient: vertical;
 			span{
 				color:#666666;
 			}

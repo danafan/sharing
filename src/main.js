@@ -18,6 +18,8 @@ Vue.use(VueClipboards);
 Vue.use(InfiniteScroll);
 
 Vue.prototype.baseUrl = "http://gxke88.com/uploads/"
+Vue.prototype.judgmentShopNum = /^[0-9]{17,19}$/;		//订单号号正则
+Vue.prototype.judgmentCode = /^G[0-9]{1,10}$/;			//师父代号正则
 Vue.prototype.judgmentPhone = /^1[34578]\d{9}$/;		//手机号正则
 Vue.prototype.judgmentName = /^[A-Za-z0-9_]{4,16}$/;	//用户名正则
 Vue.prototype.judgmentPassword = /^(?![\d]+$)(?![a-zA-Z]+$)(?![_]+$)[\da-zA-Z_]{6,16}$/;  //密码正则

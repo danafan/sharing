@@ -330,7 +330,7 @@ export default{
 					this.userInfo = res.data.data;
 					this.name = this.userInfo.real_name;	//姓名
 					this.gender = this.userInfo.sex;		//性别
-					this.masterCode = this.userInfo.code;			//师父代号
+					this.masterCode = this.userInfo.master_code;			//师父代号
 					this.WXcode = this.userInfo.wechat;		//微信号
 					this.work = this.userInfo.job_id;		//工作
 					this.birth = this.userInfo.birth;

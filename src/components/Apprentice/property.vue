@@ -102,7 +102,7 @@ export default{
 			resource.payHistory({page: this.page}).then(res => {
 				if(res.data.code == "0"){
 					let property = res.data.data;
-					if(property.length < 12){
+					if(property.length < 12 || res.data.total == 12){
 						this.isLoad = false;
 						this.property = this.property.concat(Array.from(property));
 					}else{

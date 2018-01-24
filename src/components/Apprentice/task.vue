@@ -195,11 +195,16 @@
 		}
 	}
 	.guan{
-		margin-top: .42rem;
-		width: 100%;
+		margin: .42rem auto 0;
+		width: 5rem;
 		text-align: center;
 		font-size: .28rem;
 		color: #333333;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		display: -webkit-box;
+		-webkit-line-clamp: 1;
+		-webkit-box-orient: vertical;
 		span{
 			color:#999999;
 		}
