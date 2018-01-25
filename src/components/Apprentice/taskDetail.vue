@@ -60,7 +60,7 @@
 					<div class="subTie">4. 输入商品金额，验证金额<span @click="$router.push('/shopMoney')">如何查看商品金额>></span></div>
 					<div class="operation">
 						<div class="inputTxt">
-							<input type="text" v-model="money">
+							<input type="number" v-model="money">
 						</div>	
 						<div class="confirmation" v-if="moneyId == 0" @click="conMoney">验证</div>
 						<div class="confirmation through" v-if="moneyId == 1">通过</div>
@@ -84,7 +84,8 @@
 				<div class="codeInput">
 					<input type="text" placeholder="请输入您付款的订单编号" v-model="orderCode">
 				</div>
-				<div class="prompt">请在<span>{{taskDetail.end_time}}</span>内提交您的编号，否则任务将自动作废哦！</div>	
+				<div class="prompt">请在<span>{{taskDetail.end_time}}</span>内提交您的编号</div>	
+				<div class="prompt">否则任务将自动作废哦！</div>
 				<div class="submit" @click="subOrder">提交</div>
 				<div class="goback" @click="goback">上一步</div>
 			</div>
@@ -387,7 +388,7 @@ export default{
 		...mapActions([
 			'set_route'
 			]),
-		//申请任务
+		//获取任务详情
 		getTaskDetail(){
 			resource.getTask({usertaskid:this.id}).then(res => {
 				if(res.data.code == "0"){
@@ -411,7 +412,10 @@ export default{
 		timeDown(endDateStr) {
 			    //相差的总豪秒数
 			    var totalSeconds = (new Date(endDateStr) - new Date());
-			    //小时数
+			    if(totalSeconds < 0){
+			    	this.giving();
+			    }else{
+			    	//小时数
 			    var hours = parseInt(totalSeconds / 1000 / 60 / 60 % 24 , 10); //计算剩余的小时
 			    //分钟
 			    var minutes = parseInt(totalSeconds / 1000 / 60 % 60, 10);//计算剩余的分钟
@@ -423,13 +427,25 @@ export default{
 			    setTimeout(function () {
 			    	_this.timeDown(endDateStr);
 			    }, 1000);
-			},
-			checkTime(i){ 
-				if(i<10){ 
-					i = "0" + i; 
-				} 
-				return i; 
-			}, 
+			}
+		},
+		checkTime(i){ 
+			if(i<10){ 
+				i = "0" + i; 
+			} 
+			return i; 
+		}, 
+		//时间倒数结束后自动取消任务
+		giving(){
+			resource.abandontask({usertaskid:this.id}).then(res => {
+				if(res.data.code == "0"){
+					this.selected = "index";
+					this.$router.push('/index');
+				}else{
+					this.$toast(res.data.msg);
+				}
+			});
+		},
 		//点击换一换
 		trading(){
 			let keyLength = this.keyword.length - 1;
@@ -444,6 +460,8 @@ export default{
 		conShop(){
 			if(this.shop == ""){
 				this.$toast("请输入店铺名称");
+			}else if(this.shop.indexOf(" ") != -1){
+				this.$toast("店铺名不能包含空格");
 			}else{
 				let shopNameObj = {
 					usertaskid: this.id,

@@ -288,9 +288,9 @@ export default{
 			phone: "",				//手机号
 			name: "",				//真实姓名
 			sex: "0",				//性别（默认男）
-			pickerVisible: "1960-01-01",		//日期
+			pickerVisible: "1980-01-01",		//日期
 			birth: "选择出生日期",		//显示的出生日期
-			startDate: new Date('1960-01-01'),	//最小日期
+			startDate: new Date('1980-01-01'),	//最小日期
 			endDate: new Date(),				//最大日期
 			showWork: false,		//选择职业弹框默认不显示
 			options:[],				//职业列表

@@ -25,7 +25,7 @@
 				<div class="txt">确认提现<span>{{money}}</span>元?</div>
 				<div class="buts">
 					<div class="but1" @click="state">确认</div>
-					<div class="but2" @click="passMess = false">取消</div>
+					<div class="but2" @click="this.passMess = false">取消</div>
 				</div>
 			</div>
 		</div>
@@ -218,15 +218,17 @@ export default{
 					if(res.data.code == "0"){
 						this.$toast("提现成功");
 						this.$router.replace('/property');
-					}else if(res.data.code == "9"){
-						this.passMess = false;
+					}else if(res.data.code == "1"){
 						this.$toast(res.data.message);
-					}else{
-						this.$toast(res.data.message.err_code_des);
-					}
+					}else if(res.data.code == "2"){
+						this.$toast(res.data.data.message.err_code_des);
+					};
+					this.passMess = false;
+					this.isPay = true;
 				});
 			}
 		}
+
 	},
 	components:{
 		back
