@@ -330,7 +330,7 @@ export default{
 				if(res.data.code == "0"){
 					this.showTask = 1;
 					this.statusObj = res.data.data;
-					this.keyword = this.statusObj.keyword[0];
+					this.keyword = this.statusObj.keyword;
 				}else if(res.data.code == "1"){
 					this.showTask = 2;
 				}else{

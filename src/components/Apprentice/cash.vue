@@ -1,5 +1,7 @@
 <template>
 	<div>
+		<!-- 正在提现提示框 -->
+		<div class="cashMess" v-if="showcash">系统处理中，请稍等...</div>
 		<!-- 返回按钮 -->
 		<back></back>
 		<!-- 输入金额 -->
@@ -15,6 +17,7 @@
 				<div class="subTxt">当前可用{{type}}{{shu}}元，<span @click="money = shu">全部提现</span></div>	
 				<div class="submit" @click="subCash">提现</div>
 			</div>
+			
 		</div>
 		<!-- 确认提现弹框 -->
 		<div class="passMess" v-if="passMess">
@@ -29,6 +32,7 @@
 				</div>
 			</div>
 		</div>
+
 	</div>
 </template>
 <style lang="less" scoped>
@@ -95,6 +99,7 @@
 			color: #ffffff;
 		}
 	}
+	
 }
 // 输入密码
 .passMess{
@@ -159,6 +164,21 @@
 		}
 	}
 }
+.cashMess{
+	border-radius: .1rem;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform:translate(-50%,-50%);
+	background: rgba(0,0,0,.8);
+	width: 3.5rem;
+	text-align: center;
+	height: 0.8rem;
+	line-height: 0.8rem;
+	font-size: .26rem;
+	color: #fff;
+	z-index: 100;
+}
 </style>
 <script>
 import back from '../../common/back.vue'
@@ -166,6 +186,7 @@ import resource from '../../api/resource.js'
 export default{
 	data(){
 		return{
+			showcash: false,		//默认提现提示不显示
 			isPay: true,			//可提现
 			openid: "",				//openid
 			moneyType: "",			//体现类型
@@ -212,9 +233,11 @@ export default{
 				amount: this.money,
 				type: this.moneyType
 			}
+			this.showcash = true;
 			if(this.isPay == true){
 				this.isPay = false;
 				resource.userPay(moneyObj).then(res => {
+					this.showcash = false;
 					if(res.data.code == "0"){
 						this.$toast("提现成功");
 						this.$router.replace('/property');

@@ -27,8 +27,7 @@
 						</div>
 					</div>
 					<!-- 已领取任务 -->
-					<div class="txt" v-if="toastTxt == '1'">系统检测到您三天之内有接过任务或有未完成任务</div>
-					<div class="txt" v-if="toastTxt == '1'">暂时不能接新任务哦～</div>
+					<div class="txt" v-if="toastTxt == '1'">{{toastxt}}</div>
 					<!-- 系统无任务 -->
 					<div class="txt" v-if="toastTxt == '2'">系统暂时没有发布新任务哦～</div>
 				</div>
@@ -45,7 +44,7 @@
 								<div class="leftName">
 									<span v-if="item.shop_type == '淘宝'"><img src="../../assets/taobao.png"></span>
 									<span v-else><img src="../../assets/tian mao.png"></span>
-									<span class="name">{{item.keyword[0]}}</span>
+									<span class="name">{{item.keyword}}</span>
 								</div>
 								<div class="leftSub">限<span>{{item.num}}</span>份</div>
 							</div>
@@ -241,6 +240,7 @@ export default{
 			taskList:[],							//所有任务列表
 			listNull: false,						//默认没有申请过任务
 			toastTxt: "0",							//提示(0:无任务;1:有任务,没到时间;2:已领取任务)
+			toastxt: "",							//错误提示
 			swiperOption: {                   
 		    	loop: true,                          //循环播放
 		        initialSlide: 0,					 //默认显示第一个图片
@@ -278,7 +278,7 @@ export default{
 					let taskList = res.data.data.data;
 					let total = res.data.data.total;
 					let lastPage = res.data.data.last_page;
-					if(taskList.length < "12" || total == "12" || lastPage == this.page){	// 某一页不足12条
+					if(taskList.length < "6" || total == "6" || lastPage == this.page){	// 某一页不足12条
 						this.isLoad = false;
 						this.taskList = this.taskList.concat(Array.from(taskList));
 					}else{								//正常
@@ -288,6 +288,7 @@ export default{
 					this.isLoad = false;
 					this.listNull = true;
 					this.toastTxt = "1";
+					this.toastxt = res.data.msg;
 				}else if(res.data.code == "2"){//有任务和时间
 					this.isLoad = false;
 					this.listNull = true;

@@ -3,7 +3,7 @@ import axios from './index'
 export default {
   post(path, params={}){
     // let target = {
-    //   userid: "1"
+    //   userid: "1635"
     // };
     let target = {};
     let uid = sessionStorage.getItem("uid");
@@ -27,7 +27,7 @@ export default {
   },
   get(path, params={}){
     // let target = {
-    //   userid: "1"
+    //   userid: "1635"
     // };
     let target = {};
     let uid = sessionStorage.getItem("uid");

@@ -6,7 +6,7 @@
 		<div class="loadmore" v-infinite-scroll="loadMore" v-if="showTask">
 			<recordItem v-for="(item,index) in recordList" :key="index">
 				<div slot="icon"><img :src="baseUrl + item.goods_img"></div>
-				<span slot="name">{{item.keyword.split(',')[0]}}</span>
+				<span slot="name">{{item.keyword}}</span>
 				<span slot="code">{{item.order_sn}}</span>
 				<span slot="money">¥{{item.payment/100}}</span>
 				<span slot="commission">¥{{item.award/100}}</span>

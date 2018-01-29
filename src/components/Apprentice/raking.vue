@@ -282,7 +282,7 @@ export default{
 						}
 						this.rakingList = rakingList.slice(3,100);
 					}else if(diff == 0){
-						this.rakingList = rakingList;
+						this.rakingList = rakingList.slice(3,100);
 					}
 					this.numberOne = rakingList[0];	//第一名
 					this.numberTwo = rakingList[1];	//第二名

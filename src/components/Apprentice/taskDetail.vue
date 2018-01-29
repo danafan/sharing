@@ -28,9 +28,8 @@
 					<div class="subTie">1. 打开淘宝客户端，按照以下步骤操作：</div>
 					<div class="operation">
 						<div class="operName">点击关键词复制：</div>	
-						<div class="operSubname" v-clipboard="keyWord"
-						@success="$toast('复制成功');">{{keyword[keynum]}}</div>
-						<div class="replace" @click="trading">换一换</div>	
+						<div class="operSubname" v-clipboard="keyword"
+						@success="$toast('复制成功');">{{keyword}}</div>
 					</div>
 					<!-- 第一条 -->
 					<div class="subTie">2. 筛选条件：</div>
@@ -326,11 +325,9 @@ export default{
 			pageType: true,		//默认第一页
 			id: "",				//任务id
 			taskDetail:{},		//任务详情对象
-			keyword: [],		//关键词数组
-			keynum: 0,			//默认第一个关键词
+			keyword: "",		//关键词
 			time: "",			//剩余时间
 			prompt: false,		//默认未通过验证，下面提示不显示
-			keyWord: "",		//关键词
 			shop: "",			//输入的店铺名称
 			subShop: "",		//最终提交通过的店铺名称
 			shopId: 0,			//验证店铺按钮状态（0：验证，1:成功，2:失败）
@@ -393,9 +390,8 @@ export default{
 			resource.getTask({usertaskid:this.id}).then(res => {
 				if(res.data.code == "0"){
 					this.taskDetail = res.data.data;
-					this.keyword = res.data.data.keyword;	//关键词数组
+					this.keyword = res.data.data.keyword;	//关键词
 					this.wangwang = res.data.data.wangwang;	//淘宝账号
-					this.trading();							//选择一个关键词
 					let time = res.data.data.end_time;		//任务截止时间
 					let time1 = time.replace(/-/g, '/');
 					//执行倒数函数
@@ -445,16 +441,6 @@ export default{
 					this.$toast(res.data.msg);
 				}
 			});
-		},
-		//点击换一换
-		trading(){
-			let keyLength = this.keyword.length - 1;
-			if(this.keynum < keyLength){
-				this.keynum += 1;
-			}else{
-				this.keynum = 0;
-			}
-			this.keyWord = this.keyword[this.keynum];
 		},
 		//点击验证店铺名称
 		conShop(){

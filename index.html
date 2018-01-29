@@ -16,25 +16,40 @@ div{
 <body>
 	<div id="app"></div>
 	<script type="text/javascript">
-		(function () {
-			document.addEventListener('DOMContentLoaded', function () {
-				autoWidth();
-			});
-			//监听屏幕大小改变
-			window.onresize = function(){
-				autoWidth();
+		// (function () {
+		// 	document.addEventListener('DOMContentLoaded', function () {
+		// 		autoWidth();
+		// 	});
+		// 	//监听屏幕大小改变
+		// 	window.onresize = function(){
+		// 		autoWidth();
+		// 	};
+		// 	//修改适配
+		// 	function autoWidth(){
+		// 		var html = document.documentElement;
+		// 		var windowWidth = html.clientWidth;
+		// 		if(windowWidth > 750) {
+		// 			console.log("请访问pc端");
+		// 		}else{
+		// 			html.style.fontSize = windowWidth / 7.5 + 'px';
+		// 		}
+		// 	}		
+		// })();
+		
+		
+		!(function(doc, win) {
+			var docEle = doc.documentElement,
+			evt = "onorientationchange" in window ? "orientationchange" : "resize",
+			fn = function() {
+				var width = docEle.clientWidth;
+				console.log(width);
+				width && (docEle.style.fontSize = width / 7.5 + "px");
 			};
-			//修改适配
-			function autoWidth(){
-				var html = document.documentElement;
-				var windowWidth = html.clientWidth;
-				if(windowWidth > 750) {
-					console.log("请访问pc端");
-				}else{
-					html.style.fontSize = windowWidth / 7.5 + 'px';
-				}
-			}		
-		})();
+
+			win.addEventListener(evt, fn, false);
+			doc.addEventListener("DOMContentLoaded", fn, false);
+
+		}(document, window));
 	</script>
 </body>
 </html>
