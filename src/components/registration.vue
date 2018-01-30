@@ -350,14 +350,22 @@ export default{
 				this.$toast("两次密码不一致！");
 			}else if(this.wangCode == ""){
 				this.$toast("请填写旺旺号!");
+			}else if(this.wangCode.indexOf(" ") != -1){
+				this.$toast("旺旺号不能包括空格!");
 			}else if(this.qqCode == ""){
 				this.$toast("请填写QQ号!");
+			}else if(this.qqCode.indexOf(" ") != -1){
+				this.$toast("QQ号不能包括空格!");
 			}else if(this.phone == ""){
 				this.$toast("请填写手机号!");
+			}else if(this.phone.indexOf(" ") != -1){
+				this.$toast("手机号不能包括空格!");
 			}else if(!this.judgmentPhone.test(this.phone)){
 				this.$toast("手机号格式不正确!");
 			}else if(this.name == ""){
 				this.$toast("请填写真实姓名!");
+			}else if(this.name.indexOf(" ") != -1){
+				this.$toast("真实姓名不能包括空格!");
 			}else if(this.birth == "" || this.birth == "选择出生日期"){
 				this.$toast("请选择出生日期!");
 			}else if(this.work == "" || this.work == "选择职业"){
@@ -368,6 +376,8 @@ export default{
 				this.$toast("推荐人代号格式不正确!");
 			}else if(this.status == "1" && this.recomname == ""){
 				this.$toast("请填写推荐人用户名!");
+			}else if(this.status == "1" && this.recomname.indexOf(" ") != -1){
+				this.$toast("推荐人用户名不能包括空格!");
 			}else{
 				let userObj = {
 					username: this.username,	//用户名

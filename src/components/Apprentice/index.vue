@@ -153,6 +153,8 @@
 		.taskItem{
 			margin-bottom: .22rem;
 			width: 3.4rem;
+			// flex-grow: 1;
+			// flex-shrink: 1;
 			.itemImg{
 				width: 3.4rem;
 				height: 2.8rem;
@@ -230,6 +232,7 @@ import { Spinner } from 'mint-ui';
 export default{
 	data(){
 		return{		
+			jia: true,							//等到列表接口成功之后再去加载下一页
 			subClick: true,						//默认按钮可点击一次
 			banner: [
 			require('../../assets/background1.png'),
@@ -271,16 +274,19 @@ export default{
 		},
 		//获取任务列表
 		getTaskList(page){
+			this.jia = false;
 			resource.taskList({page:page}).then(res => {
+				this.jia = true;
 				this.reload = true;	//结束转
 				if(res.data.code == "0"){
 					this.listNull = false;
 					let taskList = res.data.data.data;
 					let total = res.data.data.total;
 					let lastPage = res.data.data.last_page;
-					if(taskList.length < "6" || total == "6" || lastPage == this.page){	// 某一页不足12条
-						this.isLoad = false;
-						this.taskList = this.taskList.concat(Array.from(taskList));
+					if(taskList.length < "6" || total == "6" || lastPage == this.page){	
+					// 某一页不足6条
+					this.isLoad = false;
+					this.taskList = this.taskList.concat(Array.from(taskList));
 					}else{								//正常
 						this.taskList = this.taskList.concat(Array.from(taskList));
 					}
@@ -321,13 +327,16 @@ export default{
 		},
 		//上拉加载
 		loadMore(){
-			//获取任务列表
-			if(this.isLoad == true){
-				this.page += 1;
-				this.getTaskList(this.page);
-			}else{
-				console.log("没有更多");
+			if(this.jia == true){
+				//获取任务列表
+				if(this.isLoad == true){
+					this.page += 1;
+					this.getTaskList(this.page);
+				}else{
+					console.log("没有更多");
+				}
 			}
+			
 		}
 	},
 	components:{

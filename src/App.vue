@@ -16,10 +16,9 @@ export default {
 				this.callback(code);
 			}else{
 				this.getAuthurl();
-				//this.$router.push('/registration');
+
 				// sessionStorage.setItem("status","0");
 				// this.$router.push('/navbar');
-				//this.$router.push('/verification?mess=qwe');
 			}
 		}else{
 			console.log("授权过");

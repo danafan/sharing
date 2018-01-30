@@ -44,7 +44,7 @@
 	background: #eaeaea;
 	display: flex;
 	justify-content: space-around;
-	width: 7.5rem;
+	width: 100%;
 	height: .98rem;
 	font-size: .24rem;
 	color: #333333;
@@ -83,9 +83,9 @@ export default{
 	created(){
 		//判断是师父还是徒弟
 		let status = sessionStorage.getItem("status");
-		if(status == "0" || status == "2"){//师父
+		if(status == "0" || status == "2"){		//师父
 			this.showMaster = true;
-		}else if(status == "1"){//徒弟
+		}else if(status == "1"){				//徒弟
 			this.showMaster = false;
 		}
 		let tab = this.get_route;
