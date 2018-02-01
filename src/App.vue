@@ -41,12 +41,16 @@ methods:{
 			resource.callback({code:code}).then(res => {
 				if(res.data.code == "0"){
 					sessionStorage.setItem("callback","1");
+					console.log(res.data.data.data);
 					let openid = res.data.data.data.openid;
 					let wxname = res.data.data.data.nickname;
 					let wxIcon = res.data.data.data.headimgurl;
 					sessionStorage.setItem("openid",openid);
 					sessionStorage.setItem("wxname",wxname);
 					sessionStorage.setItem("wxIcon",wxIcon);
+					console.log(openid);
+					console.log(wxname);
+					console.log(wxIcon);
 					//根据openid获取用户状态
 					this.getserstate(openid,wxname,wxIcon);
 				}else{
@@ -61,6 +65,7 @@ methods:{
 				nickname: wxname,
 				headimgurl: wxIcon
 			}
+			console.log(wxObj);
 			resource.getUserState(wxObj).then(res => {
 				if(res.data.code == "0"){							//关联过,跳转首页
 					//获取用户id和身份

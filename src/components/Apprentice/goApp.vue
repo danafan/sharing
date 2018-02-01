@@ -5,6 +5,7 @@
 			<div class="tabItem" :class="{txtColor:colorId == 1}" @click="selTab(1)">待审核<span v-if="colorId == 1">({{waitCode}})</span></div>
 			<div class="tabItem" :class="{txtColor:colorId == 2}" @click="selTab(2)">已激活<span v-if="colorId == 2">({{checkCode}})</span></div>
 			<div class="tabItem" :class="{txtColor:colorId == 3}" @click="selTab(3)">黑名单<span v-if="colorId == 3">({{blackCode}})</span></div>
+			<div class="tabItem" :class="{txtColor:colorId == 4}" @click="selTab(4)">可接单<span v-if="colorId == 4">({{notCode}})</span></div>
 		</div>
 		<!-- 列表 -->
 		<div class="orderList" v-infinite-scroll="loadMore" v-if="nullList == false">
@@ -14,8 +15,8 @@
 					<div class="name">{{item.nickname}}</div>
 					<div class="conItem" v-if="colorId == 3">姓名：{{item.username}}</div>
 					<div class="conItem">旺旺号：{{item.wangwang}}</div>
-					<div class="conItem" v-if="colorId == 1 || colorId == 2">手机号：{{item.phone}}</div>
-					<div class="conItem" v-if="colorId == 2">本月分得佣金：¥{{item.m_award}}</div>
+					<div class="conItem" v-if="colorId == 1 || colorId == 2 || colorId == 4">手机号：{{item.phone}}</div>
+					<div class="conItem" v-if="colorId == 2 || colorId == 4">本月分得佣金：¥{{item.m_award}}</div>
 					<div class="conItem" v-if="colorId == 1">QQ号：{{item.qq}}</div>
 					<div class="conItem" v-if="colorId == 3">状态：{{item.status | status}}</div>
 					<div class="conItem">
@@ -23,6 +24,9 @@
 						<div class="buts" v-if="colorId == 1">
 							<div class="verification" @click="though(item.id)">通过</div>
 							<div class="delete" @click="Denial(item.id)">拒绝</div>
+						</div>
+						<div class="buts" v-if="colorId == 4">
+							<div class="reminder" @click="reminder(item.id)">一键提醒</div>
 						</div>
 					</div>
 				</div>
@@ -145,6 +149,17 @@
 						line-height: .32rem;
 						font-size: .24rem;
 						color:#03abff;
+					}
+					.reminder{
+						margin-left: .3rem;
+						border-radius: .1rem;
+						border: 1px solid #03abff;
+						width: 1.2rem;
+						text-align: center;
+						height: .4rem;
+						line-height: .4rem;
+						font-size: .24rem;
+						color: #03abff;
 					}
 				}
 			}
@@ -325,10 +340,11 @@ export default{
 			nullList: false,		//默认列表不为空
 			toastTxt: "",			//列表为空提示文字
 			page: 1,				//页码为0
-			isLoad: true,			//默认可以加载
+			isLoad: false,			//默认可以加载
 			waitCode: "",			//待审核徒弟的数量
 			checkCode: "",			//已激活徒弟的数量
 			blackCode: "",			//黑名单徒弟的数量
+			notCode: "",			//未接单徒弟的数量
 			id: "",					//徒弟id
 			colorId: 1,				//默认选中待审核
 			orderlist:[],			//徒弟列表
@@ -339,6 +355,7 @@ export default{
 			butType: "",			//默认点击审核
 			stateImg: require('../../assets/audit.png'),	//弹框的图片默认审核
 			userObj:{},				//徒弟详情对象
+			oktype: '0',			//0:师父审核徒弟；1:一键提醒
 		}
 	},
 	created(){
@@ -360,6 +377,8 @@ export default{
 				this.checkTab();
 			}else if(n == 3){
 				this.blackTab();
+			}else if(n == 4){
+				this.notTab();
 			}
 		}, 
 	},
@@ -375,12 +394,15 @@ export default{
 					this.checkTab();
 				}else if(this.colorId == "3"){
 					this.blackTab();
+				}else if(this.colorId == "4"){
+					this.notTab();
 				}
 			}
 		},
 		//点击切换导航
 		selTab(id){
-			this.isLoad = true;
+			this.isLoad = false;
+			this.page = 0;
 			this.colorId = id;
 			this.nullList = false;
 		},
@@ -390,12 +412,6 @@ export default{
 				if(res.data.code == "0"){
 					let orderlist = res.data.data.data;
 					this.waitCode = res.data.data.total;
-					//判断任务列表是否为空
-					if(this.waitCode == "0"){
-						this.isLoad = false;
-						this.nullList = true;
-						this.toastTxt = "您这里暂时没有要审核的徒弟哦";
-					}
 					if(orderlist.length < "12" || this.waitCode == "12"){		// 某一页不足12条
 						this.isLoad = false;
 						this.orderlist = this.orderlist.concat(Array.from(orderlist));
@@ -403,6 +419,11 @@ export default{
 						this.isLoad = true;
 						this.orderlist = this.orderlist.concat(Array.from(orderlist));
 					}
+				}else if(res.data.code == "1"){
+					this.isLoad = false;
+					this.nullList = true;
+					this.waitCode = 0;
+					this.toastTxt = "您这里暂时没有要审核的徒弟哦";
 				}else{
 					this.$toast(res.data.msg);
 				}
@@ -414,10 +435,6 @@ export default{
 				if(res.data.code == "0"){
 					let orderlist = res.data.data.data;
 					this.checkCode = res.data.data.total;
-					if(this.checkCode == "0"){
-						this.nullList = true;
-						this.toastTxt = "您这里一个徒弟也没有，赶紧去邀请吧";
-					}
 					if(orderlist.length < "12" || this.checkCode == "12"){			// 某一页不足12条
 						this.isLoad = false;
 						this.orderlist = this.orderlist.concat(Array.from(orderlist));
@@ -425,6 +442,11 @@ export default{
 						this.isLoad = true;
 						this.orderlist = this.orderlist.concat(Array.from(orderlist));
 					}
+				}else if(res.data.code == "1"){
+					this.isLoad = false;
+					this.nullList = true;
+					this.checkCode = 0;
+					this.toastTxt = "您这里一个徒弟也没有，赶紧去邀请吧";
 				}else{
 					this.$toast(res.data.msg);
 				}
@@ -436,10 +458,6 @@ export default{
 				if(res.data.code == "0"){
 					let orderlist = res.data.data.data;
 					this.blackCode = res.data.data.total;
-					if(this.blackCode == "0"){
-						this.nullList = true;
-						this.toastTxt = "呦吼，您的徒弟表现都不错哦，继续努力吧";
-					}
 					if(orderlist.length < "12" || this.blackCode == "12"){// 某一页不足12条
 						this.isLoad = false;
 						this.orderlist = this.orderlist.concat(Array.from(orderlist));
@@ -447,6 +465,29 @@ export default{
 						this.isLoad = true;
 						this.orderlist = this.orderlist.concat(Array.from(orderlist));
 					}
+				}else if(res.data.code == "1"){
+					this.isLoad = false;
+					this.nullList = true;
+					this.blackCode = 0;
+					this.toastTxt = "呦吼，您的徒弟表现都不错哦，继续努力吧";
+				}else{
+					this.$toast(res.data.msg);
+				}
+			});
+		},
+		//未接单
+		notTab(){
+			// {page: this.page}
+			resource.notTab().then(res => {
+				if(res.data.code == "0"){
+					let orderlist = res.data.data;
+					this.orderlist = orderlist;
+					this.notCode = res.data.data.length;
+				}else if(res.data.code == "1"){
+					this.isLoad = false;
+					this.nullList = true;
+					this.notCode = 0;
+					this.toastTxt = "您的徒弟都很勤奋哦～";
 				}else{
 					this.$toast(res.data.msg);
 				}
@@ -470,9 +511,10 @@ export default{
 			this.showState = true;	//弹框显示
 			this.type1 = true;		//显示通过或拒绝的框
 			this.butType = "1";		//改变状态（通过）
+			this.oktype = "0";		//师父审核徒弟
 			//改变弹框图片
 			this.stateImg = require('../../assets/audit.png');
-			this.toast = "确认通过？"
+			this.toast = "确认通过？";
 		},
 		//点击拒绝
 		Denial(id){
@@ -480,27 +522,49 @@ export default{
 			this.showState = true;	//弹框显示
 			this.type1 = true;		//显示审核或删除的框
 			this.butType = "0";		//改变状态（拒绝）
+			this.oktype = "0";		//师父审核徒弟
 			//改变弹框图片
 			this.stateImg = require('../../assets/delete.png');
-			this.toast = "确认拒绝？"
+			this.toast = "确认拒绝？";
+		},
+		//点击一键提醒
+		reminder(id){
+			this.id = id;
+			this.showState = true;	//弹框显示
+			this.type1 = true;		//显示审核或删除的框
+			this.oktype = "1";		//一键提醒
+			//改变弹框图片
+			this.stateImg = require('../../assets/remind.png');
+			this.toast = "确认提醒？";
 		},
 		//点击确认
 		ok(){
-			let preObj = {
-				p_userid: this.id,
-				status: this.butType
-			}
-			resource.prentice(preObj).then(res => {
-				if(res.data.code == "0"){
-					this.$toast("操作成功");
+			if(this.oktype == "0"){
+				let preObj = {
+					p_userid: this.id,
+					status: this.butType
+				}
+				resource.prentice(preObj).then(res => {
+					if(res.data.code == "0"){
+						this.$toast("操作成功");
+						this.showState = false;			//弹框隐藏
+						this.orderlist = [];
+						this.page = 1;
+						this.waitTab();
+					}else{
+						this.$toast(res.data.msg);
+					}
+				});
+			}else if(this.oktype == "1"){
+				resource.notice({p_userid: this.id}).then(res => {
+					this.$toast("提醒成功");
 					this.showState = false;			//弹框隐藏
 					this.orderlist = [];
 					this.page = 1;
-					this.waitTab();
-				}else{
-					this.$toast(res.data.msg);
-				}
-			});
+					this.notTab();
+				});
+			}
+			
 		},
 		//点击整个弹框关闭弹框
 		closeState(){

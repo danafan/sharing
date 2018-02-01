@@ -66,7 +66,9 @@
 						<div class="confirmation wei" v-if="moneyId == 2">失败</div>
 					</div>
 					<!-- 提示 -->
-					<div class="prompt" v-if="prompt">验证通过,请用您的淘宝账号<span>{{wangwang}}</span>,拍下并付款吧！</div>
+					<div class="prompt" v-if="prompt">请用您的淘宝账号<span>{{wangwang}}</span>,拍下并付款吧！</div>
+					<div class="prompt" v-if="tishi">验证通过，请在淘宝商品页面浏览3分钟</div>
+					<div class="prompt" v-if="tishi">剩余时间：{{time2}}</div>
 				</div>
 			</div>
 			<!-- 底部确认按钮 -->
@@ -336,6 +338,9 @@ export default{
 			wangwang: "",		//旺旺号
 			orderCode: "",		//订单编号
 			moneyId: 0,			//验证金额按钮状态（0：验证，1:成功，2:失败）
+			maxtime: 180,		//时间
+			tishi: false,		//默认倒数提示不显示
+			time2: "",			//倒数时间
 		}
 	},
 	watch:{
@@ -348,6 +353,7 @@ export default{
 				}else{
 					this.shopId = 0;
 					this.prompt = false;
+					this.tishi = false;
 				}
 			}
 		},
@@ -360,6 +366,7 @@ export default{
 				}else{
 					this.moneyId = 0;
 					this.prompt = false;
+					this.tishi = false;
 				}
 			}
 		}
@@ -488,12 +495,54 @@ export default{
 		},
 		//同时验证店铺名和金额控制按钮是否可以显示
 		conPrompt(){
-				if(this.shopId == 1 && this.moneyId == 1){//如果店铺名和金额都通过验证
-					this.prompt = true;
+			if(this.shopId == 1 && this.moneyId == 1){//如果店铺名和金额都通过验证
+				this.CountDown();
+			}else{
+				this.prompt = false;
+				this.tishi = false;
+			}
+		},
+		//单纯分钟和秒倒计时
+		CountDown() {
+			if(this.shopId == 1 && this.moneyId == 1){//如果店铺名和金额都通过验证
+				if(!!localStorage.getItem("maxtime") && this.id == localStorage.getItem("taskid")){
+					this.xia(localStorage.getItem("maxtime"));
 				}else{
-					this.prompt = false;
+					//js获取当前时间
+					var date=new Date();
+					//获取当前分钟
+					var min=date.getMinutes();
+					//设置当前时间+5分钟：把当前分钟数+5后的值重新设置为date对象的分钟数
+					date.setMinutes(min+3);
+					localStorage.setItem("maxtime",date);
+					localStorage.setItem("taskid",this.id);
+					this.xia(date);
 				}
-			},
+			}
+		},
+		xia(sheng){
+			//相差的总豪秒数
+			var totalSeconds = (new Date(sheng) - new Date());
+			if(totalSeconds < 0){
+				this.prompt = true;
+				this.tishi = false;
+			}else{
+			    	//小时数
+			    var hours = parseInt(totalSeconds / 1000 / 60 / 60 % 24 , 10); //计算剩余的小时
+			    //分钟
+			    var minutes = parseInt(totalSeconds / 1000 / 60 % 60, 10);//计算剩余的分钟
+			    //秒
+			    var seconds = parseInt(totalSeconds / 1000 % 60, 10);//计算剩余的秒数 
+			    //输出到页面
+			    this.prompt = false;
+			    this.tishi = true;	
+			    this.time2 = minutes + "分" + seconds + "秒";
+			    let _this = this;
+			    setTimeout(function () {
+			    	_this.xia(sheng);
+			    }, 1000);
+			}
+		},
 		// 下一步
 		gosub(){
 				if(this.prompt == true){//店铺名和金额都确认通过了

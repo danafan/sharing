@@ -9,9 +9,6 @@ import 'mint-ui/lib/style.css'
 import VueClipboards from 'vue-clipboards';
 import { InfiniteScroll } from 'mint-ui';
 
-
-
-
 Vue.config.productionTip = false
 Vue.use(MintUI)
 Vue.use(VueClipboards);

@@ -17,6 +17,8 @@ let path = {
 	waitTab: 'prentice/waitmastercheck',   //待审核的徒弟		
 	checkpass: 'prentice/checkpass',	   //已激活的徒弟
 	blackTab: 'prentice/blacklist',		   //黑名单
+	notTab: 'prentice/maytask',				//未接单
+	notice: 'prentice/notice',				//通知徒弟来接单
 	getApprenticeDetail:'prentice/getuserinfo',	//师父查看徒弟详情
 	prentice: 'prentice/checkprentice',		//师父审核徒弟
 	updatePass: 'index/changepassword',		//用户修改密码
@@ -95,6 +97,13 @@ export default{
 	//黑名单的徒弟
 	blackTab(params){
 		return http.post(path.blackTab, params)
+	},
+	//未接单
+	notTab(params){
+		return http.post(path.notTab, params)
+	},
+	notice(params){
+		return http.post(path.notice, params)
 	},
 	//师父查看徒弟详情
 	getApprenticeDetail(params){

@@ -30,7 +30,7 @@ dev: {
     proxyTable: {
         //开发环境
         '/weiapi': {
-        target: 'http://gxke88.com',
+        target: 'https://gxke88.com',
         //target: 'http://52gxk.com',
         changeOrigin: true,
         pathRewrite: {

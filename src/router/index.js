@@ -21,6 +21,7 @@ const raking = resolve=>System.import('@/components/Apprentice/raking')
 const updateInfo = resolve=>System.import('@/components/Apprentice/updateInfo')
 const updatePass = resolve=>System.import('@/components/Apprentice/updatePass')
 const guest = resolve=>System.import('@/components/Apprentice/guest')
+const taskRole = resolve=>System.import('@/components/Apprentice/taskRole')
 const about = resolve=>System.import('@/components/about')
 const verification = resolve=>System.import('@/components/verification')
 
@@ -97,6 +98,10 @@ export default new Router({
   {
     path:'/guest',
     component: guest
+  },
+  {
+    path:'/taskRole',
+    component: taskRole
   },
   {
     path:'/about',

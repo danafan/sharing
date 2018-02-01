@@ -4,7 +4,8 @@
 			<div class="banner">
 				<swiper :options="swiperOption" ref="mySwiper">
 					<swiper-slide v-for="(item,index) in banner" :key="index">
-						<img :src="item">
+						<img v-if="index == 1" :src="item" @click="$router.push('/taskRole')">
+						<img v-else :src="item">
 					</swiper-slide>
 					<div class="swiper-pagination" slot="pagination"></div>
 				</swiper>
@@ -75,6 +76,10 @@
 				width: 100%;
 				height: 100%;
 			}
+		}
+		.swiper-pagination{
+			height: .001rem;
+			bottom: 70px;
 		}
 	}
 }
@@ -336,8 +341,8 @@ export default{
 					console.log("没有更多");
 				}
 			}
-			
 		}
+
 	},
 	components:{
 		swiper,
