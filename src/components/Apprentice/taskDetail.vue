@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<!-- 返回按钮 -->
-		<back  v-if="pageType"></back>
+		<back v-if="pageType"></back>
 		<!-- 顶部时间 -->
 		<div class="time">
 			<div class="timeIcon">
@@ -243,7 +243,7 @@
 	line-height: .98rem;
 	font-size: .3rem;
 	color: #ffffff;
-}
+}           
 .subtxt{
 	color:#666666;
 }
@@ -347,7 +347,7 @@ export default{
 		//监听输入的店铺名称
 		shop:function(n,o){
 			if(n != o){
-				if(n == this.subShop && n != ""){//修改后的店铺名和验证通过的用户名一致
+				if(n == this.subShop && n != ""){			//修改后的店铺名和验证通过的用户名一致
 					this.shopId = 1;
 					this.conPrompt();
 				}else{
@@ -418,7 +418,7 @@ export default{
 			    if(totalSeconds < 0){
 			    	this.giving();
 			    }else{
-			    	//小时数
+			    //小时数
 			    var hours = parseInt(totalSeconds / 1000 / 60 / 60 % 24 , 10); //计算剩余的小时
 			    //分钟
 			    var minutes = parseInt(totalSeconds / 1000 / 60 % 60, 10);//计算剩余的分钟
