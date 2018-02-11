@@ -311,7 +311,7 @@ export default{
 		}
 	},
 	created(){
-		document.title = "信任问卷";
+		document.title = "新人问卷";
 		this.selTopic = this.topic[this.num];
 	},
 	watch:{
@@ -349,7 +349,13 @@ export default{
 					this.may = true;
 				}
 			}else{
-				this.may = false;
+				if(this.num == 9){
+					this.go = true;
+					this.may = false;
+				}else{
+					this.may = false;
+				}
+				
 			}
 		},
 	},
