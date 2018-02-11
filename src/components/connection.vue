@@ -6,9 +6,8 @@
 			<div class="toast">为了给您更好的服务，请管理一个共享客账号</div>
 			<div class="buts">
 				<div class="wen">已有共享客账号？</div>
-				<div class="but" @click="$router.push('/login')">立即关联</div>
+				<div class="but" @click="$router.push('/question')">立即关联</div>
 				<div class="wen">还没有共享客账号？</div>
-				<!-- <div class="but" @click="$router.push('/navbar')">快速注册</div> -->
 				<div class="but" @click="$router.push('/registration')">快速注册</div>
 			</div>
 		</div>

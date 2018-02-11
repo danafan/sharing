@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 import index from '@/components/Apprentice/index'
+const question = resolve=>System.import('@/components/questionnaire')
 const connection = resolve=>System.import('@/components/connection')
 const login = resolve=>System.import('@/components/login')
 const registration = resolve=>System.import('../components/registration')
@@ -22,6 +23,7 @@ const updateInfo = resolve=>System.import('@/components/Apprentice/updateInfo')
 const updatePass = resolve=>System.import('@/components/Apprentice/updatePass')
 const guest = resolve=>System.import('@/components/Apprentice/guest')
 const taskRole = resolve=>System.import('@/components/Apprentice/taskRole')
+const help = resolve=>System.import('@/components/Apprentice/help')
 const about = resolve=>System.import('@/components/about')
 const verification = resolve=>System.import('@/components/verification')
 
@@ -29,6 +31,10 @@ Vue.use(Router);
 
 export default new Router({
   routes: [
+  {
+    path: '/question',
+    component: question
+  },
   {
     path: '/connection',
     component: connection
@@ -102,6 +108,10 @@ export default new Router({
   {
     path:'/taskRole',
     component: taskRole
+  },
+  {
+    path:'/help',
+    component: help
   },
   {
     path:'/about',

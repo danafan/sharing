@@ -25,6 +25,9 @@
 							<div class="verification" @click="though(item.id)">通过</div>
 							<div class="delete" @click="Denial(item.id)">拒绝</div>
 						</div>
+						<div class="buts" v-if="colorId == 2">
+							<div class="reminder" @click="heiho(item.id)">申请拉黑</div>
+						</div>
 						<div class="buts" v-if="colorId == 4">
 							<div class="reminder" @click="reminder(item.id)">一键提醒</div>
 						</div>
@@ -537,9 +540,19 @@ export default{
 			this.stateImg = require('../../assets/remind.png');
 			this.toast = "确认提醒？";
 		},
+		// 申请拉黑
+		heiho(id){
+			this.id = id;
+			this.showState = true;	//弹框显示
+			this.type1 = true;		//显示审核或删除的框
+			this.oktype = "2";		//申请拉黑
+			//改变弹框图片
+			this.stateImg = require('../../assets/heiho.png');
+			this.toast = "确认申请拉黑该徒弟？";
+		},
 		//点击确认
 		ok(){
-			if(this.oktype == "0"){
+			if(this.oktype == "0"){				//师父审核徒弟
 				let preObj = {
 					p_userid: this.id,
 					status: this.butType
@@ -555,7 +568,7 @@ export default{
 						this.$toast(res.data.msg);
 					}
 				});
-			}else if(this.oktype == "1"){
+			}else if(this.oktype == "1"){		//一键提醒
 				resource.notice({p_userid: this.id}).then(res => {
 					this.$toast("提醒成功");
 					this.showState = false;			//弹框隐藏
@@ -563,8 +576,16 @@ export default{
 					this.page = 1;
 					this.notTab();
 				});
+			}else if(this.oktype == "2"){		//申请拉黑
+				this.$toast("申请成功");
+				resource.hieho({p_userid: this.id}).then(res => {
+					this.$toast("申请成功");
+					this.showState = false;			//弹框隐藏
+					this.orderlist = [];
+					this.page = 1;
+					this.checkTab();
+				});
 			}
-			
 		},
 		//点击整个弹框关闭弹框
 		closeState(){

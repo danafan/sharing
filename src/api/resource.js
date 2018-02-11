@@ -26,7 +26,8 @@ let path = {
 	updateUserInfo: 'index/changepersonziliao',	//修改用户信息
 	getUserTask: 'index/usertask',			//获取用户任务列表（已完成或已取消）
 	userPay: 'pay/pay',						//用户提现
-	payHistory: 'my/assetchange',				//用户交易明细
+	payHistory: 'my/assetchange',			//用户交易明细
+	hieho: 'prentice/waitblacklist',		//待拉黑
 	getMasterList: 'index/ranking_list',	//师父排行榜
 }
 export default{
@@ -136,6 +137,10 @@ export default{
 	//用户交易明细
 	payHistory(params){
 		return http.post(path.payHistory, params)
+	},
+	// 待拉黑
+	hieho(params){
+		return http.post(path.hieho, params)
 	},
 	//师父排行榜
 	getMasterList(params){

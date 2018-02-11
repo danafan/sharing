@@ -86,6 +86,13 @@
 					</div>
 					<img class="infoRight" src="../../assets/advance.png">
 				</div>
+				<div class="infoItem" @click="$router.push('/help')">
+					<div class="infoLeft">
+						<div class="infoIcon"><img src="../../assets/help1.png"></div>
+						<div class="infoTxt">帮助中心</div>
+					</div>
+					<img class="infoRight" src="../../assets/advance.png">
+				</div>
 				<div class="infoItem" @click="$router.push('/about')">
 					<div class="infoLeft">
 						<div class="infoIcon"><img src="../../assets/about us.png"></div>
@@ -355,3 +362,17 @@ export default{
 	}
 }
 </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
