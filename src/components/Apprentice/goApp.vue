@@ -342,7 +342,7 @@ export default{
 		return{
 			nullList: false,		//默认列表不为空
 			toastTxt: "",			//列表为空提示文字
-			page: 1,				//页码为0
+			page: 1,				//页码为1
 			isLoad: false,			//默认可以加载
 			waitCode: "",			//待审核徒弟的数量
 			checkCode: "",			//已激活徒弟的数量
@@ -390,6 +390,7 @@ export default{
 		loadMore(){
 			//获取任务列表
 			if(this.isLoad == true){
+				this.isLoad = false;
 				this.page += 1;
 				if(this.colorId == "1"){
 					this.waitTab();
@@ -405,7 +406,6 @@ export default{
 		//点击切换导航
 		selTab(id){
 			this.isLoad = false;
-			this.page = 0;
 			this.colorId = id;
 			this.nullList = false;
 		},
@@ -415,7 +415,8 @@ export default{
 				if(res.data.code == "0"){
 					let orderlist = res.data.data.data;
 					this.waitCode = res.data.data.total;
-					if(orderlist.length < "12" || this.waitCode == "12"){		// 某一页不足12条
+					let lastPage = res.data.data.last_page;
+					if(orderlist.length < "12" || this.waitCode == "12" || lastPage == this.page){		// 某一页不足12条
 						this.isLoad = false;
 						this.orderlist = this.orderlist.concat(Array.from(orderlist));
 					}else{								//正常
@@ -438,7 +439,8 @@ export default{
 				if(res.data.code == "0"){
 					let orderlist = res.data.data.data;
 					this.checkCode = res.data.data.total;
-					if(orderlist.length < "12" || this.checkCode == "12"){			// 某一页不足12条
+					let lastPage = res.data.data.last_page;
+					if(orderlist.length < "12" || this.checkCode == "12" || this.page == lastPage){
 						this.isLoad = false;
 						this.orderlist = this.orderlist.concat(Array.from(orderlist));
 					}else{								//正常
@@ -461,7 +463,8 @@ export default{
 				if(res.data.code == "0"){
 					let orderlist = res.data.data.data;
 					this.blackCode = res.data.data.total;
-					if(orderlist.length < "12" || this.blackCode == "12"){// 某一页不足12条
+					let lastPage = res.data.data.last_page;
+					if(orderlist.length < "12" || this.blackCode == "12" || lastPage == this.page){// 某一页不足12条
 						this.isLoad = false;
 						this.orderlist = this.orderlist.concat(Array.from(orderlist));
 					}else{								//正常

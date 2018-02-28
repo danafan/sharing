@@ -68,7 +68,7 @@ import resource from '../api/resource.js'
 export default{
 	data(){
 		return{
-			showCon: true,			//默认不显示
+			showCon: true,			//默认不显示	
 			wxName: "",				//微信名	
 			wxIcon: "",				//用户头像
 		}
