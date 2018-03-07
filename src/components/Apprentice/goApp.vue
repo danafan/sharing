@@ -9,7 +9,7 @@
 		</div>
 		<!-- 列表 -->
 		<div class="orderList" v-infinite-scroll="loadMore" v-if="nullList == false">
-			<div class="orderItem" v-for="item in orderlist">
+			<div class="orderItem" v-for="(item,index) in orderlist">
 				<div class="userIcon" @click="detail(item.id)"><img :src="item.headimgurl"></div>
 				<div class="userCon">
 					<div class="name">{{item.nickname}}</div>
@@ -29,7 +29,7 @@
 							<div class="reminder" @click="heiho(item.id)">申请拉黑</div>
 						</div>
 						<div class="buts" v-if="colorId == 4">
-							<div class="reminder" @click="reminder(item.id)">一键提醒</div>
+							<div class="reminder" @click="reminder(item,index)">一键提醒</div>
 						</div>
 					</div>
 				</div>
@@ -359,6 +359,7 @@ export default{
 			stateImg: require('../../assets/audit.png'),	//弹框的图片默认审核
 			userObj:{},				//徒弟详情对象
 			oktype: '0',			//0:师父审核徒弟；1:一键提醒
+			selLoad: false,			//默认要一个列表加载完成之后才能切换另一个列表
 		}
 	},
 	created(){
@@ -372,6 +373,7 @@ export default{
 			}
 		},
 		colorId:function(n,o){
+			
 			this.orderlist = [];
 			this.page = 1;
 			if(n == 1){
@@ -405,12 +407,16 @@ export default{
 		},
 		//点击切换导航
 		selTab(id){
-			this.isLoad = false;
-			this.colorId = id;
-			this.nullList = false;
+			if(this.selLoad == true){
+				this.selLoad = false;
+				this.isLoad = false;
+				this.colorId = id;
+				this.nullList = false;
+			}
 		},
 		//待审核
 		waitTab(){
+			let _this = this;
 			resource.waitTab({page: this.page}).then(res => {
 				if(res.data.code == "0"){
 					let orderlist = res.data.data.data;
@@ -431,10 +437,13 @@ export default{
 				}else{
 					this.$toast(res.data.msg);
 				}
+			}).then(function(){
+				_this.selLoad = true;
 			});
 		},
 		//已激活
 		checkTab(){
+			let _this = this;
 			resource.checkpass({page: this.page}).then(res => {
 				if(res.data.code == "0"){
 					let orderlist = res.data.data.data;
@@ -455,10 +464,13 @@ export default{
 				}else{
 					this.$toast(res.data.msg);
 				}
+			}).then(function(){
+				_this.selLoad = true;
 			});
 		},
 		//黑名单
 		blackTab(){
+			let _this = this;
 			resource.blackTab({page: this.page}).then(res => {
 				if(res.data.code == "0"){
 					let orderlist = res.data.data.data;
@@ -479,11 +491,13 @@ export default{
 				}else{
 					this.$toast(res.data.msg);
 				}
+			}).then(function(){
+				_this.selLoad = true;
 			});
 		},
 		//未接单
 		notTab(){
-			// {page: this.page}
+			let _this = this;
 			resource.notTab().then(res => {
 				if(res.data.code == "0"){
 					let orderlist = res.data.data;
@@ -497,6 +511,8 @@ export default{
 				}else{
 					this.$toast(res.data.msg);
 				}
+			}).then(function(){
+				_this.selLoad = true;
 			});
 		},
 		//点击头像查看详情
@@ -534,8 +550,8 @@ export default{
 			this.toast = "确认拒绝？";
 		},
 		//点击一键提醒
-		reminder(id){
-			this.id = id;
+		reminder(item,index){
+			this.id = item.id;
 			this.showState = true;	//弹框显示
 			this.type1 = true;		//显示审核或删除的框
 			this.oktype = "1";		//一键提醒
@@ -573,11 +589,12 @@ export default{
 				});
 			}else if(this.oktype == "1"){		//一键提醒
 				resource.notice({p_userid: this.id}).then(res => {
-					this.$toast("提醒成功");
+					if(res.data.code == '0'){
+						this.$toast("提醒成功");
+					}else{
+						this.$toast(res.data.msg);
+					}
 					this.showState = false;			//弹框隐藏
-					this.orderlist = [];
-					this.page = 1;
-					this.notTab();
 				});
 			}else if(this.oktype == "2"){		//申请拉黑
 				this.$toast("申请成功");
