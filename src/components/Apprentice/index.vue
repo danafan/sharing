@@ -246,7 +246,7 @@ export default{
 			isLoad: true,							//默认可以加载
 			page: 0,								//当前页码
 			taskList:[],							//所有任务列表
-			listNull: false,						//默认没有申请过任务
+			listNull: "",							//默认任务列表为空，显示刷新按钮
 			toastTxt: "0",							//提示(0:无任务;1:有任务,没到时间;2:已领取任务)
 			toastxt: "",							//错误提示
 			swiperOption: {                   
@@ -261,6 +261,7 @@ export default{
 		    time: "",						 		 //下一波任务来临时间
 		    could: "",								 //任务数量
 		    reload: true,							 //默认显示刷新字
+		    isLoads: true,							 //默认刷新按钮可以点击
 		}
 	},  
 	created(){
@@ -273,9 +274,19 @@ export default{
 			]),
 		//点击刷新
 		reloads(){
-			this.reload = false;	//开始转
-			this.page = 1;
-			this.getTaskList(this.page);
+			if(this.isLoads == true){
+				this.isLoads = false;
+				this.reload = false;	//开始转
+				this.page = 1;
+				this.getTaskList(this.page);
+				let _this = this;
+				setTimeout(function(){
+					_this.isLoads = true;
+				},30000);
+			}else{
+				this.$toast("操作频繁，稍后再试！");
+			}
+			
 		},
 		//获取任务列表
 		getTaskList(page){

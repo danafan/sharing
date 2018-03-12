@@ -12,7 +12,7 @@
 			<div class="orderItem" v-for="(item,index) in orderlist">
 				<div class="userIcon" @click="detail(item.id)"><img :src="item.headimgurl"></div>
 				<div class="userCon">
-					<div class="name">{{item.nickname}}</div>
+					<div class="name">{{item.nickname}}<div v-if="item.desc != ''">{{item.desc}}</div></div>
 					<div class="conItem" v-if="colorId == 3">姓名：{{item.username}}</div>
 					<div class="conItem">旺旺号：{{item.wangwang}}</div>
 					<div class="conItem" v-if="colorId == 1 || colorId == 2 || colorId == 4">手机号：{{item.phone}}</div>
@@ -122,8 +122,25 @@
 		.userCon{
 			flex: 1;
 			.name{
+				height: .45rem;
+				position:relative;
+				display: flex;
 				font-size: .3rem;
 				color:#333333;
+				div{
+					position:absolute;
+					top: .05rem;
+					right: .5rem;
+					height: .3rem;
+					border-radius: .05rem;
+					padding-left: .05rem;
+					padding-right: .05rem;
+					display: flex;
+					align-items: center;
+					color: #fff;
+					background:rgb(233,159,74);
+					font-size: .24rem;
+				}
 			}
 			.conItem{
 				display: flex;

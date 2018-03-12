@@ -7,7 +7,7 @@
 </template>
 <style lang="less" scoped>
 .back{
-	z-index: 3;
+	z-index: 3333;
 	position: fixed;
 	top: 45%;
 	transform:translate(-50%);

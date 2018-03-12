@@ -26,16 +26,24 @@
 					<div class="title">任务流程</div>
 					<!-- 第一条 -->
 					<div class="subTie">1. 打开淘宝客户端，按照以下步骤操作：</div>
-					<div class="operation">
+					<!-- <div class="operation">
 						<div class="operName">点击关键词复制：</div>	
 						<div class="operSubname" v-clipboard="keyword"
 						@success="$toast('复制成功');">{{keyword}}</div>
+					</div> -->
+					<div class="operation">
+						<div class="operName1">关键词(不可复制)：</div>	
+						<div class="operSubname1">{{keyword}}</div>
 					</div>
 					<!-- 第一条 -->
 					<div class="subTie">2. 筛选条件：</div>
 					<div class="operation">
 						<div class="operName">排序方式：</div>	
 						<div class="operSubname">{{taskDetail.sort}}</div>
+					</div>
+					<div class="operation" v-if="showPrice">
+						<div class="operName">价格区间：</div>	
+						<div class="operSubname">{{taskDetail.small_price/100}} - {{taskDetail.big_price/100}}</div>
 					</div>
 					<div class="operation">
 						<div class="operName">店铺类型：</div>	
@@ -72,11 +80,14 @@
 				</div>
 			</div>
 			<!-- 底部确认按钮 -->
-			<div class="saveSubmit" :class="{backGround: prompt == true}" @click="gosub">下一步
+			<!-- <div class="saveSubmit" :class="{backGround: prompt == true}" @click="gosub">下一步
+			</div> -->
+			<!-- 改版的按钮 -->
+			<div class="saveSubmit" :class="{backGround: prompt == true}" @click="gosub">我已付款
 			</div>
 		</div>
 		<!-- 第二页中间详情部分 -->
-		<div v-else>
+		<!-- <div v-else>
 			<div class="orderCon">
 				<div class="orderImg">
 					<img :src="baseUrl + taskDetail.goods_img">
@@ -89,6 +100,18 @@
 				<div class="prompt">否则任务将自动作废哦！</div>
 				<div class="submit" @click="subOrder">提交</div>
 				<div class="goback" @click="goback">上一步</div>
+			</div>
+		</div> -->
+		<!-- 弹框 -->
+		<div class="stateBox" v-if="showState" @click="showState = false">
+			<!-- 审核和删除 -->
+			<div class="type1" @click.stop>
+				<div class="icon"><img src="../../assets/warning.png"></div>	
+				<div class="wen">请确保订单付款后再进行提交哦！</div>
+				<div class="butss">
+					<div class="ok" @click="ok">确认</div>
+					<div class="close" @click="showState = false">取消</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -171,12 +194,18 @@
 			}
 		}
 		.operation{
+			width:100%;
 			margin-bottom: .12rem;
 			padding-left: .2rem;
 			display: flex;
 			align-items:center;
 			font-size: .26rem;
 			.operName{
+				width:1.5rem;
+				color:#333333;
+			}
+			.operName1{
+				width:2.5rem;
 				color:#333333;
 			}
 			.operSubname{
@@ -187,6 +216,18 @@
 				display: -webkit-box;
 				-webkit-line-clamp: 1;
 				-webkit-box-orient: vertical;
+			}
+			.operSubname1{
+				width: 4.5rem;
+				word-wrap:break-word;
+				color:#ff5858;
+
+				-webkit-touch-callout:none;  
+				-webkit-user-select:none;  
+				-khtml-user-select:none;  
+				-moz-user-select:none;  
+				-ms-user-select:none;  
+				user-select:none;  
 			}
 			.replace{
 				margin-left: .3rem;
@@ -316,6 +357,73 @@
 		color:#ffffff;
 	}
 }
+// 弹框
+.stateBox{
+	background:rgba(0,0,0,.66);
+	position: fixed;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 1;
+	.type1{
+		border-radius: .17rem;
+		position: relative;
+		margin: 4rem auto 0;
+		background-color: #ffffff;
+		width: 4.71rem;
+		height: 3.2rem;
+		.icon{
+			position: absolute;
+			top: -.88rem;
+			left: 50%;
+			transform: translate(-50%);
+			width: 1.78rem;
+			height: 1.76rem;
+			img{
+				width: 100%;
+				height: 100%;
+			}
+		}
+		.wen{
+			position: absolute;
+			top: 1.28rem;
+			width: 100%;
+			text-align: center;
+			font-size: .28rem;
+			color: #03abff;
+		}
+		.butss{
+			position: absolute;
+			top: 2rem;
+			left: 50%;
+			transform: translate(-50%);
+			display: flex;
+			.ok{
+				border-radius: .04rem;
+				margin-right: .4rem;
+				background-color: #03abff;
+				width: 1.1rem;
+				text-align: center;
+				height: .4rem;
+				line-height: .4rem;
+				font-size: .26rem;
+				color:#ffffff;
+			}
+			.close{
+				border-radius: .04rem;
+				border:1px solid #03abff;
+				width: 1.1rem;
+				text-align: center;
+				height: .4rem;
+				line-height: .4rem;
+				font-size: .26rem;
+				color:#03abff;
+			}
+		}
+	}
+}
 </style>
 <script>
 import {mapActions, mapGetters} from 'vuex'
@@ -341,6 +449,8 @@ export default{
 			maxtime: 180,		//时间
 			tishi: false,		//默认倒数提示不显示
 			time2: "",			//倒数时间
+			showState: false,	//弹框默认不显示
+			showPrice: false,	//价格区间默认不显示
 		}
 	},
 	watch:{
@@ -356,6 +466,11 @@ export default{
 					this.tishi = false;
 				}
 			}
+			
+			// 将用户输入的网址粘贴到输入框内
+			// var arr=n.match(/(http|https):\/\/([A-Za-z0-9.\/]+)/);    
+			// console.log(arr[0]);
+			// this.shop=arr[0];
 		},
 		//监听输入的金额
 		money:function(n,o){
@@ -401,6 +516,13 @@ export default{
 					this.wangwang = res.data.data.wangwang;	//淘宝账号
 					let time = res.data.data.end_time;		//任务截止时间
 					let time1 = time.replace(/-/g, '/');
+					let minPic = this.taskDetail.small_price;	//价格区间
+					let maxPic = this.taskDetail.big_price;
+					if(minPic == "0" && maxPic == "0"){
+						this.showPrice = false;
+					}else{
+						this.showPrice = true;
+					}
 					//执行倒数函数
 					this.timeDown(time1);
 				}else if(res.data.code == "1"){
@@ -543,39 +665,59 @@ export default{
 			    }, 1000);
 			}
 		},
-		// 下一步
+		//点击我已付款
 		gosub(){
-				if(this.prompt == true){//店铺名和金额都确认通过了
-					this.pageType = false;
-				}else{
-					this.$toast("请先通过验证！");
-				}
-			},
-		//提交订单
-		subOrder(){               
-			if(this.orderCode == ""){
-				this.$toast("请输入您付款的订单编号");
-			}else if(!this.judgmentShopNum.test(this.orderCode)){
-				this.$toast("订单编号格式不正确");
+			if(this.prompt == true){//店铺名和金额都确认通过了
+				this.showState = true;
 			}else{
-				let orderObj = {
-					usertaskid: this.id,
-					order_sn: this.orderCode
-				}
-				resource.subOrder(orderObj).then(res => {
-					if(res.data.code == "0"){
-						this.set_route("task");
-						this.$router.push("task");
-					}else{
-						this.$toast(res.data.msg);
-					}
-				});
+				this.$toast("请先通过验证！");
 			}
 		},
+		//点击我已付款的确定
+		ok(){
+			resource.verify({usertaskid: this.id}).then(res => {
+				if(res.data.code == "0"){
+					this.set_route("task");
+					this.$router.push("task");
+				}else{
+					this.$toast(res.data.message);
+					this.showState = false;
+				}
+			});
+		},
+		// 下一步
+		// gosub(){
+		// 	if(this.prompt == true){//店铺名和金额都确认通过了
+		// 		this.pageType = false;
+		// 	}else{
+		// 		this.$toast("请先通过验证！");
+		// 	}
+		// },
+		//提交订单
+		// subOrder(){               
+		// 	if(this.orderCode == ""){
+		// 		this.$toast("请输入您付款的订单编号");
+		// 	}else if(!this.judgmentShopNum.test(this.orderCode)){
+		// 		this.$toast("订单编号格式不正确");
+		// 	}else{
+		// 		let orderObj = {
+		// 			usertaskid: this.id,
+		// 			order_sn: this.orderCode
+		// 		}
+		// 		resource.subOrder(orderObj).then(res => {
+		// 			if(res.data.code == "0"){
+		// 				this.set_route("task");
+		// 				this.$router.push("task");
+		// 			}else{
+		// 				this.$toast(res.data.msg);
+		// 			}
+		// 		});
+		// 	}
+		// },
 		//上一步
-		goback(){
-			this.pageType = true;
-		}
+		// goback(){
+		// 	this.pageType = true;
+		// }
 	},
 	components:{
 		back

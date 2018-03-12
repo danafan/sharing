@@ -20,7 +20,7 @@
 					<img :src="baseUrl + statusObj.goods_img">
 				</div>
 				<div class="guan">关键词：<span>{{keyword}}</span></div>
-				<div class="orderCode" v-if="statusObj.status == '1' || statusObj.status == '3'">订单编号：<span>{{statusObj.order_sn}}</span></div>
+				<div class="orderCode" v-if="statusObj.status == '1' || statusObj.status == '3'">旺旺号：<span>{{statusObj.wangwang}}</span></div>
 				<div class="orderCode" v-if="statusObj.status == '3'">原因：<span>{{statusObj.reason}}</span></div>
 				<div class="toast" v-if="statusObj.status == '0' || statusObj.status == '3'">请在<span>{{statusObj.end_time}}</span>前完成提交任务，</div>
 				<div class="toast" v-if="statusObj.status == '0' || statusObj.status == '3'">否则将自动放弃哦～</div>

@@ -29,6 +29,7 @@ let path = {
 	payHistory: 'my/assetchange',			//用户交易明细
 	hieho: 'prentice/waitblacklist',		//待拉黑
 	getMasterList: 'index/ranking_list',	//师父排行榜
+	verify: 'task/wwverify',				//改版之后的提交订单
 }
 export default{
 	//authUrl
@@ -145,5 +146,9 @@ export default{
 	//师父排行榜
 	getMasterList(params){
 		return http.get(path.getMasterList, params)
+	},
+	//改版后的提交订单
+	verify(params){
+		return http.post(path.verify, params)
 	},
 }
