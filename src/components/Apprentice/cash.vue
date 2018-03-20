@@ -6,6 +6,16 @@
 		<back></back>
 		<!-- 输入金额 -->
 		<div class="cashBox">
+			<div class="cashFun">
+				<div class="funLeft">到账方式</div>
+				<div class="funRight" @click="showFun = true">
+					<div class="funIcon">
+						<img src="../../assets/red packet.png" v-if="selType == 1">
+						<img src="../../assets/coin.png" v-else>
+					</div>
+					<div class="funTxt">{{moneyTxt}}</div>
+				</div>
+			</div>
 			<div class="cashCon">
 				<div class="cashTie">提现金额</div>
 				<div class="txtInput">
@@ -17,7 +27,6 @@
 				<div class="subTxt">当前可用{{type}}{{shu}}元，<span @click="money = shu">全部提现</span></div>	
 				<div class="submit" @click="subCash">提现</div>
 			</div>
-			
 		</div>
 		<!-- 确认提现弹框 -->
 		<div class="passMess" v-if="passMess">
@@ -28,11 +37,34 @@
 				<div class="txt">确认提现<span>{{money}}</span>元?</div>
 				<div class="buts">
 					<div class="but1" @click="state">确认</div>
-					<div class="but2" @click="this.passMess = false">取消</div>
+					<div class="but2" @click="passMess = false">取消</div>
 				</div>
 			</div>
 		</div>
-
+		<!-- 选择到账方式弹框 -->
+		<div class="selFun" v-if="showFun">
+			<div class="selBox">
+				<div class="selBoxTop">选择到账方式</div>
+				<div class="selBoxCen" @click="selTab(1)">
+					<div class="boxLeft">
+						<img src="../../assets/red packet.png">
+						<div class="selectTxt">微信红包</div>
+					</div>
+					<div class="selected">
+						<div class="yuan" v-if="selType == 1"></div>
+					</div>
+				</div>
+				<div class="selBoxCen" @click="selTab(2)">
+					<div class="boxLeft">
+						<img src="../../assets/coin.png">
+						<div class="selectTxt">微信零钱</div>
+					</div>
+					<div class="selected">
+						<div class="yuan" v-if="selType == 2"></div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </template>
 <style lang="less" scoped>
@@ -43,10 +75,41 @@
 	background: #f1f1f1;
 	width: 100%;
 	height: 100%;
+	.cashFun{
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 0 .76rem 0 .76rem;
+		background:#f6f6f6;
+		margin: 3.73rem auto 0;
+		width:5.55rem;
+		height:.86rem;
+		.funLeft{
+			font-size:.28rem;
+			color: #333333;
+		}
+		.funRight{
+			display: flex;
+			align-items: center;
+			font-size:.26rem;
+			color: #03abff;
+			.funIcon{
+				margin-right:.06rem;
+				position:relative;
+				width: .2rem;
+				height:.24rem;
+				img{
+					position:absolute;
+					width: 100%;
+					height:100%;
+				}
+			}
+		}
+	}
 	.cashCon{
 		box-sizing: border-box;
 		padding: .48rem .76rem 0 .76rem;
-		margin: 3.73rem auto 0;
+		margin:0 auto ;
 		background: #ffffff;
 		width: 5.55rem;
 		height: 4.6rem;
@@ -89,6 +152,7 @@
 		}
 		.submit{
 			margin-top: .54rem;
+			margin-bottom: .6rem;
 			background: #03abff;
 			border-radius: .08rem;
 			width: 3.98rem;
@@ -98,8 +162,7 @@
 			font-size: .26rem;
 			color: #ffffff;
 		}
-	}
-	
+	}	
 }
 // 输入密码
 .passMess{
@@ -110,7 +173,7 @@
 	bottom: 0;
 	width: 100%;
 	height: 100%;
-	z-index: 20;
+	z-index: 999999;
 	.bai{
 		margin: 4.18rem auto 0;
 		border-radius: .18rem;
@@ -164,6 +227,66 @@
 		}
 	}
 }
+// 选择到账方式弹框
+.selFun{
+	background: rgba(0,0,0,.66);
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 999999;
+	.selBox{
+		position: absolute;
+		left: 0;
+		bottom: 0;
+		background:#fff;
+		width:100%;
+		height:3.44rem;
+		padding-left: .48rem;
+		padding-right: 1.46rem;
+		.selBoxTop{
+			font-size:.28rem;
+			color:#03abff;
+			margin-top:.5rem;
+		}
+		.selBoxCen{
+			display:flex;
+			justify-content:space-between;
+			align-items:center;
+			font-size:.26rem;
+			color:#333;
+			margin-top:.6rem;
+			.boxLeft{
+				display:flex;
+				justify-content:space-between;
+				align-items:center;
+				img{
+					margin-right:.14rem;
+					width: .2rem;
+					height:.24rem;
+				}
+			}
+			.selected{
+				display:flex;
+				justify-content:center;
+				align-items:center;
+				border:1px solid #03abff;
+				width:.2rem;
+				height:.2rem;
+				border-radius:50%;
+				.yuan{
+					background: #03abff;
+					border:1px solid #03abff;
+					width:.08rem;
+					height:.08rem;
+					border-radius:50%;
+				}
+			}
+		}
+	}
+}
 .cashMess{
 	border-radius: .1rem;
 	position: absolute;
@@ -194,13 +317,16 @@ export default{
 			passMess: false ,		//默认输入密码框不显示
 			type: "本金",			//区分类型
 			shu: "",				//总共可用金额
+			showFun: false,			//默认选择到账方式弹框不显示
+			moneyTxt: "微信红包",		//头部默认文字
+			selType: 1,				//到账方式默认红包（2是零钱）
 		}	
 	},
 	created(){
 		this.openid = sessionStorage.getItem("openid");
 		let types = this.$route.query.type;
 		let money = this.$route.query.money;
-		this.shu = money;					//总金额
+		this.shu = money;				//总金额
 		// 判断输入金额显示类型
 		if(types == "capital"){
 			document.title = "本金提现";
@@ -221,14 +347,29 @@ export default{
 				this.$toast("提现金额不能少于1元");
 			}else if(parseInt(this.money) > parseInt(this.shu)){
 				this.$toast("提现金额不能超过账户余额");
+			}else if(this.selType == 1 && parseInt(this.money) > 200){
+				this.$toast("红包提现不能超过200元,自动切换到零钱");
+				this.selType = 2;
+				this.moneyTxt = "微信零钱";
 			}else{
 				//确认弹框框显示
 				this.passMess = true;
 			}
 		},
+		//点击切换到账方式
+		selTab(num){
+			this.selType = num;
+			this.showFun = false;
+			if(num == 1){
+				this.moneyTxt = "微信红包";
+			}else{
+				this.moneyTxt = "微信零钱";
+			}
+		},
 		//点击确认金额跳转明细
 		state(){
 			let moneyObj = {
+				//openid: "okKUgw8-gVBin34HkaXE8fWdEyDA",
 				openid: this.openid,
 				amount: this.money,
 				type: this.moneyType
@@ -236,19 +377,34 @@ export default{
 			this.showcash = true;
 			if(this.isPay == true){
 				this.isPay = false;
-				resource.userPay(moneyObj).then(res => {
-					this.showcash = false;
-					if(res.data.code == "0"){
-						this.$toast("提现成功");
-						this.$router.replace('/property');
-					}else if(res.data.code == "1"){
-						this.$toast(res.data.message);
-					}else if(res.data.code == "2"){
-						this.$toast(res.data.data.message.err_code_des);
-					};
-					this.passMess = false;
-					this.isPay = true;
-				});
+				if(this.selType == 1){			//红包提现
+					resource.redPay(moneyObj).then(res => {
+						this.showcash = false;
+						if(res.data.code == "0"){
+							this.$toast("提现成功");
+							this.$router.replace('/property');
+						}else if(res.data.code == "1"){
+							this.$toast(res.data.message);
+						};
+						this.passMess = false;
+						this.isPay = true;
+					});
+					
+				}else{							// 零钱提现
+					resource.userPay(moneyObj).then(res => {
+						this.showcash = false;
+						if(res.data.code == "0"){
+							this.$toast("提现成功");
+							this.$router.replace('/property');
+						}else if(res.data.code == "1"){
+							this.$toast(res.data.message);
+						}else if(res.data.code == "2"){
+							this.$toast(res.data.data.message.err_code_des);
+						};
+						this.passMess = false;
+						this.isPay = true;
+					});
+				}
 			}
 		}
 

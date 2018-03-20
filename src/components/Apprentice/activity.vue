@@ -1,18 +1,9 @@
 <template>
 	<div>
-		<div v-infinite-scroll="loadMore">
-			<div class="banner">
-				<swiper :options="swiperOption" ref="mySwiper">
-					<swiper-slide v-for="(item,index) in banner" :key="index">
-						<img v-if="index == 1" :src="item" @click="$router.push('/taskRole')">
-						<img v-else :src="item">
-					</swiper-slide>
-					<div class="swiper-pagination" slot="pagination"></div>
-				</swiper>
-			</div>			
+		<div v-infinite-scroll="loadMore">	
 			<div class="title">
 				～<div class="flower"><img src="../../assets/flower.png"></div>
-				<div class="txt">申请任务</div>～
+				<div class="txt">活动</div>～
 			</div>
 			<div class="taskList">
 				<div class="listNull" v-if="listNull">
@@ -62,26 +53,6 @@
 	</div>
 </template>
 <style scoped lang="less">
-.banner{
-	width: 100%;
-	height: 2.96rem;
-	.swiper-container{
-		width: 100%;
-		height: 100%;
-		.swiper-slide{
-			width: 100%;
-			height: 100%; 
-			img{
-				width: 100%;
-				height: 100%;
-			}
-		}
-		.swiper-pagination{
-			height: .001rem;
-			bottom: 70px;
-		}
-	}
-}
 .title{
 	font-family: "Source Han Sans";
 	margin-top: .34rem;
@@ -230,7 +201,6 @@
 </style>
 <script>
 import {mapActions, mapGetters} from 'vuex'
-import { swiper, swiperSlide } from "vue-awesome-swiper"
 import resource from '../../api/resource.js'
 import { Spinner } from 'mint-ui';
 export default{
@@ -238,66 +208,36 @@ export default{
 		return{		
 			jia: true,							//等到列表接口成功之后再去加载下一页
 			subClick: true,						//默认按钮可点击一次
-			banner: [
-			require('../../assets/background1.png'),
-			require('../../assets/background2.png')
-			],
-			isLoad: true,							//默认可以加载
-			page: 0,								//当前页码
-			taskList:[],							//所有任务列表
-			listNull: "",							//默认任务列表为空，显示刷新按钮
-			toastTxt: "0",							//提示(0:无任务;1:有任务,没到时间;2:已领取任务)
-			toastxt: "",							//错误提示
-			swiperOption: {                   
-		    	loop: true,                          //循环播放
-		        initialSlide: 0,					 //默认显示第一个图片
-		        autoplay: 3000,                      //自动播放间隔时间
-		        setWrapperSize: true,				 //flex布局
-		        pagination: '.swiper-pagination',	 //分页器
-		        paginationClickable: true,           //点击某一个圆点跳转到相应图片
-		        autoplayDisableOnInteraction: false  //操作之后会继续自动滑动
-		    },
-		    time: "",						 		 //下一波任务来临时间
-		    could: "",								 //任务数量
-		    reload: true,							 //默认显示刷新字
-		    isLoads: true,							 //默认刷新按钮可以点击
+			isLoad: true,						//默认可以加载
+			page: 0,							//当前页码
+			taskList:[],						//所有任务列表
+			listNull: "",						//默认任务列表为空，显示刷新按钮
+			toastTxt: "0",						//提示(0:无任务;1:有任务,没到时间;2:已领取任务)
+			toastxt: "",						//错误提示
+		    time: "",						 	//下一波任务来临时间
+		    could: "",							//任务数量
+		    reload: true,						//默认显示刷新字
+		    isLoads: true,						//默认刷新按钮可以点击
 		}
 	},  
 	created(){
-		document.title = "共享客";
-		this.set_route("index");
+		document.title = "活动";
+		this.set_route("activity");
 	},
 	methods:{
 		...mapActions([
 			'set_route'
 			]),
-		//点击刷新
-		reloads(){
-			if(this.isLoads == true){
-				this.isLoads = false;
-				this.reload = false;	//开始转
-				this.page = 1;
-				this.getTaskList(this.page);
-				let _this = this;
-				setTimeout(function(){
-					_this.isLoads = true;
-				},30000);
-			}else{
-				this.$toast("操作频繁，稍后再试！");
-			}
-			
-		},
 		//获取任务列表
 		getTaskList(page){
 			this.jia = false;
-			resource.taskList({page:page}).then(res => {
+			resource.activity({page:page}).then(res => {
 				this.jia = true;
-				this.reload = true;	//结束转
 				if(res.data.code == "0"){
 					this.listNull = false;
-					let taskList = res.data.data.data;
-					let total = res.data.data.total;
-					let lastPage = res.data.data.last_page;
+					let taskList = res.data.data;
+					let total = res.data.total;
+					let lastPage = res.data.last_page;
 					if(taskList.length < "6" || total == "6" || lastPage == this.page){	
 					// 某一页不足6条
 					this.isLoad = false;
@@ -310,26 +250,16 @@ export default{
 					this.listNull = true;
 					this.toastTxt = "1";
 					this.toastxt = res.data.msg;
-				}else if(res.data.code == "2"){//有任务和时间
-					this.isLoad = false;
-					this.listNull = true;
-					this.toastTxt = "0";
-					this.time = res.data.data.start_time;
-					this.could = res.data.data.num;
-				}else if(res.data.code == "3"){//系统无任务
-					this.isLoad = false;
-					this.listNull = true;
-					this.toastTxt = "2";
 				}else{
 					this.$toast(res.data.msg);
 				}
 			})
 		},
-		// 点击申请任务成功后进入详情
+		//点击申请任务成功后进入详情
 		detail(id){
 			if(this.subClick == true){
 				this.subClick = false;
-				resource.taskDetail({taskid:id}).then(res => {
+				resource.applyActiviity({taskid:id}).then(res => {
 					if(res.data.code == "0"){
 						let taskid = res.data.usertaskid;
 						this.$router.push(`/taskDetail?id=${taskid}`);
@@ -352,11 +282,63 @@ export default{
 				}
 			}
 		}
+		//点击刷新
+		// reloads(){
+		// 	if(this.isLoads == true){
+		// 		this.isLoads = false;
+		// 		this.reload = false;	//开始转
+		// 		this.page = 1;
+		// 		this.getTaskList(this.page);
+		// 		let _this = this;
+		// 		setTimeout(function(){
+		// 			_this.isLoads = true;
+		// 		},30000);
+		// 	}else{
+		// 		this.$toast("操作频繁，稍后再试！");
+		// 	}
+		// },
+		//获取任务列表
+		// getTaskList(page){
+		// 	this.jia = false;
+		// 	resource.activity({page:page}).then(res => {
+		// 		this.jia = true;
+		// 		this.reload = true;	//结束转
+		// 		if(res.data.code == "0"){
+		// 			this.listNull = false;
+		// 			let taskList = res.data.data.data;
+		// 			let total = res.data.data.total;
+		// 			let lastPage = res.data.data.last_page;
+		// 			if(taskList.length < "6" || total == "6" || lastPage == this.page){	
+		// 			// 某一页不足6条
+		// 			this.isLoad = false;
+		// 			this.taskList = this.taskList.concat(Array.from(taskList));
+		// 			}else{								//正常
+		// 				this.taskList = this.taskList.concat(Array.from(taskList));
+		// 			}
+		// 		}else if(res.data.code == "1"){//三天之内已经接过任务
+		// 			this.isLoad = false;
+		// 			this.listNull = true;
+		// 			this.toastTxt = "1";
+		// 			this.toastxt = res.data.msg;
+		// 		}else if(res.data.code == "2"){//有任务和时间
+		// 			this.isLoad = false;
+		// 			this.listNull = true;
+		// 			this.toastTxt = "0";
+		// 			this.time = res.data.data.start_time;
+		// 			this.could = res.data.data.num;
+		// 		}else if(res.data.code == "3"){//系统无任务
+		// 			this.isLoad = false;
+		// 			this.listNull = true;
+		// 			this.toastTxt = "2";
+		// 		}else{
+		// 			this.$toast(res.data.msg);
+		// 		}
+		// 	})
+		// },
+		
 
 	},
 	components:{
-		swiper,
-		swiperSlide,
 		Spinner
 	}
 }

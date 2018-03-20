@@ -3,7 +3,7 @@
 		<div v-if="showCon">
 			<div class="userImg"><img :src="wxIcon"></div>
 			<div class="regards">亲爱的微信用户：{{wxName}}</div>
-			<div class="toast">为了给您更好的服务，请管理一个共享客账号</div>
+			<div class="toast">为了给您更好的服务，请关联一个共享客账号</div>
 			<div class="buts">
 				<div class="wen">已有共享客账号？</div>
 				<div class="but" @click="$router.push('/question')">立即关联</div>

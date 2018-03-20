@@ -6,7 +6,7 @@
 			<img src="../assets/pictue.png">
 		</div>
 		<div class="toast">
-			<div>很抱歉，您微信绑定的共享客账号无法登录，</div>
+			<div>很抱歉{{username}}，您微信绑定的共享客账号无法登录，</div>
 			<div>原因{{mess}}，请立即和管理员联系</div>
 		</div>
 	</div>
@@ -36,10 +36,12 @@ export default{
 	data(){
 		return{
 			mess: "",		//错误原因
+			username: "",	//用户名
 		}
 	},
 	created(){
 		this.mess = this.$route.query.mess;
+		this.username = this.$route.query.username;
 	},
 	components:{
 		back

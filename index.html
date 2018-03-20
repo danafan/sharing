@@ -31,7 +31,7 @@ div{
 				var availwidth = parseInt(screen.availWidth);				//屏幕实际宽度
 				if(windowWidth > 750) {
 					console.log("请访问pc端");
-				}else if(windowWidth > availwidth){
+				}else if(windowWidth != availwidth){
 					html.style.fontSize = 50 + 'px';
 				}else{
 					html.style.fontSize = windowWidth / 7.5 + 'px';

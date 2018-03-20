@@ -19,7 +19,9 @@ export default {
 
 				// sessionStorage.setItem("status","0");
 				// this.$router.push('/navbar');
-				//this.$router.push('/connection');
+
+				//this.$router.push('/attention');
+				//this.$router.push('/registration');
 			}
 		}else{
 			console.log("授权过");
@@ -50,6 +52,8 @@ methods:{
 					sessionStorage.setItem("wxIcon",wxIcon);
 					//根据openid获取用户状态
 					this.getserstate(openid,wxname,wxIcon);
+				}else if(res.data.code == "1"){
+					this.$router.replace('/attention');
 				}else{
 					this.$toast(res.data.message);
 				}
@@ -76,7 +80,8 @@ methods:{
 					this.$router.replace('/connection');
 				}else{											//异常，跳转提示页
 					let message = res.data.message;
-					this.$router.replace(`/verification?mess=${message}`);
+					let username = res.data.username;
+					this.$router.replace('/verification?mess=' + message + '&username=' + username);
 				}
 			})
 		}

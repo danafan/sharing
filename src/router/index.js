@@ -10,6 +10,7 @@ const navbar = resolve=>System.import('@/components/Apprentice/navbar')
 const goApp = resolve=>System.import('@/components/Apprentice/goApp')
 const task = resolve=>System.import('@/components/Apprentice/task')
 const taskDetail = resolve=>System.import('@/components/Apprentice/taskDetail')
+const activity = resolve=>System.import('@/components/Apprentice/activity')
 const shopFull = resolve=>System.import('@/components/Apprentice/shopFull')
 const shopMoney = resolve=>System.import('@/components/Apprentice/shopMoney')
 const orderCode = resolve=>System.import('@/components/Apprentice/orderCode')
@@ -26,6 +27,7 @@ const taskRole = resolve=>System.import('@/components/Apprentice/taskRole')
 const help = resolve=>System.import('@/components/Apprentice/help')
 const about = resolve=>System.import('@/components/about')
 const verification = resolve=>System.import('@/components/verification')
+const attention = resolve=>System.import('@/components/attention')
 
 Vue.use(Router);
 
@@ -53,6 +55,7 @@ export default new Router({
     children:[
       { path: '/index', component: index},
       { path: '/goApp', component: goApp},
+      { path:'/activity',component: activity},
       { path: '/task', component: task},
       { path: '/mine', component: mine},
     ]
@@ -120,6 +123,10 @@ export default new Router({
   {
     path:'/verification',
     component: verification
+  },
+  {
+    path:'/attention',
+    component: attention
   }
   ]
 })

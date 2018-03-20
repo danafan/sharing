@@ -26,10 +26,13 @@ let path = {
 	updateUserInfo: 'index/changepersonziliao',	//修改用户信息
 	getUserTask: 'index/usertask',			//获取用户任务列表（已完成或已取消）
 	userPay: 'pay/pay',						//用户提现
+	redPay: 'hongbao/sendhb',				//用户红包提现
 	payHistory: 'my/assetchange',			//用户交易明细
 	hieho: 'prentice/waitblacklist',		//待拉黑
 	getMasterList: 'index/ranking_list',	//师父排行榜
 	verify: 'task/wwverify',				//改版之后的提交订单
+	activity: 'task/activity',				//活动任务列表
+	applyActiviity: 'task/applyactivetask'	//申请活动任务
 }
 export default{
 	//authUrl
@@ -135,6 +138,10 @@ export default{
 	userPay(params){
 		return http.get(path.userPay, params)
 	},
+	//用户红包提现
+	redPay(params){
+		return http.post(path.redPay, params)
+	},
 	//用户交易明细
 	payHistory(params){
 		return http.post(path.payHistory, params)
@@ -150,5 +157,13 @@ export default{
 	//改版后的提交订单
 	verify(params){
 		return http.post(path.verify, params)
+	},
+	//活动任务列表
+	activity(params){
+		return http.post(path.activity, params)
+	},
+	//活动任务列表
+	applyActiviity(params){
+		return http.post(path.applyActiviity, params)
 	},
 }

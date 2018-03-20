@@ -123,7 +123,8 @@ export default{
             this.$router.replace('/navbar');
           }else if(res.data.code == '4'){//正在审核
             let msg = res.data.message;
-            this.$router.push(`/verification?mess=${msg}`);
+            let username = res.data.username;
+            this.$router.push('/verification?mess=' + msg + '&username=' + username);
           }else{
             this.$toast(res.data.message);
           }

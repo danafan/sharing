@@ -14,6 +14,11 @@
 				<img v-else src="../../assets/apprentice.png">
 				<p class="navbar_txt" :class="{select:selected == 'goApp'}">徒弟</p>
 			</div>
+			<div class="navbarItem" @click="tab('activity')">
+				<img v-if="selected == 'activity'" src="../../assets/activitysel.png">
+				<img v-else src="../../assets/activity.png">
+				<p class="navbar_txt" :class="{select:selected == 'activity'}">活动</p>
+			</div>
 			<div class="navbarItem" @click="tab('task')">
 				<img v-if="selected == 'task'" src="../../assets/task process1.png">
 				<img v-else src="../../assets/task process.png">
@@ -99,6 +104,8 @@ export default{
 				this.$router.push("/index");
 			} else if(n=='goApp') {
 				this.$router.push("/goApp");
+			}else if(n=='activity') {
+				this.$router.push("/activity");
 			}else if(n=='task') {
 				this.$router.push("/task");
 			}else if(n=='mine'){
