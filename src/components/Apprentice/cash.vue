@@ -318,8 +318,8 @@ export default{
 			type: "本金",			//区分类型
 			shu: "",				//总共可用金额
 			showFun: false,			//默认选择到账方式弹框不显示
-			moneyTxt: "微信红包",		//头部默认文字
-			selType: 1,				//到账方式默认红包（2是零钱）
+			moneyTxt: "微信零钱",		//头部默认文字
+			selType: 2,				//到账方式默认红包（2是零钱）
 		}	
 	},
 	created(){
@@ -341,6 +341,7 @@ export default{
 	methods:{
 		//点击提现
 		subCash(){
+			console.log(this.selType);
 			if(this.money == ""){
 				this.$toast("请输入提现金额");
 			}else if(parseInt(this.money) < 1){
@@ -369,7 +370,6 @@ export default{
 		//点击确认金额跳转明细
 		state(){
 			let moneyObj = {
-				//openid: "okKUgw8-gVBin34HkaXE8fWdEyDA",
 				openid: this.openid,
 				amount: this.money,
 				type: this.moneyType

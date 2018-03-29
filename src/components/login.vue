@@ -84,6 +84,7 @@ export default{
     }
   },
   created(){
+    document.title = "账户关联";
     //获取openid
     this.openid = sessionStorage.getItem("openid");
     this.headimgurl = sessionStorage.getItem("wxIcon");

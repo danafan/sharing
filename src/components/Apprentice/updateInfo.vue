@@ -372,6 +372,8 @@ export default{
 				this.$toast("请选择出生日期!");
 			}else if(this.WXcode == ""){
 				this.$toast("请填写微信号!");
+			}else if(!this.judgmentWeixin.test(this.WXcode)){
+				this.$toast("微信号格式不正确!");
 			}else{
 				let userInfo = {
 					username: this.name,

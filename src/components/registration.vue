@@ -27,6 +27,11 @@
 			<div class="itemIcon"><img src="../assets/QQ.png"></div>
 			<div class="itemInput"><input type="number" v-model="qqCode" placeholder="QQ号"></div>
 		</div>
+		<!-- 微信号 -->
+		<div class="item">
+			<div class="itemIcon"><img src="../assets/weixin.png"></div>
+			<div class="itemInput"><input type="text" v-model="wx" placeholder="微信号"></div>
+		</div>
 		<!-- 手机号 -->
 		<div class="item">
 			<div class="itemIcon"><img src="../assets/phone.png"></div>
@@ -285,6 +290,7 @@ export default{
 			newPass: "",			//确认密码
 			wangCode: "",			//旺旺号
 			qqCode: "",				//QQ号
+			wx: "",					//微信号
 			phone: "",				//手机号
 			name: "",				//真实姓名
 			sex: "0",				//性别（默认男）
@@ -299,6 +305,7 @@ export default{
 			status: "1",			//默认徒弟身份
 			recomcode: "",			//推荐人代号
 			recomname: "",			//推荐人姓名
+			ke: true,				//注册按钮返回信息之前只可点击一次
 		}
 	},
 	created(){
@@ -354,8 +361,12 @@ export default{
 				this.$toast("旺旺号不能包括空格!");
 			}else if(this.qqCode == ""){
 				this.$toast("请填写QQ号!");
-			}else if(this.qqCode.indexOf(" ") != -1){
-				this.$toast("QQ号不能包括空格!");
+			}else if(!this.judgmentqq.test(this.qqCode)){
+				this.$toast("QQ号格式不正确!");
+			}else if(this.wx == ""){
+				this.$toast("微信号不能为空!");
+			}else if(!this.judgmentWeixin.test(this.wx)){
+				this.$toast("微信号格式不正确!");
 			}else if(this.phone == ""){
 				this.$toast("请填写手机号!");
 			}else if(this.phone.indexOf(" ") != -1){
@@ -384,6 +395,7 @@ export default{
 					password: this.newPass,		//确认后的密码
 					wangwang: this.wangCode,	//旺旺号
 					qq: this.qqCode,			//qq号
+					wechat: this.wx,			//微信号
 					phone: this.phone,			//手机号
 					realname: this.name,		//真实姓名
 					sex: this.sex,				//性别
@@ -404,14 +416,19 @@ export default{
 		},
 		//请求注册接口
 		register(userObj){
-			resource.register(userObj).then(res => {
-				if(res.data.code == '0'){	
-					this.$toast("注册成功，审核通过后才能登录哦～");
-					this.$router.replace('/connection');
-				}else{
-					this.$toast(res.data.message);
-				}
-			});
+			if(this.ke == true){
+				this.ke = false;
+				resource.register(userObj).then(res => {
+					this.ke = true;
+					if(res.data.code == '0'){	
+						this.$toast("注册成功，审核通过后才能登录哦～");
+						this.$router.replace('/connection');
+					}else{
+						this.$toast(res.data.message);
+					}
+				});
+			}
+			
 		}
 	},
 	components:{
