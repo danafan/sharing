@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<div v-infinite-scroll="loadMore">
+		<div>
 			<div class="banner">
 				<swiper :options="swiperOption" ref="mySwiper">
 					<swiper-slide v-for="(item,index) in banner" :key="index">
@@ -33,29 +33,33 @@
 					<div class="txt" v-if="toastTxt == '2'">系统暂时没有发布新任务哦～</div>
 				</div>
 				<div class="listshow" v-else>
-					<div class="taskItem" v-for="item in taskList">
-						<!-- 大图 -->
-						<div class="itemImg">
-							<img class="taskImg" :src="baseUrl + item.goods_img">
-						</div>
-						<!-- 下面文字部分 -->
-						<div class="itemTxt">
-							<!-- 左侧 -->
-							<div class="txtLeft">
-								<div class="leftName">
-									<span v-if="item.shop_type == '淘宝'"><img src="../../assets/taobao.png"></span>
-									<span v-else><img src="../../assets/tian mao.png"></span>
-									<span class="name">{{item.keyword}}</span>
-								</div>
-								<div class="leftSub">限<span>{{item.num}}</span>份</div>
+					<div class="buttons" @click="application">{{butTxt}}</div>
+					<div class="txt">
+						<div class="wei" v-if="shen">总任务数量为{{could}}个，当前排队人数为{{ren}}个</div>
+						<div class="yi" v-else>
+							<div>
+								您当前已等待{{time}}，如若申请成功，
 							</div>
-							<!-- 右侧 -->
-							<div class="txtRight">
-								<div class="application" @click="detail(item.task_id)">申请任务</div>
-								<div class="residual">剩余<span>{{item.residue_num}}</span>份</div>
+							<div>
+								微信将会给您提示，请您耐心等待哦～
 							</div>
 						</div>
-					</div>
+					</div>	
+				</div>
+			</div>
+		</div>
+		<!-- 弹框部分 -->
+		<div class="stateBox" v-if="showState" @click="showState = false">
+			<!-- 审核和删除 -->
+			<div class="type1" @click.stop>
+				<div class="icon"><img src="../../assets/wait.png"></div>	
+				<div class="wen">
+					<div>确认放弃排队，放弃以后</div>
+					<div>您将重新进行排队？</div>
+				</div>
+				<div class="butss">
+					<div class="ok" @click="ok">确认</div>
+					<div class="close" @click="showState = false">取消</div>
 				</div>
 			</div>
 		</div>
@@ -113,9 +117,7 @@
 	}
 }
 .taskList{
-	font-family: "Source Han Sans";
 	box-sizing: border-box;
-	padding: .4rem .24rem .15rem .24rem;
 	margin-bottom: .98rem;
 	.listNull{
 		margin: 1.42rem auto;
@@ -154,97 +156,112 @@
 		display: flex;
 		justify-content: space-between;
 		flex-wrap: wrap;
-		.taskItem{
-			margin-bottom: .22rem;
-			width: 3.4rem;
-			// flex-grow: 1;
-			// flex-shrink: 1;
-			.itemImg{
-				width: 3.4rem;
-				height: 2.8rem;
-			}
-			.taskImg{
+		.buttons{
+			display:flex;
+			align-items:center;
+			justify-content:center;
+			margin: 1.66rem auto 0;
+			border-radius: 50%;
+			width:2.62rem;
+			height:2.62rem;
+			background: -webkit-linear-gradient(#66a6ff, #89f7fe); /* Safari 5.1 - 6.0 */
+			background: -o-linear-gradient(#66a6ff, #89f7fe); /* Opera 11.1 - 12.0 */
+			background: -moz-linear-gradient(#66a6ff, #89f7fe); /* Firefox 3.6 - 15 */
+			background: linear-gradient(#66a6ff, #89f7fe); /* 标准的语法 */
+			box-shadow: 0 .08rem .4rem #89f7fe;
+			font-size:.32rem;
+			color: #fff;
+		}
+		.txt{
+			margin-top:.5rem;
+			width:100%;
+			font-size: .28rem;
+			color: #666;
+			text-align: center;
+		}
+	}
+}
+// 弹框
+.stateBox{
+	background:rgba(0,0,0,.66);
+	position: fixed;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 1;
+	.type1{
+		border-radius: .17rem;
+		position: relative;
+		margin: 4rem auto 0;
+		background-color: #ffffff;
+		width: 4.71rem;
+		height: 3.2rem;
+		.icon{
+			position: absolute;
+			top: -.88rem;
+			left: 50%;
+			transform: translate(-50%);
+			width: 2rem;
+			height: 1.76rem;
+			img{
 				width: 100%;
 				height: 100%;
 			}
-			.itemTxt{
-				margin-top: .2rem;
-				display: flex;
-				justify-content: space-between;
-				.txtLeft{
-					.leftName{
-						line-height: 1.6;
-						width: 2rem;
-						overflow: hidden;
-						text-overflow: ellipsis;
-						display: -webkit-box;
-						-webkit-line-clamp: 1;
-						-webkit-box-orient: vertical;
-						font-size: .28rem;
-						color: #333333;
-						img{
-							width: .34rem;
-							height: .34rem;
-						}
-						.name{
-							position: relative;
-							top: -3px;
-							left: -3px;
-						}
-					}
-					.leftSub{
-						font-size: .24rem;
-						color:#999999;
-						span{
-							color:#ff5858;;
-						}
-					}
-				}
-				.txtRight{
-					text-align: end;
-					.application{
-						border-radius: .04rem;
-						width: 1.2rem;
-						text-align: center;
-						height: .34rem;
-						line-height: .34rem;
-						background: #03abff;
-						font-size: .24rem;
-						color: #ffffff;
-					}
-					.residual{
-						position: relative;
-						top:5px;
-						font-size: .24rem;
-						color:#999999;
-						span{
-							color: #ff5858;
-						}
-					}
-				}
+		}
+		.wen{
+			position: absolute;
+			top: 1.2rem;
+			width: 100%;
+			text-align: center;
+			font-size: .28rem;
+			color: #03abff;
+		}
+		.butss{
+			position: absolute;
+			top: 2.3rem;
+			left: 50%;
+			transform: translate(-50%);
+			display: flex;
+			.ok{
+				border-radius: .04rem;
+				margin-right: .4rem;
+				background-color: #03abff;
+				width: 1.1rem;
+				text-align: center;
+				height: .4rem;
+				line-height: .4rem;
+				font-size: .26rem;
+				color:#ffffff;
+			}
+			.close{
+				border-radius: .04rem;
+				border:1px solid #03abff;
+				width: 1.1rem;
+				text-align: center;
+				height: .4rem;
+				line-height: .4rem;
+				font-size: .26rem;
+				color:#03abff;
 			}
 		}
 	}
-	
 }
 </style>
 <script>
 import {mapActions, mapGetters} from 'vuex'
 import { swiper, swiperSlide } from "vue-awesome-swiper"
 import resource from '../../api/resource.js'
-import { Spinner } from 'mint-ui';
 export default{
 	data(){
 		return{		
-			jia: true,							//等到列表接口成功之后再去加载下一页
 			subClick: true,						//默认按钮可点击一次
 			banner: [
 			require('../../assets/background1.png'),
 			require('../../assets/background2.png')
 			],
-			isLoad: true,							//默认可以加载
-			page: 0,								//当前页码
-			taskList:[],							//所有任务列表
+			page: 1,								//当前页码
 			listNull: "",							//默认任务列表为空，显示刷新按钮
 			toastTxt: "0",							//提示(0:无任务;1:有任务,没到时间;2:已领取任务)
 			toastxt: "",							//错误提示
@@ -258,14 +275,19 @@ export default{
 		        autoplayDisableOnInteraction: false  //操作之后会继续自动滑动
 		    },
 		    time: "",						 		 //下一波任务来临时间
-		    could: "",								 //任务数量
+		    shen: true,								 //默认当前有任务可以申请
+		    could: "21",							 //当前任务总数量
+		    ren: "3",								 //当前排队人数
 		    reload: true,							 //默认显示刷新字
 		    isLoads: true,							 //默认刷新按钮可以点击
+		    butTxt: "申请任务",						 //中间按钮的文字
+		    showState: false,						 //默认取消排队弹框不显示
 		}
 	},  
 	created(){
 		document.title = "共享客";
 		this.set_route("index");
+		this.getTaskList(this.page);
 	},
 	methods:{
 		...mapActions([
@@ -276,7 +298,6 @@ export default{
 			if(this.isLoads == true){
 				this.isLoads = false;
 				this.reload = false;	//开始转
-				this.page = 1;
 				this.getTaskList(this.page);
 				let _this = this;
 				setTimeout(function(){
@@ -289,35 +310,21 @@ export default{
 		},
 		//获取任务列表
 		getTaskList(page){
-			this.jia = false;
 			resource.taskList({page:page}).then(res => {
-				this.jia = true;
 				this.reload = true;	//结束转
 				if(res.data.code == "0"){
 					this.listNull = false;
-					let taskList = res.data.data.data;
-					let total = res.data.data.total;
-					let lastPage = res.data.data.last_page;
-					if(taskList.length < "6" || total == "6" || lastPage == this.page){	
-					// 某一页不足6条
-					this.isLoad = false;
-					this.taskList = this.taskList.concat(Array.from(taskList));
-					}else{								//正常
-						this.taskList = this.taskList.concat(Array.from(taskList));
-					}
+					
 				}else if(res.data.code == "1"){//三天之内已经接过任务
-					this.isLoad = false;
-					this.listNull = true;
+					this.listNull = false;
 					this.toastTxt = "1";
 					this.toastxt = res.data.msg;
 				}else if(res.data.code == "2"){//有任务和时间
-					this.isLoad = false;
 					this.listNull = true;
 					this.toastTxt = "0";
 					this.time = res.data.data.start_time;
 					this.could = res.data.data.num;
 				}else if(res.data.code == "3"){//系统无任务
-					this.isLoad = false;
 					this.listNull = true;
 					this.toastTxt = "2";
 				}else{
@@ -325,39 +332,24 @@ export default{
 				}
 			})
 		},
-		// 点击申请任务成功后进入详情
-		detail(id){
-			if(this.subClick == true){
-				this.subClick = false;
-				resource.taskDetail({taskid:id}).then(res => {
-					if(res.data.code == "0"){
-						let taskid = res.data.usertaskid;
-						this.$router.push(`/taskDetail?id=${taskid}`);
-					}else{
-						this.$toast(res.data.msg);
-						this.subClick = true;	
-					}		
-				});
+		//点击中间大按钮
+		application(){
+			if(this.shen == true){	//申请任务
+				this.shen = false;
+			}else{					//排队中
+				this.showState = true;
 			}
 		},
-		//上拉加载
-		loadMore(){
-			if(this.jia == true){
-				//获取任务列表
-				if(this.isLoad == true){
-					this.page += 1;
-					this.getTaskList(this.page);
-				}else{
-					console.log("没有更多");
-				}
-			}
+		//点击确认放弃排队
+		ok(){
+			console.log("放弃排队");
+			this.showState = false;
 		}
 
 	},
 	components:{
 		swiper,
-		swiperSlide,
-		Spinner
+		swiperSlide
 	}
 }
 </script>
