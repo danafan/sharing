@@ -56,10 +56,11 @@
 				</div>
 				<div class="selBoxCen" @click="selTab(2)">
 					<div class="boxLeft">
-						<img src="../../assets/coin.png">
-						<div class="selectTxt">微信零钱</div>
+						<img src="../../assets/coin1.png" v-if="cashType == true">
+						<img src="../../assets/coin.png" v-else>
+						<div class="selectTxt" :class="{unsel:cashType == true}">微信零钱</div>
 					</div>
-					<div class="selected">
+					<div class="selected" :class="{unsels:cashType == true}">
 						<div class="yuan" v-if="selType == 2"></div>
 					</div>
 				</div>
@@ -256,17 +257,20 @@
 			justify-content:space-between;
 			align-items:center;
 			font-size:.26rem;
-			color:#333;
 			margin-top:.6rem;
 			.boxLeft{
 				display:flex;
 				justify-content:space-between;
 				align-items:center;
+				color:#333;
 				img{
 					margin-right:.14rem;
 					width: .2rem;
 					height:.24rem;
 				}
+			}
+			.unsel{
+				color: #999;
 			}
 			.selected{
 				display:flex;
@@ -283,6 +287,9 @@
 					height:.08rem;
 					border-radius:50%;
 				}
+			}
+			.unsels{
+				border:1px solid #999;
 			}
 		}
 	}
@@ -320,9 +327,21 @@ export default{
 			showFun: false,			//默认选择到账方式弹框不显示
 			moneyTxt: "微信零钱",		//头部默认文字
 			selType: 2,				//到账方式默认红包（2是零钱）
+			cashType: false,		//默认所有人到账方式可选，如果是徒弟1-3号只能选择红包提现
 		}	
 	},
 	created(){
+		//获取用户状态，0:师父；1:徒弟，徒弟每月1-3号只能选择红包提现
+		let status = sessionStorage.getItem("status");
+		if(status == "1"){//徒弟
+			let date = new Date();
+			let days = date.getDate();
+			if(days == "1" || days == "2" || days == "3"){//徒弟只能红包提现
+				this.selType = 1;	//默认提现方式为红包
+				this.moneyTxt = "微信红包";
+				this.cashType = true;
+			}
+		}
 		this.openid = sessionStorage.getItem("openid");
 		let types = this.$route.query.type;
 		let money = this.$route.query.money;
@@ -341,7 +360,6 @@ export default{
 	methods:{
 		//点击提现
 		subCash(){
-			console.log(this.selType);
 			if(this.money == ""){
 				this.$toast("请输入提现金额");
 			}else if(parseInt(this.money) < 1){
@@ -359,12 +377,18 @@ export default{
 		},
 		//点击切换到账方式
 		selTab(num){
-			this.selType = num;
 			this.showFun = false;
 			if(num == 1){
+				this.selType = 1;
 				this.moneyTxt = "微信红包";
 			}else{
-				this.moneyTxt = "微信零钱";
+				if(this.cashType == true){
+					this.selType = 1;
+					this.$toast("每月1-3号只能选择红包提现哦～");
+				}else{
+					this.selType = 2;
+					this.moneyTxt = "微信零钱";
+				}
 			}
 		},
 		//点击确认金额跳转明细

@@ -17,7 +17,7 @@ export default {
 			}else{
 				this.getAuthurl();
 
-				// sessionStorage.setItem("status","0");
+				// sessionStorage.setItem("status","1");
 				// this.$router.push('/navbar');
 
 				//this.$router.push('/attention');

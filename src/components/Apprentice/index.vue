@@ -33,7 +33,7 @@
 					<div class="txt" v-if="toastTxt == '2'">系统暂时没有发布新任务哦～</div>
 				</div>
 				<div class="listshow" v-else>
-					<div class="taskItem" v-for="item in taskList">
+					<div class="taskItem" v-for="item in taskList"> 
 						<!-- 大图 -->
 						<div class="itemImg">
 							<img class="taskImg" :src="baseUrl + item.goods_img">
