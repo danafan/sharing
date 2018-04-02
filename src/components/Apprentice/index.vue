@@ -27,10 +27,8 @@
 							<mt-spinner :type="3" color="#03abff"></mt-spinner>	
 						</div>
 					</div>
-					<!-- 已领取任务 -->
+					<!-- 现在不能接任务 -->
 					<div class="txt" v-if="toastTxt == '1'">{{toastxt}}</div>
-					<!-- 系统无任务 -->
-					<div class="txt" v-if="toastTxt == '2'">系统暂时没有发布新任务哦～</div>
 				</div>
 				<div class="listshow" v-else>
 					<div class="buttons" @click="application">{{butTxt}}</div>
@@ -261,7 +259,6 @@ export default{
 			require('../../assets/background1.png'),
 			require('../../assets/background2.png')
 			],
-			page: 1,								//当前页码
 			listNull: "",							//默认任务列表为空，显示刷新按钮
 			toastTxt: "0",							//提示(0:无任务;1:有任务,没到时间;2:已领取任务)
 			toastxt: "",							//错误提示
@@ -276,8 +273,8 @@ export default{
 		    },
 		    time: "",						 		 //下一波任务来临时间
 		    shen: true,								 //默认当前有任务可以申请
-		    could: "21",							 //当前任务总数量
-		    ren: "3",								 //当前排队人数
+		    could: "",							 	 //当前任务总数量
+		    ren: "",								 //当前排队人数
 		    reload: true,							 //默认显示刷新字
 		    isLoads: true,							 //默认刷新按钮可以点击
 		    butTxt: "申请任务",						 //中间按钮的文字
@@ -306,27 +303,28 @@ export default{
 			}else{
 				this.$toast("操作频繁，稍后再试！");
 			}
-			
 		},
 		//获取任务列表
-		getTaskList(page){
-			resource.taskList({page:page}).then(res => {
+		getTaskList(){
+			resource.taskList().then(res => {
 				this.reload = true;	//结束转
-				if(res.data.code == "0"){
+				if(res.data.code == "0"){				//可以申请任务
 					this.listNull = false;
-					
-				}else if(res.data.code == "1"){//三天之内已经接过任务
-					this.listNull = false;
+					this.could = res.data.task_num;
+					this.ren = res.data.user_num;
+				}else if(res.data.code == "1"){			//三天之内已经接过任务或系统无任务
+					this.listNull = true;		//不显示大按钮
 					this.toastTxt = "1";
 					this.toastxt = res.data.msg;
-				}else if(res.data.code == "2"){//有任务和时间
-					this.listNull = true;
+				}else if(res.data.code == "2"){			//有任务和时间
+					this.listNull = true;		//不显示大按钮
 					this.toastTxt = "0";
 					this.time = res.data.data.start_time;
 					this.could = res.data.data.num;
-				}else if(res.data.code == "3"){//系统无任务
-					this.listNull = true;
-					this.toastTxt = "2";
+				}else if(res.data.code == "3"){			//排队中
+					this.listNull = false;
+					this.shen = false;
+					this.butTxt = "排队中";
 				}else{
 					this.$toast(res.data.msg);
 				}
@@ -335,7 +333,11 @@ export default{
 		//点击中间大按钮
 		application(){
 			if(this.shen == true){	//申请任务
-				this.shen = false;
+				resource.taskDetail().then(res => {
+					this.shen = false;
+					this.butTxt = "排队中";
+				});
+				
 			}else{					//排队中
 				this.showState = true;
 			}

@@ -341,7 +341,6 @@ export default{
 	methods:{
 		//点击提现
 		subCash(){
-			console.log(this.selType);
 			if(this.money == ""){
 				this.$toast("请输入提现金额");
 			}else if(parseInt(this.money) < 1){
