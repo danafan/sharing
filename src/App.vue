@@ -17,10 +17,10 @@ export default {
 			}else{
 				this.getAuthurl();
 
-				// sessionStorage.setItem("status","1");
-				// this.$router.push('/navbar');
+				//sessionStorage.setItem("status","0");
+				//this.$router.push('/navbar');
 
-				//this.$router.push('/attention');
+				//this.$router.push('/taskDetail');
 				//this.$router.push('/registration');
 			}
 		}else{

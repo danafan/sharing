@@ -319,6 +319,15 @@ export default{
 		this.set_route("task");
 		//获取任务进度
 		this.getTaskStatus();
+		//如果从任务详情过来的，直接定位到首页
+		let _this = this;
+		window.addEventListener("popstate", function(e) { 
+			if(!!sessionStorage.getItem("toDetil")){
+				sessionStorage.removeItem("toDetil");
+				_this.set_route("index");
+				_this.$router.push("index");
+			}
+		}, false); 
 	},
 	methods:{
 		...mapActions([

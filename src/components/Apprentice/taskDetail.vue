@@ -678,6 +678,7 @@ export default{
 			resource.verify({usertaskid: this.id}).then(res => {
 				if(res.data.code == "0"){
 					this.set_route("task");
+					sessionStorage.setItem("toDetil");
 					this.$router.push("task");
 				}else{
 					this.$toast(res.data.message);

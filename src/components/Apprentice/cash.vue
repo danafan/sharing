@@ -307,7 +307,7 @@
 	line-height: 0.8rem;
 	font-size: .26rem;
 	color: #fff;
-	z-index: 100;
+	z-index: 1000000000;
 }
 </style>
 <script>
