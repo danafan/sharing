@@ -6,8 +6,10 @@ let path = {
 	register: 'index/register',		  	   //用户注册
 	connection: 'index/guanlian',	  	   //用户关联
 	getWorklist: 'index/getworklist', 	   //获取工作类型列表
-	taskList: 'task/tasklist',        	   //首页任务列表
-	taskDetail:'task/applytask',		   //申请任务
+	//taskList: 'task/tasklist',        	   //首页任务列表
+	taskList: 'newtask/index',			   // 首页任务列表
+	//taskDetail:'task/applytask',		   		//申请任务   
+	taskDetail:'newtask/pushuser',		   //申请任务
 	getTask: 'task/gettaskinfo',		   //查看任务详情
 	firmShopName: 'task/verifyshopname',   //验证店铺名称
 	firmShopMoney: 'task/verifygoodsprice',//验证商品金额
