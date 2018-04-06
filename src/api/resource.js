@@ -8,8 +8,10 @@ let path = {
 	getWorklist: 'index/getworklist', 	   //获取工作类型列表
 	//taskList: 'task/tasklist',        	   //首页任务列表
 	taskList: 'newtask/index',			   // 首页任务列表
+	publish: 'group/publish_open',		   //首页公告
 	//taskDetail:'task/applytask',		   		//申请任务   
 	taskDetail:'newtask/pushuser',		   //申请任务
+	abandTask: 'newtask/abandonapply',	   //放弃任务
 	getTask: 'task/gettaskinfo',		   //查看任务详情
 	firmShopName: 'task/verifyshopname',   //验证店铺名称
 	firmShopMoney: 'task/verifygoodsprice',//验证商品金额
@@ -65,9 +67,16 @@ export default{
 	taskList(params){
 		return http.post(path.taskList, params)
 	},
+	publish(params){
+		return http.post(path.publish, params)
+	},
 	//申请任务
 	taskDetail(params){
 		return http.post(path.taskDetail, params)
+	},
+	//放弃任务
+	abandTask(params){
+		return http.post(path.abandTask, params)
 	},
 	//任务详情
 	getTask(params){

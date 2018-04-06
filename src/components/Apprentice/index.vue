@@ -14,7 +14,7 @@
 				～<div class="flower"><img src="../../assets/flower.png"></div>
 				<div class="txt">申请任务</div>～
 			</div>
-			<div class="taskList">
+			<div class="taskList" v-show="listNull == true || listNull == false">
 				<div class="listNull" v-if="listNull">
 					<div class="img"><img src="../../assets/mascot.png"></div>
 					<!-- 系统无任务，有时间 -->
@@ -36,7 +36,7 @@
 						<div class="wei" v-if="shen">总任务数量为{{could}}个，当前排队人数为{{ren}}个</div>
 						<div class="yi" v-else>
 							<div>
-								您当前已等待{{time}}，如若申请成功，
+								您当前已等待{{showTime}}，如若申请成功，
 							</div>
 							<div>
 								微信将会给您提示，请您耐心等待哦～
@@ -46,7 +46,7 @@
 				</div>
 			</div>
 		</div>
-		<!-- 弹框部分 -->
+		<!-- 放弃任务弹框部分 -->
 		<div class="stateBox" v-if="showState" @click="showState = false">
 			<!-- 审核和删除 -->
 			<div class="type1" @click.stop>
@@ -59,6 +59,19 @@
 					<div class="ok" @click="ok">确认</div>
 					<div class="close" @click="showState = false">取消</div>
 				</div>
+			</div>
+		</div>
+		<!-- 公告弹框部分 -->
+		<div class="bulletinBox" v-if="showBull" @click="showBull = false">
+			<div class="inform" @click.stop>
+				<img src="../../assets/inform.png">
+			</div>
+			<div class="bulletin" @click.stop>
+				<div class="bulletinTie">公告</div>
+				<div class="bullTxt">
+					{{bulletinTxt}}
+				</div>
+				<div class="bullBut" @click="showBull = false">朕已阅</div>
 			</div>
 		</div>
 	</div>
@@ -179,7 +192,7 @@
 		}
 	}
 }
-// 弹框
+// 取消任务弹框
 .stateBox{
 	background:rgba(0,0,0,.66);
 	position: fixed;
@@ -246,6 +259,65 @@
 		}
 	}
 }
+// 公告弹框
+.bulletinBox{
+	background:rgba(0,0,0,.66);
+	position: fixed;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 1;
+	.inform{
+		position:absolute;
+		top: 3.1rem;
+		left:.56rem;
+		width:2.36rem;
+		height:2.36rem;
+		img{
+			width:100%;
+			height:100%;
+		}
+	}
+	.bulletin{
+		margin: 4.66rem auto 0;
+		background:#fff;
+		border-radius: .16rem;
+		width: 4.7rem;
+		padding-bottom: .3rem;
+		// height:4.44rem;
+		.bulletinTie{
+			font-size:.3rem;
+			color:#FFF;
+			border-radius: .16rem .16rem 0 0;
+			background:#03abff;
+			width: 4.7rem;
+			text-align:center;
+			height:1.12rem;
+			line-height:1.12rem;
+		}
+		.bullTxt{
+			margin: .6rem auto 0;
+			width:4.2rem;
+			text-align:center;
+			font-size:.28rem;
+			color: #03abff;
+		}
+		.bullBut{
+			margin:.6rem auto .3rem;
+			border-radius:.2rem;
+			background:#03abff;
+			width:3.42rem;
+			text-align:center;
+			height:.46rem;
+			line-height:.46rem;
+			font-size:.26rem;
+			color: #fff;
+		}
+	}
+}
+
 </style>
 <script>
 import {mapActions, mapGetters} from 'vuex'
@@ -259,7 +331,7 @@ export default{
 			require('../../assets/background1.png'),
 			require('../../assets/background2.png')
 			],
-			listNull: "",							//默认任务列表为空，显示刷新按钮
+			listNull: '',							//默认任务列表为空，显示刷新按钮
 			toastTxt: "0",							//提示(0:无任务;1:有任务,没到时间;2:已领取任务)
 			toastxt: "",							//错误提示
 			swiperOption: {                   
@@ -279,12 +351,19 @@ export default{
 		    isLoads: true,							 //默认刷新按钮可以点击
 		    butTxt: "申请任务",						 //中间按钮的文字
 		    showState: false,						 //默认取消排队弹框不显示
+		    applyTime: "",							 //任务申请成功的时间
+		    showTime: "",							 //计算好的已等待的时间
+		    showBull: false,						 	 //公告默认不显示
+		    bulletinTxt: "注意，注意，每月本金可立马提现，佣金每月1-3号可提现哦～",  //公告内容
 		}
 	},  
 	created(){
 		document.title = "共享客";
 		this.set_route("index");
-		this.getTaskList(this.page);
+		// 获取首页任务列表
+		this.getTaskList();
+		//获取首页公告
+		this.publishs();
 	},
 	methods:{
 		...mapActions([
@@ -295,7 +374,7 @@ export default{
 			if(this.isLoads == true){
 				this.isLoads = false;
 				this.reload = false;	//开始转
-				this.getTaskList(this.page);
+				this.getTaskList();
 				let _this = this;
 				setTimeout(function(){
 					_this.isLoads = true;
@@ -303,6 +382,27 @@ export default{
 			}else{
 				this.$toast("操作频繁，稍后再试！");
 			}
+		},
+		publishs(){
+			resource.publish().then(res => {
+				if(res.data.code == "0"){
+					let sessionPubid = localStorage.getItem("pubId");
+					let pubid = res.data.data.id;
+					if(!!pubid && sessionPubid != pubid){
+						this.showBull = true;
+						this.bulletinTxt = res.data.data.content;
+						localStorage.setItem("pubId",res.data.data.id);
+					}else if(!pubid){
+						this.showBull = true;
+						this.bulletinTxt = res.data.data.content;
+						localStorage.setItem("pubId",res.data.data.id);
+					}else{
+						this.showBull = false;
+					}
+				}else{
+					console.log("无公告");
+				}
+			})
 		},
 		//获取任务列表
 		getTaskList(){
@@ -312,6 +412,8 @@ export default{
 					this.listNull = false;
 					this.could = res.data.task_num;
 					this.ren = res.data.user_num;
+					this.shen = true;
+					this.butTxt = "申请任务";
 				}else if(res.data.code == "1"){			//三天之内已经接过任务或系统无任务
 					this.listNull = true;		//不显示大按钮
 					this.toastTxt = "1";
@@ -322,6 +424,10 @@ export default{
 					this.time = res.data.data.start_time;
 					this.could = res.data.data.num;
 				}else if(res.data.code == "3"){			//排队中
+					//排队成功的时间
+					this.applyTime = parseInt(res.data.apply_time);
+					//计算与此时的时间差并且展示到页面
+					this.chaTime();
 					this.listNull = false;
 					this.shen = false;
 					this.butTxt = "排队中";
@@ -334,18 +440,65 @@ export default{
 		application(){
 			if(this.shen == true){	//申请任务
 				resource.taskDetail().then(res => {
-					this.shen = false;
-					this.butTxt = "排队中";
+					if(res.data.code == "0"){
+						//排队成功的时间
+						this.applyTime = res.data.apply_time;
+						//计算与此时的时间差并且展示到页面
+						this.chaTime();
+						// 修改状态
+						this.shen = false;
+						this.butTxt = "排队中";
+					}else{
+						this.getTaskList();
+						this.$toast(res.data.msg);
+					}
 				});
-				
 			}else{					//排队中
 				this.showState = true;
 			}
 		},
+		chaTime(){
+			var date = new Date(this.applyTime * 1000);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
+			let Y = date.getFullYear() + '/';
+			let M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '/';
+			let D = date.getDate() + ' ';
+			let h = date.getHours() + ':';
+			let m = date.getMinutes() + ':';
+			let s = date.getSeconds();
+			let shi = Y + M + D + h + m + s;
+			var totalSeconds = (new Date() - new Date(shi));
+			//小时数
+			var hours = parseInt(totalSeconds / 1000 / 60 / 60 % 24 , 10); //计算剩余的小时
+			//分钟
+			var minutes = parseInt(totalSeconds / 1000 / 60 % 60, 10);//计算剩余的分钟
+			//秒
+			var seconds = parseInt(totalSeconds / 1000 % 60, 10);//计算剩余的秒数 
+			//输出到页面
+			this.showTime = this.checkTime(hours) + ":" + this.checkTime(minutes) + ":" + this.checkTime(seconds);
+			let _this = this;
+			setTimeout(function () {
+				_this.chaTime();
+			}, 1000);
+		},
+		checkTime(i){ 
+			if(i<10){ 
+				i = "0" + i; 
+			} 
+			return i; 
+		}, 
 		//点击确认放弃排队
 		ok(){
-			console.log("放弃排队");
-			this.showState = false;
+			resource.abandTask().then(res => {
+				if(res.data.code == "0"){
+					this.$toast("放弃成功!");
+					this.showState = false;
+					this.getTaskList();
+				}else{
+					this.showState = false;
+					this.getTaskList();
+					this.$toast(res.data.msg);
+				}
+			});
 		}
 
 	},
