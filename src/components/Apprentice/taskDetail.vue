@@ -451,6 +451,7 @@ export default{
 			time2: "",			//倒数时间
 			showState: false,	//弹框默认不显示
 			showPrice: false,	//价格区间默认不显示
+			yi: true,			//默认可以点击我已付款
 		}
 	},
 	watch:{
@@ -675,16 +676,26 @@ export default{
 		},
 		//点击我已付款的确定
 		ok(){
-			resource.verify({usertaskid: this.id}).then(res => {
-				if(res.data.code == "0"){
-					this.set_route("task");
-					sessionStorage.setItem("toDetil");
-					this.$router.push("task");
-				}else{
-					this.$toast(res.data.message);
-					this.showState = false;
-				}
-			});
+			if(this.yi == true){
+				this.yi = false;
+				resource.verify({usertaskid: this.id}).then(res => {
+					this.yi = true;
+					if(res.data.code == "0"){
+						this.set_route("task");
+						sessionStorage.setItem("toDetil",1);
+						this.$router.push("task");
+					}else if(res.data.code == "2"){
+						this.set_route("task");
+						sessionStorage.setItem("toDetil",1);
+						this.$router.push("task");
+						this.$toast(res.data.message);
+						this.showState = false;
+					}else{
+						this.$toast(res.data.message);
+						this.showState = false;
+					}
+				});
+			}
 		},
 		// 下一步
 		// gosub(){
