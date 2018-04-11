@@ -19,9 +19,6 @@ export default {
 
 				// sessionStorage.setItem("status","0");
 				// this.$router.push('/navbar');
-
-				//this.$router.push('/taskDetail');
-				//this.$router.push('/registration');
 			}
 		}else{
 			console.log("授权过");

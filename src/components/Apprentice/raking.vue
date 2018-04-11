@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="box">
 		<back></back>
 		<div class="tab">
 			<div class="dayRaking" :class="{selTab:backId == 0}" @click="backId = 0">日榜</div>
@@ -52,6 +52,14 @@
 	</div>
 </template>
 <style lang="less" scoped>
+.box{
+	position:absolute;
+	top: 0;
+	left:0;
+	width:100%;
+	background: #f3f4f5;
+	height:100%;
+}
 .tab{
 	margin-top: .38rem;
 	display: flex;
@@ -189,7 +197,7 @@
 	padding-right: .3rem;
 	padding-left: .3rem;
 	border-radius: .08rem;
-	background-color: #f8f8f8;
+	background-color: #fff;
 	margin: .6rem auto 0;
 	width: 5.64rem;
 	height: 7.08rem;
@@ -206,7 +214,7 @@
 			color:#333333;
 		}
 		.itemRight{
-			border-bottom:1px solid #e0e0e0;
+			border-bottom:1px solid #f4f4f4;
 			width: 4.6rem;
 			display: flex;
 			align-items:center;

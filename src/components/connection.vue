@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="box">
 		<div v-if="showCon">
 			<div class="userImg"><img :src="wxIcon"></div>
 			<div class="regards">亲爱的微信用户：{{wxName}}</div>
@@ -14,6 +14,14 @@
 	</div>
 </template>
 <style lang="less" scoped>
+.box{
+  position:absolute;
+  top: 0;
+  left: 0;
+  width:100%;
+  height:100%;
+  background:#f3f4f5;
+}
 .userImg{
 	margin: .96rem auto 0;
 	border-radius: .08rem;
@@ -40,7 +48,7 @@
 	color: #999999;
 }
 .buts{
-	border-top:1px solid #f4f4f4;
+	border-top:1px solid #cdcdcd;
 	margin-top: .36rem;
 	padding-top: .36rem;
 	.wen{
@@ -54,10 +62,11 @@
 		border-radius: .08rem;
 		margin:0 auto .36rem; 
 		background: #03abff;
-		width: 4.64rem;
+		box-shadow: 0 .02rem .2rem #03abff;
+		width: 6.54rem;
 		text-align: center;
-		height: .62rem;
-		line-height: .62rem;
+		height: .9rem;
+		line-height: .9rem;
 		font-size: .26rem;
 		color: #ffffff;
 	}

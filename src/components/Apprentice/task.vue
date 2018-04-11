@@ -159,7 +159,7 @@
 		}
 	}
 	.bottomBox{
-		background-color: #f2f2f2;
+		background-color: #f3f4f5;
 		width: 100%;
 		height: 5.45rem;
 	}
@@ -248,10 +248,10 @@
 		div{
 			border-radius: .04rem;
 			font-size: .28rem;
-			width: 1.44rem;
+			width: 1.9rem;
 			text-align: center;
-			height: .48rem;
-			line-height: .48rem;
+			height: .64rem;
+			line-height: .64rem;
 		}
 		.hui{
 			margin-right: .16rem;
@@ -265,6 +265,7 @@
 		}
 		.dai{
 			background-color: #dfdfdf;
+			box-shadow: 0 .02rem .2rem #dfdfdf;
 			color: #ffffff;
 		}
 	}
@@ -289,11 +290,12 @@
 	.gotask{
 		border-radius: .04rem;
 		background-color: #03abff;
+		box-shadow: 0 .02rem .2rem #03abff;
 		margin:.24rem auto 0;
-		width: 1.96rem;
+		width: 6.54rem;
 		text-align: center;
-		height: .6rem;
-		line-height: .6rem;
+		height: .9rem;
+		line-height: .9rem;
 		font-size: .26rem;
 		color:#ffffff;
 	}

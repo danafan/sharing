@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="box">
 		<!-- 返回按钮 -->
 		<back></back>
 		<div class="logo">
@@ -10,6 +10,14 @@
 	</div>
 </template>
 <style lang="less" scoped>
+.box{
+  position:absolute;
+  top: 0;
+  left: 0;
+  width:100%;
+  height:100%;
+  background:#f3f4f5;
+}
 .logo{
 	margin: 1.22rem auto 0;
 	width: 1.18rem;

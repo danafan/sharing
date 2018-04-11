@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="box">
 		<div class="img">
 			<img src="../assets/QR code.png">
 		</div>
@@ -14,6 +14,14 @@
 	</div>
 </template>
 <style scoped lang="less">
+.box{
+  position:absolute;
+  top: 0;
+  left: 0;
+  width:100%;
+  height:100%;
+  background:#f3f4f5;
+}
 .img{
 	margin: .84rem auto 0;
 	width: 2.14rem;

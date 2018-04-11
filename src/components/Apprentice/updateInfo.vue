@@ -106,7 +106,7 @@
 </template>
 <style lang="less" scoped>
 .Box{
-	background: #f1f1f1;
+	background: #f3f4f5;
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -206,11 +206,12 @@
 	.subInfo{
 		margin: .32rem auto;
 		background: #03abff;
+		box-shadow: 0 .02rem .2rem #03abff;
 		border-radius: .04rem;
-		width: 5.86rem;
+		width: 6.54rem;
 		text-align: center;
-		height: .78rem;
-		line-height: .78rem;
+		height: .9rem;
+		line-height: .9rem;
 		font-size: .26rem;
 		color:#ffffff;
 	}

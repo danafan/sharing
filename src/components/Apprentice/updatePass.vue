@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="box">
 		<!-- 返回按钮 -->
 		<back></back>
 		<!-- 原始密码 -->
@@ -22,7 +22,16 @@
 	</div>
 </template>
 <style lang="less" scoped>
+.box{
+	position:absolute;
+	top: 0;
+	left: 0;
+	width:100%;
+	height: 100%;
+	background:#f3f4f5;
+}
 .passItem{
+	background:#fff;
 	padding-left: .58rem;
 	padding-right: .58rem;
 	border-bottom: 1px solid #f4f4f4;
@@ -74,11 +83,12 @@
 .ok{
 	border-radius: .08rem;
 	background: #03abff;
+	box-shadow: 0 .02rem .2rem #03abff;
 	margin: 1.1rem auto;
-	width: 5.86rem;
+	width: 6.54rem;
 	text-align: center;
-	height: .8rem;
-	line-height: .8rem;
+	height: .9rem;
+	line-height: .9rem;
 	font-size: .26rem;
 	color:#ffffff;
 }

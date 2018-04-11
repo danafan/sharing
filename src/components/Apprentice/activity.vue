@@ -61,7 +61,7 @@
 	align-items:center;
 	width: 100%;
 	height: .48rem;
-	background: #f5f9fc;
+	background: #fff;
 	font-size: .28rem;
 	.flower{
 		margin-left: .1rem;

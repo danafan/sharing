@@ -73,7 +73,7 @@
 // 输入金额
 .cashBox{
 	position: absolute;
-	background: #f1f1f1;
+	background: #f3f4f5;
 	width: 100%;
 	height: 100%;
 	.cashFun{
@@ -81,7 +81,7 @@
 		justify-content: space-between;
 		align-items: center;
 		padding: 0 .76rem 0 .76rem;
-		background:#f6f6f6;
+		background:#eee;
 		margin: 3.73rem auto 0;
 		width:5.55rem;
 		height:.86rem;

@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="box">
 		<!-- 返回按钮 -->
 		<back v-if="pageType"></back>
 		<!-- 顶部时间 -->
@@ -117,6 +117,10 @@
 	</div>
 </template>
 <style lang="less" scoped>
+.box{
+	height:100%;
+	background:#f3f4f5;
+}
 .time{
 	display: flex;
 	justify-content: center;
@@ -149,9 +153,9 @@
 	margin-top: .63rem;
 	margin-bottom: .98rem;
 	.topCon{
+		padding-top: .15rem;
 		border-bottom: 1px solid #f4f4f4;
 		.tie{
-			margin-top: .85rem;
 			width: 100%;
 			text-align: center;
 			font-size: .28rem;
@@ -274,14 +278,15 @@
 	}
 }
 .saveSubmit{
+	box-shadow: 0 -.05rem .4rem #e8e8e8;
 	background: #e8e8e8;
 	position: fixed;
 	bottom: 0;
 	left: 0;
 	width: 100%;
 	text-align: center;
-	height: .98rem;
-	line-height: .98rem;
+	height: .9rem;
+	line-height: .9rem;
 	font-size: .3rem;
 	color: #ffffff;
 }           

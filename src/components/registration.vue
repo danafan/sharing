@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="box">
 		<!-- 返回按钮 -->
 		<back></back>
 		<!-- 用户名 -->
@@ -96,7 +96,12 @@
 </div>
 </template>
 <style lang="less" scoped>
+.box{
+	background:#f3f4f5;
+	height:100%;
+}
 .item{
+	background:#fff;
 	border-bottom: 1px solid #eeeeee;
 	padding-left: .58rem;
 	padding-right: .58rem;
@@ -159,6 +164,7 @@
 	}
 }
 .option{
+	background:#fff;
 	border-bottom: 1px solid #eeeeee;
 	padding: .3rem .58rem;
 	.select{
@@ -225,10 +231,11 @@
 	margin: .5rem auto;
 	border-radius: .08rem;
 	background: #03abff;
-	width: 5.84rem;
+	box-shadow: 0 .02rem .2rem #03abff;
+	width: 6.54rem;
 	text-align: center;
-	height: .8rem;
-	line-height: .8rem;
+	height: .9rem;
+	line-height: .9rem;
 	font-size: .26rem;
 	color: #ffffff;
 }

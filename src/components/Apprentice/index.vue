@@ -10,13 +10,9 @@
 					<div class="swiper-pagination" slot="pagination"></div>
 				</swiper>
 			</div>			
-			<div class="title">
-				～<div class="flower"><img src="../../assets/flower.png"></div>
-				<div class="txt">申请任务</div>～
-			</div>
-			<div class="taskList" v-show="listNull == true || listNull == false">
-				<div class="listNull" v-if="listNull">
-					<div class="img"><img src="../../assets/mascot.png"></div>
+			<div class="taskList">
+				<div class="listNull" v-if="listNull == true">
+					<div class="buttons1">申请任务</div>
 					<!-- 系统无任务，有时间 -->
 					<div class="txt" v-if="toastTxt == '0'">您当前任务已被领完，下一波</div>
 					<div class="txt" v-if="toastTxt == '0'">任务来临时间为{{time}}</div>
@@ -30,7 +26,7 @@
 					<!-- 现在不能接任务 -->
 					<div class="txt" v-if="toastTxt == '1'">{{toastxt}}</div>
 				</div>
-				<div class="listshow" v-else>
+				<div class="listshow" v-if="listNull == false">
 					<div class="buttons" @click="application">{{butTxt}}</div>
 					<div class="txt">
 						<div class="wei" v-if="shen">总任务数量为{{could}}个，当前排队人数为{{ren}}个</div>
@@ -97,49 +93,27 @@
 		}
 	}
 }
-.title{
-	font-family: "Source Han Sans";
-	margin-top: .34rem;
-	display: flex;
-	justify-content:center;
-	align-items:center;
-	width: 100%;
-	height: .48rem;
-	background: #f5f9fc;
-	font-size: .28rem;
-	.flower{
-		margin-left: .1rem;
-		margin-right: .1rem;
-		position: relative;
-		width: .34rem;
-		height: .36rem;
-		display: flex;
-		align-items:center;
-		img{
-			position: absolute;
-			width: 100%;
-			height: 100%;
-		}
-	}
-	.txt{
-		font-weight: 700;
-		margin-right: .1rem;
-		color:#333333;
-	}
-}
 .taskList{
+	height:100%;
 	box-sizing: border-box;
 	margin-bottom: .98rem;
 	.listNull{
 		margin: 1.42rem auto;
-		.img{
-			margin: 0 auto .32rem;
-			width: 2.96rem;
-			height: 2.96rem;
-			img{
-				width: 100%;
-				height: 100%;
-			}
+		.buttons1{
+			display:flex;
+			align-items:center;
+			justify-content:center;
+			margin: 1.66rem auto 0;
+			border-radius: 50%;
+			width:2.62rem;
+			height:2.62rem;
+			background: -webkit-linear-gradient(#eee, #eee); /* Safari 5.1 - 6.0 */
+			background: -o-linear-gradient(#eee, #eee); /* Opera 11.1 - 12.0 */
+			background: -moz-linear-gradient(#eee, #eee); /* Firefox 3.6 - 15 */
+			background: linear-gradient(#eee, #eee); /* 标准的语法 */
+			box-shadow: 0 .08rem .4rem #eee;
+			font-size:.32rem;
+			color: #fff;
 		}
 		.txt{
 			margin-bottom: .1rem;
@@ -331,7 +305,7 @@ export default{
 			require('../../assets/background1.png'),
 			require('../../assets/background2.png')
 			],
-			listNull: '',							//默认任务列表为空，显示刷新按钮
+			listNull: 3,							//默认任务列表为空，显示刷新按钮
 			toastTxt: "0",							//提示(0:无任务;1:有任务,没到时间;2:已领取任务)
 			toastxt: "",							//错误提示
 			swiperOption: {                   
@@ -383,6 +357,7 @@ export default{
 				this.$toast("操作频繁，稍后再试！");
 			}
 		},
+		//获取公告
 		publishs(){
 			resource.publish().then(res => {
 				if(res.data.code == "0"){
@@ -407,19 +382,19 @@ export default{
 		//获取任务列表
 		getTaskList(){
 			resource.taskList().then(res => {
-				this.reload = true;	//结束转
+				this.reload = true;						//结束转
 				if(res.data.code == "0"){				//可以申请任务
 					this.listNull = false;
 					this.could = res.data.task_num;
 					this.ren = res.data.user_num;
 					this.shen = true;
-					this.butTxt = "申请任务";
+					this.butTxt = " 申请任务";
 				}else if(res.data.code == "1"){			//三天之内已经接过任务或系统无任务
-					this.listNull = true;		//不显示大按钮
+					this.listNull = true;				//不显示大按钮
 					this.toastTxt = "1";
 					this.toastxt = res.data.msg;
 				}else if(res.data.code == "2"){			//有任务和时间
-					this.listNull = true;		//不显示大按钮
+					this.listNull = true;				//不显示大按钮
 					this.toastTxt = "0";
 					this.time = res.data.data.start_time;
 					this.could = res.data.data.num;

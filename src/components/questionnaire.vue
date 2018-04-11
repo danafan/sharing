@@ -65,7 +65,7 @@
 	font-size: .24rem;
 	color: #666;
 	span{
-		border-bottom: 1px solid #666;
+		border-bottom: 1px solid #e8e8e8;
 	}
 }
 .buts{

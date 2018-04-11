@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="box">
 		<!-- 返回按钮 -->
 		<back></back>
 		<div class="fullbox">
@@ -22,6 +22,14 @@
 	</div>
 </template>
 <style lang="less" scoped>
+.box{
+	position:absolute;
+	top: 0;
+	left:0;
+	width:100%;
+	height:100%;
+	background: #f3f4f5;
+}
 .bounce-enter-active {
 	animation: bounce-in .5s;
 }

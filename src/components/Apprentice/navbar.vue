@@ -34,11 +34,13 @@
 </template>
 <style lang="less" scoped>
 .pageWrap{
+	background:#f3f4f5;
 	box-sizing: border-box;
 	position: absolute;
 	top: 0;
 	left: 0;
 	width: 100%;
+	height: 100%;
 }
 .navbar{
 	font-family: "Source Han Sans";
@@ -46,13 +48,13 @@
 	left: 0;
 	bottom: 0;
 	box-sizing: border-box;
-	background: #eaeaea;
+	background: #fff;
 	display: flex;
 	justify-content: space-around;
 	width: 100%;
 	height: .98rem;
-	font-size: .24rem;
-	color: #333333;
+	font-size: .26rem;
+	color: #999;
 	.navbarItem{
 		display: flex;
 		flex-direction: column;
