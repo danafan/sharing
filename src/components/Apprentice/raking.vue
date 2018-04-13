@@ -8,30 +8,24 @@
 		<div class="icon">
 			<div class="iconItem two">
 				<div class="img">
-					<div class="div1">
-						<div class="userimg"><img :src="numberTwo.headimgurl"></div>
-						<img src="../../assets/Second.png">
-					</div>
+					<div class="userimg"><img :src="numberTwo.headimgurl"></div>
+					<img src="../../assets/Second.png">
 				</div>
 				<div class="code">{{numberTwo.master_code}}</div>
 				<div class="money">¥{{numberTwo.sum/100}}</div>
 			</div>
 			<div class="iconItem one">
 				<div class="img">
-					<div class="div2">
-						<div class="userimg"><img :src="numberOne.headimgurl"></div>
-						<img src="../../assets/First.png">
-					</div>
+					<div class="userimg"><img :src="numberOne.headimgurl"></div>
+					<img src="../../assets/First.png">
 				</div>
-				<div class="code code1">{{numberOne.master_code}}</div>
+				<div class="code">{{numberOne.master_code}}</div>
 				<div class="money">¥{{numberOne.sum/100}}</div>
 			</div>
 			<div class="iconItem three">
 				<div class="img">
-					<div class="div3">
-						<div class="userimg"><img :src="numberThree.headimgurl"></div>
-						<img src="../../assets/Third.png">
-					</div>
+					<div class="userimg"><img :src="numberThree.headimgurl"></div>
+					<img src="../../assets/Third.png">
 				</div>
 				<div class="code">{{numberThree.master_code}}</div>
 				<div class="money">¥{{numberThree.sum/100}}</div>
@@ -57,17 +51,20 @@
 	top: 0;
 	left:0;
 	width:100%;
-	background: #f3f4f5;
+	background: #f4f5f6;
 	height:100%;
 }
 .tab{
-	margin-top: .38rem;
+	box-shadow: 0 .06rem .2rem rgb(172,221,246);
+	border-radius: .12rem;
+	width:5rem;
+	margin: .38rem auto 0;
 	display: flex;
 	justify-content:center;
 	.dayRaking{
-		border: 1px solid #03abff;
-		border-radius: .36rem 0 0 .36rem;
-		width: 2.52rem;
+		background:#fff;
+		border-radius: .12rem 0 0 .12rem;
+		width: 2.5rem;
 		text-align: center;
 		height: .72rem;
 		line-height: .72rem;
@@ -76,9 +73,9 @@
 		color:#03abff;
 	}
 	.monRaking{
-		border: 1px solid #03abff;
-		border-radius: 0 .36rem .36rem 0;
-		width: 2.52rem;
+		background:#fff;
+		border-radius: 0 .12rem .12rem 0;
+		width: 2.5rem;
 		text-align: center;
 		height: .72rem;
 		line-height: .72rem;
@@ -96,101 +93,118 @@
 	width: 100%;
 	display: flex;
 	justify-content:center;
+	align-items:center;
 	.iconItem{
-		.img{
-			height: 1.9rem; 
-			display: flex;
-			align-items:center;
-			.div1{
-				position: relative;
-				width: 1.4rem;
-				height: 1.52rem;
-				.userimg{
-					z-index: 1;
-					position: absolute;
-					right: .05rem;
-					bottom: .06rem;
-					border-radius: 50%;
-					width: 1.1rem;
-					height: 1.1rem;
-					img{
-						border-radius: 50%;
-						width: 100%;
-						height: 100%;
-					}
-				}
-				img{
-					position: absolute;
-					left: 0;
-					top: 0;
-					width: 100%;
-					height: 100%;
-				}
-			}
-			.div2{
-				position: relative;
-				width: 1.38rem;
-				height: 1.82rem;
-				.userimg{
-					z-index: 1;
-					position: absolute;
-					right: .06rem;
-					bottom: .053rem;
-					border-radius: 50%;
-					width: 1.25rem;
-					height: 1.25rem;
-					img{
-						border-radius: 50%;
-						width: 100%;
-						height: 100%;
-					}
-				}
-				img{
-					width: 100%;
-					height: 100%;
-				}
-			}
-			.div3{
-				position: relative;
-				width: 1.46rem;
-				height: 1.5rem;
-				.userimg{
-					z-index: 1;
-					position: absolute;
-					left: .07rem;
-					bottom: .07rem;
-					border-radius: 50%;
-					width: 1.12rem;
-					height: 1.12rem;
-					img{
-						border-radius: 50%;
-						width: 100%;
-						height: 100%;
-					}
-				}
-				img{
-					width: 100%;
-					height: 100%;
-				}
-			}
-		}
 		.code{
 			text-align: center;
 			font-size: .28rem;
-			color:#333333;
-		}
-		.code1{
-			font-size: .3rem;
+			color:#fff;
 		}
 		.money{
 			text-align: center;
-			font-size: .26rem;
-			color:#fe8d2c;
+			font-size: .24rem;
+			color:#e0e0df;
+		}
+	}
+	.two{
+		background:#ffb55b;
+		box-shadow: 0 .06rem .2rem #ffb544;
+		border-radius:.08rem;
+		width:1.68rem;
+		height:2.3rem;
+		padding-top: .1rem;
+		.img{
+			position: relative;
+			width: 100%;
+			height:1.4rem;
+			img{
+				width: 1.34rem;
+				height: 1.32rem;
+			}
+			.userimg{
+				z-index: 1;
+				position: absolute;
+				top:.26rem;
+				left: .3rem;
+				border-radius: 50%;
+				width: 1.04rem;
+				height: 1.04rem;
+				img{
+					border-radius: 50%;
+					width: 100%;
+					height: 100%;
+				}
+			}
 		}
 	}
 	.one{
-		margin-right: .6rem;
-		margin-left: .6rem;
+		background:#ff6792;
+		box-shadow: 0 .06rem .2rem #ff5993;
+		border-radius:.08rem;
+		width:2.02rem;
+		height:2.66rem;
+		margin-right: .4rem;
+		margin-left: .4rem;
+		padding-top: .1rem;
+		.img{
+			display: flex;
+			align-items:center;
+			justify-content:center;
+			position: relative;
+			width: 100%;
+			img{
+				width: 1.38rem;
+				height: 1.82rem;
+			}
+			.userimg{
+				z-index: 1;
+				position: absolute;
+				top:.47rem;
+				left: 50%;
+				transform: translate(-50%);
+				border-radius: 50%;
+				width: 1.34rem;
+				height: 1.34rem;
+				img{
+					border-radius: 50%;
+					width: 100%;
+					height: 100%;
+				}
+			}
+		}
+	}
+	.three{
+		background:#5cb5fe;
+		box-shadow: 0 .06rem .2rem #45d0ff;
+		border-radius:.08rem;
+		width:1.68rem;
+		height:2.3rem;
+		padding-top: .1rem;
+		.img{
+			position: relative;
+			width: 100%;
+			height:1.4rem;
+			img{
+				position:absolute;
+				right: 0;
+				width: 1.34rem;
+				height: 1.32rem;
+			}
+			.userimg{
+				z-index: 1;
+				position: absolute;
+				top:.29rem;
+				left: .34rem;
+				border-radius: 50%;
+				width: 1.04rem;
+				height: 1.04rem;
+				img{
+					border-radius: 50%;
+					width: 100%;
+					height: 100%;
+				}
+			}
+		}
 	}
 }
 .rakList{
@@ -199,7 +213,7 @@
 	border-radius: .08rem;
 	background-color: #fff;
 	margin: .6rem auto 0;
-	width: 5.64rem;
+	width: 6.26rem;
 	height: 7.08rem;
 	overflow-y: scroll;
 	.rakItem{
@@ -215,7 +229,7 @@
 		}
 		.itemRight{
 			border-bottom:1px solid #f4f4f4;
-			width: 4.6rem;
+			width: 5.08rem;
 			display: flex;
 			align-items:center;
 			justify-content: space-between;

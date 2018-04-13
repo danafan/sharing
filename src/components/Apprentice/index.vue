@@ -103,7 +103,7 @@
 			display:flex;
 			align-items:center;
 			justify-content:center;
-			margin: 1.66rem auto 0;
+			margin: 1.66rem auto .5rem;
 			border-radius: 50%;
 			width:2.62rem;
 			height:2.62rem;

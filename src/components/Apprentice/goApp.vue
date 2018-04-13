@@ -86,6 +86,7 @@
 	width: 100%;
 	height: 1.05rem;
 	background-color: #eee;
+	z-index:9;
 	.tabItem{
 		font-size: .3rem;
 		color: #333333;
