@@ -265,6 +265,8 @@ export default{
 						this.$router.push(`/taskDetail?id=${taskid}`);
 					}else{
 						this.$toast(res.data.msg);
+						this.page = 0;
+						this.getTaskList(this.page);
 						this.subClick = true;	
 					}		
 				});

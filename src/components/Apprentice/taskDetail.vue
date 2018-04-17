@@ -45,7 +45,7 @@
 						<div class="operName">价格区间：</div>	
 						<div class="operSubname">{{taskDetail.small_price/100}} - {{taskDetail.big_price/100}}</div>
 					</div>
-					<div class="operation">
+					<div class="operation" v-if="taskDetail.shop_type != '淘宝'">
 						<div class="operName">店铺类型：</div>	
 						<div class="operSubname">{{taskDetail.shop_type}}</div>
 					</div>
