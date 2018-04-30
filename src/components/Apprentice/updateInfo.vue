@@ -206,7 +206,7 @@
 	.subInfo{
 		margin: .32rem auto;
 		background: #03abff;
-		box-shadow: 0 .02rem .2rem #03abff;
+		box-shadow: 0 .02rem .2rem rgb(110,189,243);
 		border-radius: .04rem;
 		width: 6.54rem;
 		text-align: center;

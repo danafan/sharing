@@ -290,7 +290,7 @@
 	.gotask{
 		border-radius: .04rem;
 		background-color: #03abff;
-		box-shadow: 0 .02rem .2rem #03abff;
+		box-shadow: 0 .02rem .2rem rgb(110,189,243);
 		margin:.24rem auto 0;
 		width: 6.54rem;
 		text-align: center;

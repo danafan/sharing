@@ -1,7 +1,10 @@
 <template>
 	<div class="box">
 		<div class="img">
+			公共二维码
 			<img src="../assets/QR code.png">
+			<!-- 文艺男二维码 -->
+			<!-- <img src="../assets/wenyinancode.png"> -->
 		</div>
 		<div class="txt1">请先关注公众号</div>
 		<div class="txt2">长按图片【识别二维码】公众号</div>

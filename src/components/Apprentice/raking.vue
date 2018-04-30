@@ -295,7 +295,7 @@ export default{
 					let diff = 100 - rakingList.length;	//和100做对比
 					if(diff > 0){
 						let rakObj = {
-							"headimgurl":"http://www.gxke88.com/uploads/touxiang/tx.png",
+							"headimgurl":"http://gxke88.com/uploads/touxiang/tx.png",
 							"master_code":"虚位以待",
 							"sum":"0"
 						}

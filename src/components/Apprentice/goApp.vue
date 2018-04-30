@@ -101,9 +101,11 @@
 	}
 }
 .orderList{
+	background:#f3f4f5;
 	padding-top: 1.05rem;
-	margin-bottom: .98rem;
+	padding-bottom: .98rem;
 	.orderItem{
+		background:#fff;
 		border-bottom:1px solid #e8e8e8;
 		padding-left: .58rem;
 		display: flex;

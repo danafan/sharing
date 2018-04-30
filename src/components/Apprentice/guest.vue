@@ -117,7 +117,7 @@
 .ok{
 	border-radius: .08rem;
 	background: #03abff;
-	box-shadow: 0 .02rem .2rem #03abff;
+	box-shadow: 0 .02rem .2rem rgb(110,189,243);
 	margin: 1.68rem auto;
 	width: 6.54rem;
 	text-align: center;
