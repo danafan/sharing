@@ -5,6 +5,7 @@ let path = {
 	getUserState: 'index/logincheck', 	   //根据openid获取用户状态
 	register: 'index/register',		  	   //用户注册
 	connection: 'index/guanlian',	  	   //用户关联
+	isbindphone: 'sms/isbindphone',		   //判断用户是否绑定了手机号
 	getWorklist: 'index/getworklist', 	   //获取工作类型列表
 	//taskList: 'task/tasklist',           //首页任务列表
 	taskList: 'newtask/index',			   // 首页任务列表
@@ -58,6 +59,10 @@ export default{
 	//用户关联
 	connection(params){
 		return http.post(path.connection, params)
+	},
+	//判断用户是否关联了手机号
+	isbindphone(params){
+		return http.post(path.isbindphone, params)
 	},
 	//获取工作类型列表
 	getWorklist(params){

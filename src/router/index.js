@@ -5,6 +5,7 @@ import index from '@/components/Apprentice/index'
 const question = resolve=>System.import('@/components/questionnaire')
 const connection = resolve=>System.import('@/components/connection')
 const login = resolve=>System.import('@/components/login')
+const code = resolve=>System.import('@/components/code')
 const registration = resolve=>System.import('../components/registration')
 const navbar = resolve=>System.import('@/components/Apprentice/navbar')
 const goApp = resolve=>System.import('@/components/Apprentice/goApp')
@@ -44,6 +45,10 @@ export default new Router({
   {
     path: '/login',
     component: login
+  },
+  {
+    path: '/code',
+    component: code
   },
   {
     path: '/registration',

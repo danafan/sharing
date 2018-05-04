@@ -300,7 +300,7 @@ import resource from '../../api/resource.js'
 export default{
 	data(){
 		return{		
-			subClick: true,						//默认按钮可点击一次
+			subClick: true,							//默认按钮可点击一次
 			banner: [
 			require('../../assets/background1.png'),
 			require('../../assets/background2.png')
@@ -327,7 +327,7 @@ export default{
 		    showState: false,						 //默认取消排队弹框不显示
 		    applyTime: "",							 //任务申请成功的时间
 		    showTime: "",							 //计算好的已等待的时间
-		    showBull: false,						 	 //公告默认不显示
+		    showBull: false,						 //公告默认不显示
 		    bulletinTxt: "注意，注意，每月本金可立马提现，佣金每月1-3号可提现哦～",  //公告内容
 		}
 	},  
@@ -338,6 +338,8 @@ export default{
 		this.getTaskList();
 		//获取首页公告
 		this.publishs();
+		//判断用户是否关联了手机号
+		this.isbindphone();
 	},
 	methods:{
 		...mapActions([
@@ -410,6 +412,12 @@ export default{
 					this.$toast(res.data.msg);
 				}
 			})
+		},
+		//判断用户是否关联了手机号
+		isbindphone(){
+			resource.isbindphone().then(res => {
+
+			});
 		},
 		//点击中间大按钮
 		application(){

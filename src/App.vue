@@ -15,10 +15,10 @@ export default {
 				let code = url.split("?")[1].split("&")[0].split("=")[1];	// 获取code
 				this.callback(code);
 			}else{
-				this.getAuthurl();
+				//this.getAuthurl();
 
-				// sessionStorage.setItem("status","0");
-				// this.$router.push('/navbar');
+				sessionStorage.setItem("status","0");
+				this.$router.push('/navbar');
 			}
 		}else{
 			console.log("授权过");
