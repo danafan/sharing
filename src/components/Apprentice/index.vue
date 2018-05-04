@@ -70,6 +70,22 @@
 				<div class="bullBut" @click="showBull = false">朕已阅</div>
 			</div>
 		</div>
+		<!-- 未绑定手机号提示框 -->
+		<div class="bindBox" v-if="showBind" @click="showBind = false">
+			<!-- 审核和删除 -->
+			<div class="type1" @click.stop>
+				<div class="icon"><img src="../../assets/mobile-phone.png"></div>	
+				<div class="wen">
+					<div>请绑定手机号</div>
+					<div class="ti">您还没有绑定手机号，任务将受限制</div>
+					<div class="ti">请前去绑定吧！</div>
+				</div>
+				<div class="butss">
+					<div class="close" @click="showBind = false">取消</div>
+					<div class="ok" @click="$router.push('/code?tab=con')">绑定手机</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </template>
 <style scoped lang="less">
