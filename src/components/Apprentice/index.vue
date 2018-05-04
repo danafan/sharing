@@ -307,7 +307,77 @@
 		}
 	}
 }
-
+// 取消任务弹框
+.bindBox{
+	background:rgba(0,0,0,.66);
+	position: fixed;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 1;
+	.type1{
+		border-radius: .17rem;
+		position: relative;
+		margin: 4rem auto 0;
+		background-color: #ffffff;
+		width: 4.71rem;
+		height: 3.2rem;
+		.icon{
+			position: absolute;
+			top: -.88rem;
+			left: 50%;
+			transform: translate(-50%);
+			width: 2rem;
+			height: 1.68rem;
+			img{
+				width: 100%;
+				height: 100%;
+			}
+		}
+		.wen{
+			position: absolute;
+			top: .9rem;
+			width: 100%;
+			text-align: center;
+			font-size: .3rem;
+			color: #03abff;
+			.ti{
+				font-size:.26rem;
+				color: #666;
+			}
+		}
+		.butss{
+			position: absolute;
+			top: 2.3rem;
+			left: 50%;
+			transform: translate(-50%);
+			display: flex;
+			.ok{
+				border-radius: .04rem;
+				background-color: #03abff;
+				width: 1.4rem;
+				text-align: center;
+				height: .45rem;
+				line-height: .45rem;
+				font-size: .26rem;
+				color:#ffffff;
+			}
+			.close{
+				margin-right: .58rem;
+				border-radius: .04rem;
+				border:1px solid #03abff;
+				width: 1.4rem;
+				text-align: center;
+				height: .45rem;
+				line-height: .45rem;
+				font-size: .26rem;
+				color:#03abff;
+			}
+		}
+	}
+}
 </style>
 <script>
 import {mapActions, mapGetters} from 'vuex'
@@ -345,6 +415,7 @@ export default{
 		    showTime: "",							 //计算好的已等待的时间
 		    showBull: false,						 //公告默认不显示
 		    bulletinTxt: "注意，注意，每月本金可立马提现，佣金每月1-3号可提现哦～",  //公告内容
+		    showBind: false,						 //默认未绑定手机号弹框不显示
 		}
 	},  
 	created(){
@@ -432,7 +503,11 @@ export default{
 		//判断用户是否关联了手机号
 		isbindphone(){
 			resource.isbindphone().then(res => {
-
+				if(res.data.code == "0"){
+					this.showBind = true;
+				}else{
+					console.log(res.data.msg);
+				}
 			});
 		},
 		//点击中间大按钮

@@ -74,7 +74,6 @@
 		} 
 	}
 }
-
 .codeItem1{
 	position:relative;
 	display: flex;
@@ -200,7 +199,6 @@ export default{
 				this.$toast("手机号格式不正确!");
 			}else{
 				if(this.notBut == true){
-					this.$toast("验证码发送中，请稍后...");
 					// 获取验证码
 					if(this.router == true){
 						//注册验证码
@@ -221,6 +219,7 @@ export default{
 			}
 			resource.bindsendsms(userObj).then(res => {
 				if(res.data.code == "0"){
+					this.$toast("发送成功，请稍后...");
 					this.time = res.data.invalid_time;
 					// 倒计时
 					this.timeDown();
@@ -237,6 +236,7 @@ export default{
 			}
 			resource.sendsms(userObj).then(res => {
 				if(res.data.code == "0"){
+					this.$toast("发送成功，请稍后...");
 					this.time = res.data.invalid_time;
 					// 倒计时
 					this.timeDown();
@@ -286,11 +286,12 @@ export default{
 							//跳转到注册页面
 							this.$router.push('/registration?phone=' + this.phone);
 						}else if(type == "1"){//绑定
-							//刷新当前页面
-							location.reload(true);
+							this.$toast("绑定成功");
+							//跳转到首页
+							this.$router.push('/index');
 						}
 					}else{
-						this.$toast(res,data.msg);
+						this.$toast(res.data.msg);
 					}
 				})
 			}else{

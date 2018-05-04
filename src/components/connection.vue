@@ -8,7 +8,8 @@
 				<div class="wen">已有共享客账号？</div>
 				<div class="but" @click="$router.push('/question')">立即关联</div>
 				<div class="wen">还没有共享客账号？</div>
-				<div class="but" @click="$router.push('/registration')">快速注册</div>
+				<!-- <div class="but" @click="$router.push('/registration')">快速注册</div> -->
+				<div class="but" @click="$router.push('/code?tab=res')">快速注册</div>
 			</div>
 		</div>
 	</div>

@@ -6,6 +6,9 @@ let path = {
 	register: 'index/register',		  	   //用户注册
 	connection: 'index/guanlian',	  	   //用户关联
 	isbindphone: 'sms/isbindphone',		   //判断用户是否绑定了手机号
+	sendsms: 'sms/sendsms',				   //发送短信注册
+	bindsendsms: 'sms/bindsendsms',		   //发送短信绑定
+	virifysms: 'sms/virifysms',			   //手机号验证码
 	getWorklist: 'index/getworklist', 	   //获取工作类型列表
 	//taskList: 'task/tasklist',           //首页任务列表
 	taskList: 'newtask/index',			   // 首页任务列表
@@ -63,6 +66,18 @@ export default{
 	//判断用户是否关联了手机号
 	isbindphone(params){
 		return http.post(path.isbindphone, params)
+	},
+	//发送短信，注册
+	sendsms(params){
+		return http.post(path.sendsms, params)
+	},
+	//发送短信，绑定
+	bindsendsms(params){
+		return http.post(path.bindsendsms, params)
+	},
+	//手机号验证码
+	virifysms(params){
+		return http.post(path.virifysms, params)
 	},
 	//获取工作类型列表
 	getWorklist(params){

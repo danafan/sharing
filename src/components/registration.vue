@@ -33,10 +33,10 @@
 			<div class="itemInput"><input type="text" v-model="wx" placeholder="微信号"></div>
 		</div>
 		<!-- 手机号 -->
-		<div class="item">
+		<!-- <div class="item">
 			<div class="itemIcon"><img src="../assets/phone.png"></div>
 			<div class="itemInput"><input type="number" v-model="phone" placeholder="手机号"></div>
-		</div>
+		</div> -->
 		<!-- 姓名 -->
 		<div class="item">
 			<div class="itemIcon"><img src="../assets/name.png"></div>
@@ -316,6 +316,8 @@ export default{
 		}
 	},
 	created(){
+		//获取上个页面传过来的手机号
+		this.phone = this.$route.query.phone;
 		document.title = "用户注册";
 		//获取工作类型列表
 		this.Worklist();
