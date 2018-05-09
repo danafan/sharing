@@ -71,7 +71,7 @@
 			</div>
 		</div>
 		<!-- 未绑定手机号提示框 -->
-		<div class="bindBox" v-if="showBind" @click="showBind = false">
+		<div class="bindBox" v-if="showBind">
 			<!-- 审核和删除 -->
 			<div class="type1" @click.stop>
 				<div class="icon"><img src="../../assets/mobile-phone.png"></div>	
@@ -81,7 +81,7 @@
 					<div class="ti">请前去绑定吧！</div>
 				</div>
 				<div class="butss">
-					<div class="close" @click="showBind = false">取消</div>
+					<!-- <div class="close" @click="showBind = false">取消</div> -->
 					<div class="ok" @click="$router.push('/code?tab=con')">绑定手机</div>
 				</div>
 			</div>
@@ -363,17 +363,6 @@
 				line-height: .45rem;
 				font-size: .26rem;
 				color:#ffffff;
-			}
-			.close{
-				margin-right: .58rem;
-				border-radius: .04rem;
-				border:1px solid #03abff;
-				width: 1.4rem;
-				text-align: center;
-				height: .45rem;
-				line-height: .45rem;
-				font-size: .26rem;
-				color:#03abff;
 			}
 		}
 	}

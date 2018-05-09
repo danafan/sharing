@@ -14,8 +14,8 @@ Vue.use(MintUI)
 Vue.use(VueClipboards);
 Vue.use(InfiniteScroll);
 
-Vue.prototype.baseUrl = "/uploads/"
-//Vue.prototype.baseUrl = "http://yun.gxke88.com/" 
+//Vue.prototype.baseUrl = "/uploads/"
+Vue.prototype.baseUrl = "http://yun.gxke88.com/" 
 Vue.prototype.judgmentShopNum = /^[0-9]{17,19}$/;		//订单号正则
 Vue.prototype.judgmentCode = /^G[0-9]{1,10}$/;			//师父代号正则
 Vue.prototype.judgmentPhone = /^1[3456789]\d{9}$/;		//手机号正则

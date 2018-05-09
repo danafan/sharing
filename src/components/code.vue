@@ -255,7 +255,7 @@ export default{
 				setTimeout(_this.timeDown, 1000);
 			} else {
 				_this.notBut = true;		//按钮可以点击
-				_this.time = "3";
+				_this.time = this.time;
 				_this.codeTxt = "获取验证码";
 			}
 		},
