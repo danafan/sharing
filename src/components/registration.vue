@@ -318,6 +318,9 @@ export default{
 	created(){
 		//获取上个页面传过来的手机号
 		this.phone = this.$route.query.phone;
+		if(!this.phone){
+			this.$router.push("/code");
+		}
 		document.title = "用户注册";
 		//获取工作类型列表
 		this.Worklist();
@@ -367,6 +370,8 @@ export default{
 			}else if(this.wangCode == ""){
 				this.$toast("请填写旺旺号!");
 			}else if(this.wangCode.indexOf(" ") != -1){
+				this.$toast("旺旺号不能包括空格!");
+			}else if(this.wangCode.indexOf("	") != -1){
 				this.$toast("旺旺号不能包括空格!");
 			}else if(this.qqCode == ""){
 				this.$toast("请填写QQ号!");
