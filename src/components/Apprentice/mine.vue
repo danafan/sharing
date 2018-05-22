@@ -31,6 +31,26 @@
 						<img class="infoRight" src="../../assets/advance.png">
 					</div>
 				</div>
+				<!-- 评价任务 -->
+				<div class="myTask" :class="{botline:showPing == false}" @click="showping">
+					<div class="infoLeft">
+						<div class="infoIcon"><img src="../../assets/assess1.png"></div>
+						<div class="infoTxt">评价列表</div>
+					</div>
+					<img v-if="showPing == false" class="infoRight" src="../../assets/advance.png">
+					<img v-else class="infoRight" src="../../assets/pull-down.png">
+				</div>
+				<div class="pingInfo" v-if="showPing">
+					<div class="taskItem taskItems" @click="$router.push('/appraisal?type=0')">
+						<div class="key">可接评价</div>
+						<div class="val">10个</div>
+					</div>
+					<div class="taskItem taskItems sd" @click="$router.push('/appraisal?type=1')">
+						<div class="key">评价记录</div>
+						<div class="val">10个</div>
+					</div>
+				</div>
+				<!-- 我的金库 -->
 				<div class="myMoney" :class="{botline:showMoney == false}" @click="showmoney">
 					<div class="infoLeft">
 						<div class="infoIcon"><img src="../../assets/my value.png"></div>
@@ -254,6 +274,45 @@
 				border: none;
 			}
 		}
+		.pingInfo{
+			border-bottom:1px solid #f4f4f4;
+			padding-right: .58rem;
+			padding-left: .58rem;
+			.taskItem{
+				font-size: .26rem;
+				height: .88rem;
+				line-height: .88rem;
+				.key{
+					color: #03abff;
+				}
+				.val{
+					color: #ff5858;
+				}
+			}
+			.taskItems{
+				border-bottom:1px solid #f4f4f4;
+				display: flex;
+				justify-content: space-between;
+				align-items:center;
+				.cash{
+					border:1px solid #03abff;
+					border-radius: .04rem;
+					width: .88rem;
+					text-align: center;
+					height: .3rem;
+					line-height: .3rem;
+					font-size: .24rem;
+					color:#03abff;
+				}
+				.money{
+					color:#ff5858;
+					font-size: .24rem;
+				}
+			}
+			.sd{
+				border: none;
+			}
+		}
 	}
 }
 // 我的任务和我的金库下面的线
@@ -271,6 +330,7 @@ export default{
 			wximg: "",				//微信头像
 			usercode: "",			//师父代号
 			showTask: false,		//我的任务默认不展开
+			showPing: false,		//评价任务默认不展开
 			showMoney: false,		//我的金库默认不展开
 			showMaster: false,		//默认徒弟身份，佣金排行榜不显示
 			award: "",				//佣金
@@ -299,6 +359,13 @@ export default{
 		}else{
 			this.showTask = JSON.parse(showtask);
 		}
+		//判断评价列表是否展开
+		let showping = sessionStorage.getItem("showPing");
+		if(!showping){
+			this.showPing = false;
+		}else{
+			this.showPing = JSON.parse(showping);
+		}
 		//判断我的金库是否展开
 		let showmoney = sessionStorage.getItem("showMoney");
 		if(!showmoney){
@@ -318,6 +385,11 @@ export default{
 		showtask(){
 			this.showTask = !this.showTask;
 			sessionStorage.setItem("showTask",JSON.stringify(this.showTask));
+		},
+		// 点击评价列表
+		showping(){
+			this.showPing = !this.showPing;
+			sessionStorage.setItem("showPing",JSON.stringify(this.showPing));
 		},
 		// 点击我的金库
 		showmoney(){

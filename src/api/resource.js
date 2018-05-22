@@ -40,7 +40,13 @@ let path = {
 	getMasterList: 'index/ranking_list',	//师父排行榜
 	verify: 'task/wwverify',				//改版之后的提交订单
 	activity: 'task/activity',				//活动任务列表
-	applyActiviity: 'task/applyactivetask'	//申请活动任务
+	applyActiviity: 'task/applyactivetask',	//申请活动任务
+	AppraisalList:'evaluate/ableevaluate',	//可接任务列表
+	applytask: 'evaluate/applytask',		//接取任务
+	completedTask: 'evaluate/accepttask',	//已接任务列表
+	evaluatedetail: 'evaluate/userevaluatedetail',	//任务详情
+	abandontask: 'evaluate/abandontask',	//放弃评价任务
+	completeevaluate:'evaluate/completeevaluate'	//完成评价任务
 }
 export default{
 	//authUrl
@@ -196,5 +202,29 @@ export default{
 	//活动任务列表
 	applyActiviity(params){
 		return http.post(path.applyActiviity, params)
+	},
+	//可接评价任务列表
+	AppraisalList(params){
+		return http.get(path.AppraisalList, params)
+	},
+	//接取任务
+	applytask(params){
+		return http.get(path.applytask, params)
+	},
+	//已接任务列表
+	completedTask(params){
+		return http.get(path.completedTask, params)
+	},
+	//任务详情
+	evaluatedetail(params){
+		return http.get(path.evaluatedetail, params)
+	},
+	//放弃评价任务
+	abandontask(params){
+		return http.get(path.abandontask, params)
+	},
+	//完成评价任务
+	completeevaluate(params){
+		return http.get(path.completeevaluate, params)
 	},
 }

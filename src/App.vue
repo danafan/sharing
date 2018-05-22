@@ -24,8 +24,8 @@ export default {
 		}else{
 			console.log("授权过");
 		}
-},
-methods:{
+	},
+	methods:{
 		//获取authUrl
 		getAuthurl(){
 			resource.authUrl().then(res => {

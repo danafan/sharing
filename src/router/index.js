@@ -21,6 +21,8 @@ const mine = resolve=>System.import('@/components/Apprentice/mine')
 const cash = resolve=>System.import('@/components/Apprentice/cash')
 const property = resolve=>System.import('@/components/Apprentice/property')
 const raking = resolve=>System.import('@/components/Apprentice/raking')
+const appraisal = resolve=>System.import('@/components/Apprentice/appraisal')
+const appraisalDetail = resolve=>System.import('@/components/Apprentice/appraisalDetail')
 const updateInfo = resolve=>System.import('@/components/Apprentice/updateInfo')
 const updatePass = resolve=>System.import('@/components/Apprentice/updatePass')
 const guest = resolve=>System.import('@/components/Apprentice/guest')
@@ -100,6 +102,14 @@ export default new Router({
   {
     path:'/raking',
     component: raking
+  },
+  {
+    path:'/appraisal',
+    component: appraisal
+  },
+  {
+    path:'/appraisalDetail',
+    component: appraisalDetail
   },
   {
     path:'/updateInfo',

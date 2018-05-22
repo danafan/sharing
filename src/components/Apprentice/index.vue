@@ -415,7 +415,7 @@ export default{
 		//获取首页公告
 		this.publishs();
 		//判断用户是否关联了手机号
-		this.isbindphone();
+		//this.isbindphone();
 	},
 	methods:{
 		...mapActions([
