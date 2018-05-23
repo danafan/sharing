@@ -17,7 +17,7 @@
 			<div class="imgbox">
 				<div class="title">评价图片（长按可保存到本地）</div>
 				<div class="imglist">
-					<div class="img" v-for = "item in imgList"><img :src="baseUrl + item"></div>
+					<div class="img" v-for = "item in imgList"><img :src="baseUrl1 + item"></div>
 				</div>
 			</div>
 			<div class="evaluation">评语（可复制）</div>
@@ -284,7 +284,7 @@
 		giving(){
 			resource.abandontask({order_sn:this.ordersn}).then(res => {
 				if(res.data.code == "0"){
-					this.$toast("任务已放弃");
+					this.$toast("已放弃");
 					this.$router.go(-1);
 				}else{
 					this.$toast(res.data.msg);
@@ -314,7 +314,7 @@
 				}
 				resource.completeevaluate(orderObj).then(res => {
 					if(res.data.code == "0"){
-						this.$toast("任务已完成");
+						this.$toast("已提交");
 						this.$router.go(-1);
 					}else{
 						this.$toast(res.data.msg);

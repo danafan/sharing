@@ -9,6 +9,12 @@
 					</swiper-slide>
 					<div class="swiper-pagination" slot="pagination"></div>
 				</swiper>
+				<!-- <swiper :options="swiperOption" ref="mySwiper">
+					<swiper-slide v-for="item in banner">
+						<img :src="item.img_url" @click="$router.push('/taskRole')">
+					</swiper-slide>
+					<div class="swiper-pagination" slot="pagination"></div>
+				</swiper> -->
 			</div>			
 			<div class="taskList">
 				<div class="listNull" v-if="listNull == true">
@@ -377,8 +383,8 @@ export default{
 		return{		
 			subClick: true,							//默认按钮可点击一次
 			banner: [
-			require('../../assets/background1.png'),
-			require('../../assets/background2.png')
+				require('../../assets/background1.png'),
+				require('../../assets/background2.png')
 			],
 			listNull: 3,							//默认任务列表为空，显示刷新按钮
 			toastTxt: "0",							//提示(0:无任务;1:有任务,没到时间;2:已领取任务)
@@ -414,8 +420,10 @@ export default{
 		this.getTaskList();
 		//获取首页公告
 		this.publishs();
+		//获取首页banner
+		//this.getBanner();
 		//判断用户是否关联了手机号
-		//this.isbindphone();
+		this.isbindphone();
 	},
 	methods:{
 		...mapActions([
@@ -435,6 +443,16 @@ export default{
 				this.$toast("操作频繁，稍后再试！");
 			}
 		},
+		//获取banner
+		// getBanner(){
+		// 	resource.getBanner().then(res => {
+		// 		if(res.data.code == "0"){
+		// 			this.banner = res.data.data.res;
+		// 		}else{
+		// 			console.log("无公告");
+		// 		}
+		// 	})
+		// },
 		//获取公告
 		publishs(){
 			resource.publish().then(res => {

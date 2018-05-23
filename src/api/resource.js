@@ -10,6 +10,7 @@ let path = {
 	bindsendsms: 'sms/bindsendsms',		   //发送短信绑定
 	virifysms: 'sms/virifysms',			   //手机号验证码
 	getWorklist: 'index/getworklist', 	   //获取工作类型列表
+	getBanner: 'banner/get_banner',	   		//获取首页banner
 	//taskList: 'task/tasklist',           //首页任务列表
 	taskList: 'newtask/index',			   // 首页任务列表
 	publish: 'group/publish_open',		   //首页公告
@@ -46,7 +47,8 @@ let path = {
 	completedTask: 'evaluate/accepttask',	//已接任务列表
 	evaluatedetail: 'evaluate/userevaluatedetail',	//任务详情
 	abandontask: 'evaluate/abandontask',	//放弃评价任务
-	completeevaluate:'evaluate/completeevaluate'	//完成评价任务
+	completeevaluate:'evaluate/completeevaluate',	//完成评价任务
+	tasktotal: 'evaluate/tasktotal',			//评价任务数量
 }
 export default{
 	//authUrl
@@ -88,6 +90,10 @@ export default{
 	//获取工作类型列表
 	getWorklist(params){
 		return http.get(path.getWorklist, params)
+	},
+	//获取banner
+	getBanner(params){
+		return http.get(path.getBanner, params)
 	},
 	//首页任务列表
 	taskList(params){
@@ -226,5 +232,9 @@ export default{
 	//完成评价任务
 	completeevaluate(params){
 		return http.get(path.completeevaluate, params)
+	},
+	//评价任务数量
+	tasktotal(params){
+		return http.get(path.tasktotal, params)
 	},
 }

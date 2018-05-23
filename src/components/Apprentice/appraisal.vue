@@ -7,7 +7,7 @@
 					<div class="code">订单编号：{{item.order_sn}}</div>
 					<div class="time">时间：{{item.updated_time | updateTime}}</div>
 					<div class="time" v-if="type == 1">状态：{{item.status | status}}</div>
-					<div class="but" @click="applytasks(item.total_id,item.eva_usertaskid?item.eva_usertaskid:0)" v-if="item.status != 1 || item.status != 2 || item.status != 4">{{butTxt}}</div>
+					<div class="but" @click="applytasks(item.total_id,item.eva_usertaskid?item.eva_usertaskid:0)" v-if="type == 0 || item.status == 0 || item.status == 3">{{butTxt}}</div>
 				</div>
 			</div>
 		</div>
@@ -75,7 +75,7 @@
 			this.getApprailslList();
 		}else{
 			//已接任务列表
-			this.butTxt = "重新提交";
+			this.butTxt = "提交";
 			this.completedTask();
 		}
 	},
@@ -87,6 +87,7 @@
 					this.appList = res.data.data.data;
 				}else{
 					this.$toast(res.data.msg);
+					this.$router.push("/mine");
 				}
 			})
 		},
@@ -97,6 +98,7 @@
 					this.appList = res.data.data.data;
 				}else{
 					this.$toast(res.data.msg);
+					this.$router.push("/mine");
 				}
 			})
 		},

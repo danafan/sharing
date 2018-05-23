@@ -5,38 +5,61 @@
 </template>
 
 <script>
-import resource from './api/resource.js'
-export default {
-	name: 'app',
-	created(){
-		if(!sessionStorage.getItem("callback")){
-			if(!!sessionStorage.getItem("authUrl")){ //有authurl过
-				let url = window.location.href;
-				let code = url.split("?")[1].split("&")[0].split("=")[1];	// 获取code
-				this.callback(code);
-			}else{
-				this.getAuthurl();
-
-				// sessionStorage.setItem("status","0");
-				// this.$router.push('/navbar');
-				//this.$router.push('/code');
-			}
-		}else{
-			console.log("授权过");
-		}
-	},
-	methods:{
-		//获取authUrl
-		getAuthurl(){
-			resource.authUrl().then(res => {
-				if(res.data.code == "0"){
-					sessionStorage.setItem("authUrl","1");
-					window.location.href = res.data.data.url;
+	import resource from './api/resource.js'
+	export default {
+		name: 'app',
+		created(){
+			if(!sessionStorage.getItem("callback")){
+				if(!!sessionStorage.getItem("authUrl")){ //有authurl过
+					let url = window.location.href;
+					let code = url.split("?")[1].split("&")[0].split("=")[1];	// 获取code
+					this.callback(code);
 				}else{
-					this.$toast(res.data.message);
+					let str = window.location.href;
+					//判断是否进入任务详情或评价任务列表
+					if(str.indexOf("?") > 0){
+						let one = str.split("?");
+						if(one[1].indexOf("&")){
+							let arr = one[1].split("&");
+							let tab = arr[0].split("=")[1];
+							let it = arr[1].split("=")[1].split("#")[0];
+							sessionStorage.setItem("appTab",tab);
+							sessionStorage.setItem("appType",it);
+						}
+					};
+					// let appTab = sessionStorage.getItem("appTab");
+					// let appType = sessionStorage.getItem("appType");
+					// if(!!appTab){
+					// 	if(appTab == "taskDetail"){
+					// 		this.$router.replace('/taskDetail?id=' + appType);
+					// 	}else if(appTab == "appraisal"){
+					// 		this.$router.replace('/appraisal?type=' + appType);
+					// 	}
+					// }else{
+					// 	this.$router.replace('/navbar');	
+					// }
+					this.getAuthurl();
+
+					// sessionStorage.setItem("status","0");
+					// this.$router.push('/navbar');
+					//this.$router.push('/code');
 				}
-			})
+			}else{
+				console.log("授权过");
+			}
 		},
+		methods:{
+			//获取authUrl
+			getAuthurl(){
+				resource.authUrl().then(res => {
+					if(res.data.code == "0"){
+						sessionStorage.setItem("authUrl","1");
+						window.location.href = res.data.data.url;
+					}else{
+						this.$toast(res.data.message);
+					}
+				})
+			},
 		//callback
 		callback(code){
 			resource.callback({code:code}).then(res => {
@@ -73,7 +96,18 @@ export default {
 					sessionStorage.setItem("uid",uid);				//用户id
 					sessionStorage.setItem("status",status);		//用户身份
 					sessionStorage.setItem("usercode",usercode);	//用户身份
-					this.$router.replace('/navbar');	
+					//判断跳转
+					let appTab = sessionStorage.getItem("appTab");
+					let appType = sessionStorage.getItem("appType");
+					if(!!appTab){
+						if(appTab == "taskDetail"){
+							this.$router.replace('/taskDetail?id=' + appType);
+						}else if(appTab == "appraisal"){
+							this.$router.replace('/appraisal?type=' + appType);
+						}
+					}else{
+						this.$router.replace('/navbar');	
+					}
 				}else if(res.data.code == "2"){					//未关联,跳转关联或注册页
 					this.$router.replace('/connection');
 				}else{											//异常，跳转提示页

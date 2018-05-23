@@ -35,19 +35,19 @@
 				<div class="myTask" :class="{botline:showPing == false}" @click="showping">
 					<div class="infoLeft">
 						<div class="infoIcon"><img src="../../assets/assess1.png"></div>
-						<div class="infoTxt">评价列表</div>
+						<div class="infoTxt">评价任务</div>
 					</div>
 					<img v-if="showPing == false" class="infoRight" src="../../assets/advance.png">
 					<img v-else class="infoRight" src="../../assets/pull-down.png">
 				</div>
 				<div class="pingInfo" v-if="showPing">
-					<div class="taskItem taskItems" @click="$router.push('/appraisal?type=0')">
-						<div class="key">可接评价</div>
-						<div class="val">10个</div>
+					<div class="taskItem taskItems" @click="gooAppraisal(0)">
+						<div class="key">可接</div>
+						<div class="val">{{ableTasksCount}}个</div>
 					</div>
-					<div class="taskItem taskItems sd" @click="$router.push('/appraisal?type=1')">
-						<div class="key">评价记录</div>
-						<div class="val">10个</div>
+					<div class="taskItem taskItems sd" @click="gooAppraisal(1)">
+						<div class="key">历史</div>
+						<div class="val">{{acceptTasksCount}}个</div>
 					</div>
 				</div>
 				<!-- 我的金库 -->
@@ -331,6 +331,8 @@ export default{
 			usercode: "",			//师父代号
 			showTask: false,		//我的任务默认不展开
 			showPing: false,		//评价任务默认不展开
+			ableTasksCount: 0,		//可接评价任务
+			acceptTasksCount: 0,	//评价任务记录
 			showMoney: false,		//我的金库默认不展开
 			showMaster: false,		//默认徒弟身份，佣金排行榜不显示
 			award: "",				//佣金
@@ -365,6 +367,9 @@ export default{
 			this.showPing = false;
 		}else{
 			this.showPing = JSON.parse(showping);
+			if(this.showPing == true){
+				this.getTotaltask();
+			}
 		}
 		//判断我的金库是否展开
 		let showmoney = sessionStorage.getItem("showMoney");
@@ -390,6 +395,9 @@ export default{
 		showping(){
 			this.showPing = !this.showPing;
 			sessionStorage.setItem("showPing",JSON.stringify(this.showPing));
+			if(this.showPing == true){
+				this.getTotaltask();
+			}
 		},
 		// 点击我的金库
 		showmoney(){
@@ -397,6 +405,16 @@ export default{
 			sessionStorage.setItem("showMoney",JSON.stringify(this.showMoney));
 			if(this.showMoney == true){
 				this.getuserinfo();
+			}
+		},
+		//点击可接或历史
+		gooAppraisal(type){
+			if(type == 0 && this.ableTasksCount == 0){
+				this.$toast("当前无可接任务");
+			}else if(type == 1 && this.acceptTasksCount == 0){
+				this.$toast("当前无历史任务记录");
+			}else{
+				this.$router.push('/appraisal?type=' + type);
 			}
 		},
 		//点击本金提现
@@ -414,6 +432,17 @@ export default{
 			}else{
 				this.$router.push(`/cash?type=commission&money=${this.award}`)
 			}
+		},
+		//获取评价任务数量
+		getTotaltask(){
+			resource.tasktotal().then(res => {
+				if(res.data.code == "0"){
+					this.ableTasksCount = res.data.ableTasksCount;
+					this.acceptTasksCount = res.data.acceptTasksCount;
+				}else{
+					this.$toast(res.data.message);
+				}
+			});
 		},
 		//获取用户信息
 		getuserinfo(){

@@ -532,7 +532,12 @@ export default{
 					//执行倒数函数
 					this.timeDown(time1);
 				}else if(res.data.code == "1"){
-					this.$router.go(-1);
+					if(!!sessionStorage.getItem("appTab")){
+						sessionStorage.removeItem("appTab");
+						this.$router.push("/index");
+					}else{
+						this.$router.go(-1);
+					}
 					this.$toast(res.data.msg);
 				}else{
 					this.$toast(res.data.msg);
