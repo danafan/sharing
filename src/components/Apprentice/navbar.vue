@@ -22,7 +22,7 @@
 			<div class="navbarItem" @click="tab('task')">
 				<img v-if="selected == 'task'" src="../../assets/task process1.png">
 				<img v-else src="../../assets/task process.png">
-				<p class="navbar_txt" :class="{select:selected == 'task'}">任务进度</p>
+				<p class="navbar_txt" :class="{select:selected == 'task'}">进度</p>
 			</div>
 			<div class="navbarItem" @click="tab('mine')">
 				<img v-if="selected == 'mine'" src="../../assets/me(blue).png">
