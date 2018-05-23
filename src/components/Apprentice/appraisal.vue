@@ -1,5 +1,7 @@
 <template>
 	<div>
+		<!-- 返回按钮 -->
+		<back></back>
 		<div class="appraisalBox">
 			<div class="appItem" v-for="item in appList">
 				<div class="img"><img :src="baseUrl + item.goods_img"></div>
@@ -58,6 +60,7 @@
 }
 </style>
 <script>
+	import back from '../../common/back.vue'
 	import resource from '../../api/resource.js'
 	export default{
 		data(){
@@ -139,6 +142,9 @@
 				return "放弃";
 			}
 		}
+	},
+	components:{
+		back
 	}
 
 

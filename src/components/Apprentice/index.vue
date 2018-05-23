@@ -3,18 +3,12 @@
 		<div>
 			<div class="banner">
 				<swiper :options="swiperOption" ref="mySwiper">
-					<swiper-slide v-for="(item,index) in banner" :key="index">
-						<img v-if="index == 1" :src="item" @click="$router.push('/taskRole')">
-						<img v-else :src="item">
+					<swiper-slide v-for="(item,index) in banner">
+						<img v-if="index == 0" :src="item.img_url" @click="$router.push('/taskRole')">
+						<img v-else :src="item.img_url">
 					</swiper-slide>
 					<div class="swiper-pagination" slot="pagination"></div>
 				</swiper>
-				<!-- <swiper :options="swiperOption" ref="mySwiper">
-					<swiper-slide v-for="item in banner">
-						<img :src="item.img_url" @click="$router.push('/taskRole')">
-					</swiper-slide>
-					<div class="swiper-pagination" slot="pagination"></div>
-				</swiper> -->
 			</div>			
 			<div class="taskList">
 				<div class="listNull" v-if="listNull == true">
@@ -421,7 +415,7 @@ export default{
 		//获取首页公告
 		this.publishs();
 		//获取首页banner
-		//this.getBanner();
+		this.getBanner();
 		//判断用户是否关联了手机号
 		this.isbindphone();
 	},
@@ -444,15 +438,17 @@ export default{
 			}
 		},
 		//获取banner
-		// getBanner(){
-		// 	resource.getBanner().then(res => {
-		// 		if(res.data.code == "0"){
-		// 			this.banner = res.data.data.res;
-		// 		}else{
-		// 			console.log("无公告");
-		// 		}
-		// 	})
-		// },
+		getBanner(){
+			let uid = sessionStorage.getItem("uid");
+			resource.getBanner({userid:uid}).then(res => {
+				if(res.data.code == "0"){
+					this.banner = res.data.data.res;
+					this.banner.unshift({img_url:require('../../assets/background2.png')});
+				}else{
+					console.log("无banner");
+				}
+			})
+		},
 		//获取公告
 		publishs(){
 			resource.publish().then(res => {

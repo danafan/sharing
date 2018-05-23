@@ -46,7 +46,7 @@ let path = {
 	applytask: 'evaluate/applytask',		//接取任务
 	completedTask: 'evaluate/accepttask',	//已接任务列表
 	evaluatedetail: 'evaluate/userevaluatedetail',	//任务详情
-	abandontask: 'evaluate/abandontask',	//放弃评价任务
+	abandontasks: 'evaluate/abandontask',	//放弃评价任务
 	completeevaluate:'evaluate/completeevaluate',	//完成评价任务
 	tasktotal: 'evaluate/tasktotal',			//评价任务数量
 }

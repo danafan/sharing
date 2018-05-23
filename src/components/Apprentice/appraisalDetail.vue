@@ -1,5 +1,7 @@
 <template>
 	<div class="box">
+		<!-- 返回按钮 -->
+		<back></back>
 		<!-- 顶部时间 -->
 		<div class="time">
 			<div class="timeIcon">
@@ -13,6 +15,9 @@
 			</div>
 			<div class="item">
 				订单编号：{{ordersn}}
+			</div>
+			<div class="item shuo">
+				说明：找到上面订单号的订单，用系统提供的图片+评语发布5星好评后提交任务即可！PS：如果接任务前已经好评，使用图片+评语追加评价即可
 			</div>
 			<div class="imgbox">
 				<div class="title">评价图片（长按可保存到本地）</div>
@@ -88,6 +93,9 @@
 		padding: .26rem .58rem;
 		font-size:.3rem;
 		color: #333;
+	}
+	.shuo{
+		color: #ff5858;
 	}
 	.imgbox{
 		.title{
@@ -216,6 +224,7 @@
 }
 </style>
 <script>
+	import back from '../../common/back.vue'
 	import resource from '../../api/resource.js'
 	export default{
 		data(){
@@ -250,6 +259,7 @@
 					this.timeDown(time1);
 				}else{
 					this.$toast(res.data.msg);
+					this.$router.go(-1);
 				}
 			})
 		},
@@ -282,7 +292,7 @@
 		}, 
 		//时间倒数结束后自动取消任务
 		giving(){
-			resource.abandontask({order_sn:this.ordersn}).then(res => {
+			resource.abandontasks({order_sn:this.ordersn}).then(res => {
 				if(res.data.code == "0"){
 					this.$toast("已放弃");
 					this.$router.go(-1);
@@ -323,6 +333,9 @@
 			}
 			this.showTan = false;
 		}
+	},
+	components:{
+		back
 	}
 }
 </script>
