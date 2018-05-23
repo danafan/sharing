@@ -376,10 +376,7 @@ export default{
 	data(){
 		return{		
 			subClick: true,							//默认按钮可点击一次
-			banner: [
-				require('../../assets/background1.png'),
-				require('../../assets/background2.png')
-			],
+			banner: [],
 			listNull: 3,							//默认任务列表为空，显示刷新按钮
 			toastTxt: "0",							//提示(0:无任务;1:有任务,没到时间;2:已领取任务)
 			toastxt: "",							//错误提示
