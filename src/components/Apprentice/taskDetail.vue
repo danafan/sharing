@@ -660,7 +660,7 @@ export default{
 				this.prompt = true;
 				this.tishi = false;
 			}else{
-			    	//小时数
+			    //小时数
 			    var hours = parseInt(totalSeconds / 1000 / 60 / 60 % 24 , 10); //计算剩余的小时
 			    //分钟
 			    var minutes = parseInt(totalSeconds / 1000 / 60 % 60, 10);//计算剩余的分钟

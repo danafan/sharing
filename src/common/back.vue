@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<div class="back" id="back" @touchstart="start($event)" @touchmove.prevent="move($event)" @touchend="end($event)" @click="$router.go(-1)">
+		<div class="back" id="back" @touchstart="start($event)" @touchmove.prevent="move($event)" @touchend="end($event)" @click="back">
 			<img src="../assets/hover button.png">
 		</div>
 	</div>
@@ -76,6 +76,15 @@ export default{
         end(){
         	this.flag = false;
         },
+        //点击
+        back(){
+        	if(!!sessionStorage.getItem("appTab")){
+        		sessionStorage.removeItem("appTab")
+        		this.$router.push('/index');
+        	}else{
+        		this.$router.go(-1);
+        	}
+        }
     }
 }
 </script>
