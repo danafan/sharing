@@ -186,14 +186,11 @@
           this.$toast("验证码不能为空!");
         }else{
           let userInfo = {
-            openid: "okKUgw4zm13beVTbPXzkYunjA-vQ",        //openid
-            //openid: this.openid,        //openid
-            headimgurl: "jsgdfjhdgfjhsdf",//微信头像
-            //headimgurl: this.headimgurl,//微信头像
-            nickname: "this.nickname",    //微信昵称
-            //nickname: this.nickname,    //微信昵称
-            phone: this.phone,          //手机号
-            code: this.code             //密码
+            openid: this.openid,          //openid
+            headimgurl: this.headimgurl,  //微信头像
+            nickname: this.nickname,      //微信昵称
+            phone: this.phone,            //手机号
+            code: this.code               //密码
           }
           //手机号登录
           this.phoneLogin(userInfo);
@@ -208,7 +205,7 @@
       }else{
         if(this.notBut == true){//如果按钮可以点击
           let userInfo = {
-            openid: "okKUgw4zm13beVTbPXzkYunjA-vQ",
+            openid: this.openid,
             phone: this.phone
           }
           resource.sendcode(userInfo).then(res => {
