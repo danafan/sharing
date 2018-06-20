@@ -20,7 +20,7 @@
 }
 .logo{
 	margin: 1.22rem auto 0;
-	width: 1.18rem;
+	width: 1.68rem;
 	height: 1.68rem;
 	img{
 		width: 100%;

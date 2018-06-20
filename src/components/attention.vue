@@ -1,10 +1,7 @@
 <template>
 	<div class="box">
 		<div class="img">
-			公共二维码
 			<img src="../assets/QR code.png">
-			<!-- 文艺男二维码 -->
-			<!-- <img src="../assets/wenyinancode.png"> -->
 		</div>
 		<div class="txt1">请先关注公众号</div>
 		<div class="txt2">长按图片【识别二维码】公众号</div>
@@ -12,7 +9,7 @@
 		<div class="txt4">无法识别二维码</div>
 		<div class="txt5">1.打开微信，点击“添加朋友”</div>
 		<div class="txt5">2.点击“公众号”</div>
-		<div class="txt5">3.搜索公众号：“留客户”</div>
+		<div class="txt5">3.搜索公众号</div>
 		<div class="txt5">4.点击“关注”，完成</div>
 	</div>
 </template>

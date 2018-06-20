@@ -405,7 +405,7 @@ export default{
 		}
 	},  
 	created(){
-		document.title = "共享客";
+		document.title = "首页";
 		this.set_route("index");
 		// 获取首页任务列表
 		this.getTaskList();

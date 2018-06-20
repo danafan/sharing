@@ -47,7 +47,7 @@
 		</div>
 		<!-- 每一块内容 -->
 		<div class="itemBox">
-			<div class="itemTie">第五步：任务提交完毕后，可以返回微信页面，进入【留客户】通知，查询您的订单审核情况</div>
+			<div class="itemTie">第五步：任务提交完毕后，可以返回微信页面，进入服务通知，查询您的订单审核情况</div>
 			<div class="roleImg" @click="lookImg(7)"><img src="../../assets/lc7.png"></div>
 		</div>
 		<!-- 每一块内容 -->

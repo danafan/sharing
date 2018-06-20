@@ -5,6 +5,8 @@ let path = {
 	getUserState: 'index/logincheck', 	   //根据openid获取用户状态
 	register: 'index/register',		  	   //用户注册
 	connection: 'index/guanlian',	  	   //用户关联
+	sendcode: 'index/sendcode',			   //获取验证码
+	phonejoin: 'index/virifysms',	  	   //手机号关联
 	isbindphone: 'sms/isbindphone',		   //判断用户是否绑定了手机号
 	sendsms: 'sms/sendsms',				   //发送短信注册
 	bindsendsms: 'sms/bindsendsms',		   //发送短信绑定
@@ -70,6 +72,18 @@ export default{
 	//用户关联
 	connection(params){
 		return http.post(path.connection, params)
+	},
+	//获取验证码
+	sendcode(params){
+		return http.get(path.sendcode, params)
+	},
+	//手机号关联
+	phonejoin(params){
+		return http.post(path.phonejoin, params)
+	},
+	//
+	phonejoin(params){
+		return http.get(path.phonejoin, params)
 	},
 	//判断用户是否关联了手机号
 	isbindphone(params){

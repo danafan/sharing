@@ -2,7 +2,7 @@
 	<div>
 		<!-- 上面背景图 -->
 		<div class="back3">
-			<img src="../assets/background3.png">
+			<img src="../assets/backgroundwen.png">
 		</div>
 		<!-- 多选问题 -->
 		<div class="question" v-if="num == 3 || num == 5 || num == 9">
