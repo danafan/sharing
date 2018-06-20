@@ -186,9 +186,12 @@
           this.$toast("验证码不能为空!");
         }else{
           let userInfo = {
-            openid: this.openid,        //openid
-            headimgurl: this.headimgurl,//微信头像
-            nickname: this.nickname,    //微信昵称
+            openid: "okKUgw4zm13beVTbPXzkYunjA-vQ",        //openid
+            //openid: this.openid,        //openid
+            headimgurl: "jsgdfjhdgfjhsdf",//微信头像
+            //headimgurl: this.headimgurl,//微信头像
+            nickname: "this.nickname",    //微信昵称
+            //nickname: this.nickname,    //微信昵称
             phone: this.phone,          //手机号
             code: this.code             //密码
           }
@@ -209,13 +212,12 @@
             phone: this.phone
           }
           resource.sendcode(userInfo).then(res => {
-            // if(res.data.code == '0'){ //发送成功
-
-            // }else{
-            //   this.$toast(res.data.message);
-            // }
+            if(res.data.code == '0'){ //发送成功
+              this.timeDown();
+            }else{
+              this.$toast(res.data.msg);
+            }
           });
-          this.timeDown();
         }else{
           this.$toast("操作频繁");
         }
@@ -260,23 +262,23 @@
       //手机号登录
       phoneLogin(userInfo){
         resource.phonejoin(userInfo).then(res => {
-          // if(res.data.code == '0'){ //关联成功
-          //   //获取用户ID和身份
-          //   let uid = res.data.data.id;
-          //   let status = res.data.data.identity;
-          //   let usercode = res.data.data.code;
-          //   sessionStorage.setItem("uid",uid);
-          //   sessionStorage.setItem("status",status);
-          //   sessionStorage.setItem("usercode",usercode);
-          //   this.$toast("关联成功！");
-          //   this.$router.replace('/navbar');
-          // }else if(res.data.code == '4'){//正在审核
-          //   let msg = res.data.message;
-          //   let username = res.data.username;
-          //   this.$router.push('/verification?mess=' + msg + '&username=' + username);
-          // }else{
-          //   this.$toast(res.data.message);
-          // }
+          if(res.data.code == '0'){ //关联成功
+            //获取用户ID和身份
+            let uid = res.data.data.id;
+            let status = res.data.data.identity;
+            let usercode = res.data.data.code;
+            sessionStorage.setItem("uid",uid);
+            sessionStorage.setItem("status",status);
+            sessionStorage.setItem("usercode",usercode);
+            this.$toast("关联成功！");
+            this.$router.replace('/navbar');
+          }else if(res.data.code == '4'){//正在审核
+            let msg = res.data.msg;
+            let username = res.data.username;
+            this.$router.push('/verification?mess=' + msg + '&username=' + username);
+          }else{
+            this.$toast(res.data.msg);
+          }
         });
       }
     },
