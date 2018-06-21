@@ -226,8 +226,8 @@ export default{
 		return http.get(path.evaluatedetail, params)
 	},
 	//放弃评价任务
-	abandontask(params){
-		return http.get(path.abandontask, params)
+	abandontasks(params){
+		return http.get(path.abandontasks, params)
 	},
 	//完成评价任务
 	completeevaluate(params){

@@ -27,17 +27,7 @@
 							sessionStorage.setItem("appType",it);
 						}
 					};
-					// let appTab = sessionStorage.getItem("appTab");
-					// let appType = sessionStorage.getItem("appType");
-					// if(!!appTab){
-					// 	if(appTab == "taskDetail"){
-					// 		this.$router.replace('/taskDetail?id=' + appType);
-					// 	}else if(appTab == "appraisal"){
-					// 		this.$router.replace('/appraisal?type=' + appType);
-					// 	}
-					// }else{
-					// 	this.$router.replace('/navbar');	
-					// }
+					
 					this.getAuthurl();
 
 					// sessionStorage.setItem("status","0");
