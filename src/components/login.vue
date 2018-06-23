@@ -23,7 +23,7 @@
       <div class="infoItem">
         <div class="codeBox">
           <div class="icon"><img src="../assets/code1.png"></div>
-          <div class="txtInput"><input type="password" placeholder="请输入验证码" v-model="code"></div>
+          <div class="txtInput"><input type="number" placeholder="请输入验证码" v-model="code"></div>
         </div>
         <div class="butCode" @click="getCode" :class="{'selbutCode':notBut == false}">{{codebutTxt}}</div>
       </div>
@@ -140,17 +140,18 @@
     data(){
       return{
       tabList:["账号登录","手机号登录"], //导航列表
-      tabId: 0,           //默认选中的是第一个导航
-      openid: "",         //openid
-      headimgurl: "",     //微信头像
-      nickname: "",       //微信昵称
-      username: "",       //用户名
-      password: "",       //密码
-      phone:"",           //手机号
-      code:"",            //验证码
-      notBut: true,       //默认获取验证码按钮可点击
-      codebutTxt: "获取验证码", //按钮文字
-      time:90,            //默认倒数90秒
+      tabId: 0,                       //默认选中的是第一个导航
+      openid: "",                     //openid
+      headimgurl: "",                 //微信头像
+      nickname: "",                   //微信昵称
+      username: "",                   //用户名
+      password: "",                   //密码
+      phone:"",                       //手机号
+      code:"",                        //验证码
+      notBut: true,                   //默认获取验证码按钮可点击
+      codebutTxt: "获取验证码",        //按钮文字
+      time:90,                        //默认倒数90秒
+      isLogin: false,                 //默认不可请求接口
     }
   },
   created(){
@@ -210,6 +211,7 @@
           }
           resource.sendcode(userInfo).then(res => {
             if(res.data.code == '0'){ //发送成功
+              this.isLogin = true;    //获取过验证码，可点击登录
               this.timeDown();
             }else{
               this.$toast(res.data.msg);
@@ -258,26 +260,29 @@
       },
       //手机号登录
       phoneLogin(userInfo){
-        resource.phonejoin(userInfo).then(res => {
-          if(res.data.code == '0'){ //关联成功
-            //获取用户ID和身份
-            let uid = res.data.data.id;
-            let status = res.data.data.identity;
-            let usercode = res.data.data.code;
-            sessionStorage.setItem("uid",uid);
-            sessionStorage.setItem("status",status);
-            sessionStorage.setItem("usercode",usercode);
-            this.$toast("关联成功！");
-            this.$router.replace('/navbar');
-          }else if(res.data.code == '4'){//正在审核
-            let msg = res.data.msg;
-            let username = res.data.username;
-            this.$router.push('/verification?mess=' + msg + '&username=' + username);
-          }else{
-            this.$toast(res.data.msg);
-          }
-        });
+        if(this.isLogin == true){ // 如果获取过验证码请求登录接口
+          resource.phonejoin(userInfo).then(res => {
+            if(res.data.code == '0'){ //关联成功
+                //获取用户ID和身份
+                let uid = res.data.data.id;
+                let status = res.data.data.identity;
+                let usercode = res.data.data.code;
+                sessionStorage.setItem("uid",uid);
+                sessionStorage.setItem("status",status);
+                sessionStorage.setItem("usercode",usercode);
+                this.$toast("关联成功！");
+                this.$router.replace('/navbar');
+            }else if(res.data.code == '4'){//正在审核
+              let msg = res.data.msg;
+              let username = res.data.username;
+              this.$router.push('/verification?mess=' + msg + '&username=' + username);
+            }else{
+              this.$toast(res.data.msg);
+            }
+          });
+        }
       }
+
     },
     components:{
       back
