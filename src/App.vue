@@ -8,6 +8,11 @@
 	import resource from './api/resource.js'
 	export default {
 		name: 'app',
+		data(){
+			return{
+				unionid: ""
+			}
+		},
 		created(){
 			if(!sessionStorage.getItem("callback")){
 				if(!!sessionStorage.getItem("authUrl")){ //有authurl过
@@ -58,6 +63,7 @@
 					let openid = res.data.data.data.openid;
 					let wxname = res.data.data.data.nickname;
 					let wxIcon = res.data.data.data.headimgurl;
+					this.unionid = res.data.data.data.unionid;
 					sessionStorage.setItem("openid",openid);
 					sessionStorage.setItem("wxname",wxname);
 					sessionStorage.setItem("wxIcon",wxIcon);
@@ -75,7 +81,8 @@
 			let wxObj = {
 				openid: openid,
 				nickname: wxname,
-				headimgurl: wxIcon
+				headimgurl: wxIcon,
+				unionid: this.unionid
 			}
 			resource.getUserState(wxObj).then(res => {
 				if(res.data.code == "0"){							//关联过,跳转首页
