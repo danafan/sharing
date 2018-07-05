@@ -31,7 +31,8 @@ dev: {
         //开发环境
         '/weiapi': {
         //target: 'https://gxke88.com',
-        target: 'http://cs.52gxk.com',
+        // target: 'http://cs.52gxk.com',
+        target: 'http://www.52gxk.com',
         changeOrigin: true,
         pathRewrite: { 
           '^/weiapi': '/weiapi'

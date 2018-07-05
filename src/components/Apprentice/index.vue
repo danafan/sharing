@@ -27,7 +27,7 @@
 					<div class="txt" v-if="toastTxt == '1'">{{toastxt}}</div>
 				</div>
 				<div class="listshow" v-if="listNull == false">
-					<div class="buttons" @click="application">{{butTxt}}</div>
+					<div class="buttons" @click="application" v-clipboard="message">{{butTxt}}</div>
 					<div class="txt">
 						<div class="wei" v-if="shen">总任务数量为{{could}}个，当前排队人数为{{ren}}个</div>
 						<div class="yi" v-else>
@@ -402,6 +402,7 @@ export default{
 		    showBull: false,						 //公告默认不显示
 		    bulletinTxt: "注意，注意，每月本金可立马提现，佣金每月1-3号可提现哦～",  //公告内容
 		    showBind: false,						 //默认未绑定手机号弹框不显示
+		    message: ""								 //复制的淘链接
 		}
 	},  
 	created(){
@@ -441,6 +442,7 @@ export default{
 				if(res.data.code == "0"){
 					this.banner = res.data.data.res;
 					this.banner.unshift({img_url:require('../../assets/background2.png')});
+					this.message = res.data.copy_code;
 				}else{
 					console.log("无banner");
 				}
