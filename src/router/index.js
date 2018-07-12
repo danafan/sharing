@@ -31,6 +31,7 @@ const help = resolve=>System.import('@/components/Apprentice/help')
 const about = resolve=>System.import('@/components/about')
 const verification = resolve=>System.import('@/components/verification')
 const attention = resolve=>System.import('@/components/attention')
+const certification = resolve=>System.import('@/components/certification')
 
 Vue.use(Router);
 
@@ -142,6 +143,10 @@ export default new Router({
   {
     path:'/attention',
     component: attention
-  }
+  },
+  {
+    path:'/certification',
+    component: certification
+  },
   ]
 })

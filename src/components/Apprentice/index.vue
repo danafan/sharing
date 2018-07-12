@@ -81,8 +81,21 @@
 					<div class="ti">请前去绑定吧！</div>
 				</div>
 				<div class="butss">
-					<!-- <div class="close" @click="showBind = false">取消</div> -->
 					<div class="ok" @click="$router.push('/code?tab=con')">绑定手机</div>
+				</div>
+			</div>
+		</div>
+		<!-- 未实名认证弹框 -->
+		<div class="bindBox" v-if="showCer">
+			<!-- 审核和删除 -->
+			<div class="type2" @click.stop>
+				<div class="icon"><img src="../../assets/certification.png"></div>	
+				<div class="wen">
+					<div>实名认证</div>
+					<div class="ti">根据国家法律规定互联网账号必须经过实名认证，为确保账户正常使用及账户安全请尽快完成实名</div>
+				</div>
+				<div class="butss">
+					<div class="ok" @click="$router.push('/certification')">去认证</div>
 				</div>
 			</div>
 		</div>
@@ -366,6 +379,57 @@
 			}
 		}
 	}
+	.type2{
+		border-radius: .17rem;
+		position: relative;
+		margin: 4rem auto 0;
+		background-color: #ffffff;
+		width: 4.71rem;
+		height: 3.2rem;
+		.icon{
+			position: absolute;
+			top: -.88rem;
+			left: 50%;
+			transform: translate(-50%);
+			width: 2rem;
+			height: 1.68rem;
+			img{
+				width: 100%;
+				height: 100%;
+			}
+		}
+		.wen{
+			position: absolute;
+			top: .9rem;
+			width: 100%;
+			text-align: center;
+			font-size: .3rem;
+			color: #03abff;
+			.ti{
+				margin: .05rem auto 0;
+				width: 90%;
+				font-size:.26rem;
+				color: #666;
+			}
+		}
+		.butss{
+			position: absolute;
+			top: 2.6rem;
+			left: 50%;
+			transform: translate(-50%);
+			display: flex;
+			.ok{
+				border-radius: .04rem;
+				background-color: #03abff;
+				width: 1.4rem;
+				text-align: center;
+				height: .45rem;
+				line-height: .45rem;
+				font-size: .26rem;
+				color:#ffffff;
+			}
+		}
+	}
 }
 </style>
 <script>
@@ -402,7 +466,8 @@ export default{
 		    showBull: false,						 //公告默认不显示
 		    bulletinTxt: "注意，注意，每月本金可立马提现，佣金每月1-3号可提现哦～",  //公告内容
 		    showBind: false,						 //默认未绑定手机号弹框不显示
-		    message: ""								 //复制的淘链接
+		    message: "",							 //复制的淘链接
+		    showCer: false,						     //未实名认证弹框默认不显示
 		}
 	},  
 	created(){

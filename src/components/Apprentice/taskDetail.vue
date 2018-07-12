@@ -35,8 +35,12 @@
 						<div class="operName1">关键词(不可复制)：</div>	
 						<div class="operSubname1">{{keyword}}</div>
 					</div>
+					<div class="subTie">2. 购买数量</div>
+					<div class="operation">
+						<div class="operSubname2">订单需购买{{taskDetail.goods_num}}件才能审核通过，请添加到购物车一起付款</div>
+					</div>
 					<!-- 第一条 -->
-					<div class="subTie">2. 筛选条件：</div>
+					<div class="subTie">3. 筛选条件：</div>
 					<div class="operation">
 						<div class="operName">排序方式：</div>	
 						<div class="operSubname">{{taskDetail.sort}}</div>
@@ -54,7 +58,7 @@
 						<div class="operSubname">{{taskDetail.arrive_pay}}</div>
 					</div>
 					<!-- 第一条 -->
-					<div class="subTie">3. 输入店铺全称，验证店铺<span @click="$router.push('/shopFull')">如何查看店铺全称>></span></div>
+					<div class="subTie">4. 输入店铺全称，验证店铺<span @click="$router.push('/shopFull')">如何查看店铺全称>></span></div>
 					<div class="operation">
 						<div class="inputTxt">
 							<input type="text" v-model="shop">
@@ -64,7 +68,7 @@
 						<div class="confirmation wei" v-if="shopId == 2">失败</div>
 					</div>
 					<!-- 第一条 -->
-					<div class="subTie">4. 输入商品金额，验证金额<span @click="$router.push('/shopMoney')">如何查看商品金额>></span></div>
+					<div class="subTie">5. 输入商品金额，验证金额<span @click="$router.push('/shopMoney')">如何查看商品金额>></span></div>
 					<div class="operation">
 						<div class="inputTxt">
 							<input type="number" v-model="money">
@@ -220,6 +224,9 @@
 				display: -webkit-box;
 				-webkit-line-clamp: 1;
 				-webkit-box-orient: vertical;
+			}
+			.operSubname2{
+				color:#ff5858;
 			}
 			.operSubname1{
 				width: 4.5rem;

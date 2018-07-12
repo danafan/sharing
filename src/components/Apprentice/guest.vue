@@ -17,7 +17,7 @@
 					<img class="cha" src="../../assets/chacha.png" @click="deleteImg(index)">
 					<img class="lookimg" :src="item">
 				</div>	
-				<uploadimg  @callbackFn="callbackFn" v-if="imgObjList.length < 3"></uploadimg>
+				<uploadimg @callbackFn="callbackFn" v-if="imgObjList.length < 3"></uploadimg>
 			</div>
 		</div>
 		<div class="zi">{{shu}}／200</div>	

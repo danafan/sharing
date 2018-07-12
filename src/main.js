@@ -24,6 +24,7 @@ Vue.prototype.judgmentName = /^[A-Za-z0-9_]{4,16}$/;	//用户名正则。
 Vue.prototype.judgmentqq = /^\d{5,10}$/;				//qq号正则
 Vue.prototype.judgmentWeixin = /^[a-zA-Z]{1}[-_a-zA-Z0-9]{5,19}$/;		//微信号正则
 Vue.prototype.judgmentPassword = /^(?![\d]+$)(?![a-zA-Z]+$)(?![_]+$)[\da-zA-Z_]{6,16}$/;  //密码正则
+Vue.prototype.judgmentCard = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;	//身份证号正则
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
