@@ -31,8 +31,8 @@ dev: {
         //开发环境
         '/weiapi': {
         // target: 'http://cs.52gxk.com',               //共享客测试
-        //target: 'http://www.52gxk.com',               //共享客正式
-        target: 'http://cs.2wyn.com',                   //文艺男女测试
+        target: 'https://www.52gxk.com',               //共享客正式
+        //target: 'http://cs.2wyn.com',                   //文艺男女测试
         changeOrigin: true,
         pathRewrite: { 
           '^/weiapi': '/weiapi'
