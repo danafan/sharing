@@ -38,7 +38,7 @@
 					// sessionStorage.setItem("status","0");
 					// this.$router.push('/navbar');
 					//this.$router.push('/certification');
-					//this.$router.push('/code');
+					//this.$router.push('/taskDetail');
 				}
 			}else{
 				console.log("授权过");

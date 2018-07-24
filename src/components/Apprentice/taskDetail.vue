@@ -23,6 +23,10 @@
 				</div>
 				<!-- 下面部分 -->
 				<div class="taskCon">
+					<div class="title">任务要求</div>
+					<div class="operation">
+						<div class="operSubname2">{{taskDetail.task_remark}}</div>
+					</div>
 					<div class="title">任务流程</div>
 					<!-- 第一条 -->
 					<div class="subTie">1. 打开淘宝客户端，按照以下步骤操作：</div>
