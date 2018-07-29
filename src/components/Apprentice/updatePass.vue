@@ -112,15 +112,15 @@ export default{
 		update(){
 			if(this.oldPass == ""){
 				this.$toast("原始密码不能为空!");
-			}else if(!this.judgmentName.test(this.oldPass)){
+			}else if(!this.judgmentPassword.test(this.oldPass)){
 				this.$toast("密码为6-16位，包含字母、数字、下划线中的两种!");
 			}else if(this.newPass == ""){
 				this.$toast("新密码不能为空!");
-			}else if(!this.judgmentName.test(this.newPass)){
+			}else if(!this.judgmentPassword.test(this.newPass)){
 				this.$toast("密码为6-16位，包含字母、数字、下划线中的两种!");
 			}else if(this.okPass == ""){
 				this.$toast("请确认密码!");
-			}else if(!this.judgmentName.test(this.okPass)){
+			}else if(!this.judgmentPassword.test(this.okPass)){
 				this.$toast("密码为6-16位，包含字母、数字、下划线中的两种!");
 			}else if(this.newPass != this.okPass){
 				this.$toast("两次密码不一样");
