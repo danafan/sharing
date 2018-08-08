@@ -20,7 +20,7 @@
 		<!-- 旺旺号 -->
 		<div class="item">
 			<div class="itemIcon"><img src="../assets/wangwang.png"></div>
-			<div class="itemInput"><input type="text" v-model="wangCode" placeholder="旺旺号"></div>
+			<div class="itemInput"><input type="text" v-model="wangCode" placeholder="旺旺号(淘宝会员名)"></div>
 		</div>
 		<!-- QQ号 -->
 		<div class="item">
