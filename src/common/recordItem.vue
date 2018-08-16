@@ -6,8 +6,8 @@
 			</div>
 			<div class="itemCon">
 				<div class="name">关键词：<span><slot name="name"></slot></span></div>
-				<div class="name">订单编号：<span><slot name="code"></slot></span></div>
-				<div class="name">付款金额：<span><slot name="money"></slot></span></div>
+				<div class="name" v-if="taskType == 0">订单编号：<span><slot name="code"></slot></span></div>
+				<div class="name" v-if="taskType == 0">付款金额：<span><slot name="money"></slot></span></div>
 				<div class="name">佣金：<span><slot name="commission"></slot></span></div>
 				<div class="name">时间：<span><slot name="time"></slot></span></div>
 			</div>
@@ -56,7 +56,11 @@
 }
 </style>
 <script>
-export default{
-	
-}
+	export default{
+		props:{
+			taskType:{
+				default: 0 
+			}
+		},
+	}
 </script>

@@ -20,9 +20,10 @@
 				说明：找到上面订单号的订单，用系统提供的图片+评语发布5星好评后提交任务即可！PS：如果接任务前已经好评，使用图片+评语追加评价即可
 			</div>
 			<div class="imgbox">
-				<div class="title">评价图片（长按可保存到本地）</div>
+				<div class="title">评价图片或视频（图片长按保存）</div>
 				<div class="imglist">
 					<div class="img" v-for = "item in imgList"><img :src="baseUrl1 + item"></div>
+					<div class="video" v-if="video != ''" @click="uploadVideo">下载视频</div>  
 				</div>
 			</div>
 			<div class="evaluation">评语（可复制）</div>
@@ -120,6 +121,15 @@
 					width:100%;
 					height:100%;
 				}
+			}
+			.video{
+				background: rgba(0,0,0,.6);
+				width:1.46rem;
+				text-align: center;
+				height:1.46rem;
+				line-height: 1.46rem;
+				font-size:.26rem;
+				color: #fff;
 			}
 		}
 	}
@@ -238,6 +248,7 @@
 			ordersn: "",					//订单编号
 			imgList:[],						//图片
 			content: "",					//文字
+			video:"",						//视频地址
 		}
 	},
 	created(){
@@ -254,6 +265,9 @@
 					this.ordersn = taskObj.order_sn;
 					this.imgList = taskObj.img;
 					this.content = taskObj.content;
+					if(taskObj.video_url != ""){
+						this.video = taskObj.video_url;
+					}
 					let time1 = taskObj.stale_time;
 					//执行倒数函数
 					this.timeDown(time1);
@@ -300,6 +314,10 @@
 					this.$toast(res.data.msg);
 				}
 			})
+		},
+		//点击下载视频
+		uploadVideo(){
+			window.location.href = "http://www.52gxk.com/weiapi/evaluatetask/download?url=" + this.baseUrl1 + this.video;
 		},
 		//点击放弃或者提交按钮
 		tan(type){

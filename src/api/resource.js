@@ -48,6 +48,7 @@ let path = {
 	applytask: 'evaluate/applytask',		//接取任务
 	completedTask: 'evaluate/accepttask',	//已接任务列表
 	evaluatedetail: 'evaluate/userevaluatedetail',	//任务详情
+	uploadvideo:"evaluatetask/download",		//下载视频
 	abandontasks: 'evaluate/abandontask',	//放弃评价任务
 	completeevaluate:'evaluate/completeevaluate',	//完成评价任务
 	tasktotal: 'evaluate/tasktotal',			//评价任务数量
@@ -234,6 +235,9 @@ export default{
 	//任务详情
 	evaluatedetail(params){
 		return http.get(path.evaluatedetail, params)
+	},
+	uploadvideo(params){
+		return http.get(path.uploadvideo, params)
 	},
 	//放弃评价任务
 	abandontasks(params){

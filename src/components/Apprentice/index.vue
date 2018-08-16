@@ -11,6 +11,11 @@
 				</swiper>
 			</div>			
 			<div class="taskList">
+				<!-- 普通任务或搜索任务 -->
+				<div class="tabBox">
+					<div class="item" :class="{'selItem':selTab == 0}" @click="selTab = 0">普通任务</div>
+					<div class="item" :class="{'selItem':selTab == 2}" @click="selTab = 2">搜索任务</div>
+				</div>
 				<div class="listNull" v-if="listNull == true">
 					<div class="buttons1">申请任务</div>
 					<!-- 系统无任务，有时间 -->
@@ -126,6 +131,21 @@
 	height:100%;
 	box-sizing: border-box;
 	margin-bottom: .98rem;
+	.tabBox{
+		display:flex;
+		align-items: center;
+		justify-content:space-around; 
+		font-size: .3rem;
+		color: #333;
+		height: 1rem;
+		.item{
+			padding-bottom: .05rem;
+		}
+		.selItem{
+			color: #03abff;
+			border-bottom: .04rem solid #03abff;
+		}
+	}
 	.listNull{
 		margin: 1.42rem auto;
 		.buttons1{
@@ -433,12 +453,12 @@
 }
 </style>
 <script>
-import {mapActions, mapGetters} from 'vuex'
-import { swiper, swiperSlide } from "vue-awesome-swiper"
-import resource from '../../api/resource.js'
-export default{
-	data(){
-		return{		
+	import {mapActions, mapGetters} from 'vuex'
+	import { swiper, swiperSlide } from "vue-awesome-swiper"
+	import resource from '../../api/resource.js'
+	export default{
+		data(){
+			return{		
 			subClick: true,							//默认按钮可点击一次
 			banner: [],
 			listNull: 3,							//默认任务列表为空，显示刷新按钮
@@ -468,6 +488,7 @@ export default{
 		    showBind: false,						 //默认未绑定手机号弹框不显示
 		    message: "",							 //复制的淘链接
 		    showCer: false,						     //未实名认证弹框默认不显示
+		    selTab: 0,								 //默认选中普通任务
 		}
 	},  
 	created(){
@@ -482,6 +503,12 @@ export default{
 		//判断用户是否关联了手机号
 		this.isbindphone();
 	},
+	watch:{
+		selTab:function(n){
+			//获取任务列表
+			this.getTaskList();
+		}
+	},
 	methods:{
 		...mapActions([
 			'set_route'
@@ -495,7 +522,7 @@ export default{
 				let _this = this;
 				setTimeout(function(){
 					_this.isLoads = true;
-				},30000);
+				},5000);
 			}else{
 				this.$toast("操作频繁，稍后再试！");
 			}
@@ -512,6 +539,16 @@ export default{
 					console.log("无banner");
 				}
 			})
+		},
+		//判断用户是否关联了手机号
+		isbindphone(){
+			resource.isbindphone().then(res => {
+				if(res.data.code == "0"){
+					this.showBind = true;
+				}else{
+					console.log(res.data.msg);
+				}
+			});
 		},
 		//获取公告
 		publishs(){
@@ -537,7 +574,7 @@ export default{
 		},
 		//获取任务列表
 		getTaskList(){
-			resource.taskList().then(res => {
+			resource.taskList({task_type:this.selTab}).then(res => {
 				this.reload = true;						//结束转
 				if(res.data.code == "0"){				//可以申请任务
 					this.listNull = false;
@@ -567,20 +604,10 @@ export default{
 				}
 			})
 		},
-		//判断用户是否关联了手机号
-		isbindphone(){
-			resource.isbindphone().then(res => {
-				if(res.data.code == "0"){
-					this.showBind = true;
-				}else{
-					console.log(res.data.msg);
-				}
-			});
-		},
 		//点击中间大按钮
 		application(){
 			if(this.shen == true){	//申请任务
-				resource.taskDetail().then(res => {
+				resource.taskDetail({task_type:this.selTab}).then(res => {
 					if(res.data.code == "0"){
 						//排队成功的时间
 						this.applyTime = res.data.apply_time;

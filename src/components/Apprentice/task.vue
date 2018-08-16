@@ -24,7 +24,8 @@
 				<div class="orderCode" v-if="statusObj.status == '3'">原因：<span>{{statusObj.reason}}</span></div>
 				<div class="toast" v-if="statusObj.status == '0' || statusObj.status == '3'">请在<span>{{statusObj.end_time}}</span>前完成提交任务，</div>
 				<div class="toast" v-if="statusObj.status == '0' || statusObj.status == '3'">否则将自动放弃哦～</div>
-				<div class="hong" v-if="statusObj.status == '0'">离任务完成还差一步，请提交订单编号</div>
+				<div class="hong" v-if="statusObj.status == '0' && statusObj.task_type == 0">离任务完成还差一步，请提交订单编号</div>
+				<div class="hong" v-if="statusObj.status == '0' && statusObj.task_type == 2">离任务完成还差一步，请上传图片</div>
 				<div class="buts" v-if="statusObj.status == '0'">
 					<div class="hui" @click="giving(1)">放弃任务</div>
 					<div class="lan" @click="$router.push(`/taskDetail?id=${statusObj.usertaskid}`)">继续任务</div>

@@ -88,28 +88,42 @@
 				</div>
 			</div>
 			<!-- 底部确认按钮 -->
-			<!-- <div class="saveSubmit" :class="{backGround: prompt == true}" @click="gosub">下一步
-			</div> -->
+			<div class="saveSubmit" v-if="type == 2" :class="{backGround: prompt == true}" @click="next">下一步
+			</div>
 			<!-- 改版的按钮 -->
-			<div class="saveSubmit" :class="{backGround: prompt == true}" @click="gosub">我已付款
+			<div class="saveSubmit" v-else :class="{backGround: prompt == true}" @click="gosub">我已付款
 			</div>
 		</div>
 		<!-- 第二页中间详情部分 -->
-		<!-- <div v-else>
+		<div v-else>
 			<div class="orderCon">
-				<div class="orderImg">
-					<img :src="baseUrl + taskDetail.goods_img">
+				<div class="title">6.上传图片</div>
+				<div class="uploadBox">
+					<div class="imgItem">
+						<div class="img" v-if="showListImg != ''">
+							<img class="cha" src="../../assets/chacha.png" @click="deleteImg('1')">
+							<img class="lookimg" :src="showListImg">
+						</div>
+						<search @callbackFn="callback" type="0"></search>
+						<div class="toast">商品列表图</div>
+					</div>
+					<div class="imgItem">
+						<div class="img" v-if="showDetailImg != ''">
+							<img class="cha" src="../../assets/chacha.png" @click="deleteImg('1')">
+							<img class="lookimg" :src="showDetailImg">
+						</div>
+						<search @callbackFn="callback" type="1"></search>
+						<div class="toast">商品详情图</div>
+					</div>
 				</div>
-				<div class="lookCode" @click="$router.push('/orderCode')">如何查询订单编号>></div>
-				<div class="codeInput">
-					<input type="text" placeholder="请输入您付款的订单编号" v-model="orderCode">
+				<div class="demon">
+					<img src="../../assets/shi1.png">
+					<img src="../../assets/shi2.png">
 				</div>
-				<div class="prompt">请在<span>{{taskDetail.end_time}}</span>内提交您的编号</div>	
-				<div class="prompt">否则任务将自动作废哦！</div>
 				<div class="submit" @click="subOrder">提交</div>
 				<div class="goback" @click="goback">上一步</div>
 			</div>
-		</div> -->
+		</div>
 		<!-- 弹框 -->
 		<div class="stateBox" v-if="showState" @click="showState = false">
 			<!-- 审核和删除 -->
@@ -310,67 +324,89 @@
 .backGround{
 	background: #03abff;
 }
+//第二页内容
 .orderCon{
-	margin-top: 1.18rem;
-	.orderImg{
-		margin: .55rem auto 0;
-		width: 2.86rem;
-		height: 2.86rem;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	padding: .64rem;
+	.title{
+		padding-top: .24rem;
+		padding-bottom: .24rem;
+		font-size: .26rem;
+		color: #333;
+	}
+	.uploadBox{
+		display:flex;
+		justify-content: space-between;
+		.imgItem{
+			.img{
+				position: relative;
+				width: 2.9rem;
+				height: 2.22rem;
+				.cha{
+					position: absolute;
+					top: 0;
+					right: 0;
+					z-index: 1;
+				}
+				.lookimg{
+					position: absolute;
+					top: 0;
+					left: 0;
+					width: 100%;
+					height: 100%;
+				}
+			}
+			.toast{
+				margin-top: .14rem;
+				width: 2.9rem;
+				text-align: center;
+				font-size: .28rem;
+				color: #666;
+			}
+		}
+		.demoImgs{
+			img{
+				width: 2.88rem;
+				height: 2.2rem;
+			}
+		}
+	}
+	.demon{
+		margin-top: .42rem;
+		display:flex;
+		justify-content:space-between;
 		img{
-			width: 100%;
-			height: 100%;
-		}
-	}
-	.lookCode{
-		margin-top: .12rem;
-		width: 100%;
-		text-align: center;
-		font-size: .28rem;
-		color:#03abff;
-	}
-	.codeInput{
-		width: 100%;
-		text-align: center;
-		input{
-			outline: none;
-			border:1px solid #bfbfbf;
-			border-radius: .08rem;
-			width: 5.8rem;
-			text-align: center;
-			height: .68rem;
-		}
-	}
-	.prompt{
-		margin-top: .1rem;
-		width: 100%;
-		text-align: center;
-		font-size: .24rem;
-		color:#333333;
-		span{
-			color: #ff5858;
+			width: 2.84rem;
+			height: 3.76rem;
 		}
 	}
 	.submit{
-		margin: 1rem auto .2rem;
+		margin: .5rem auto 0;
 		border-radius: .08rem;
 		background: #03abff;
-		width: 2.63rem;
+		box-shadow: 0 .02rem .2rem #03abff;
+		width: 100%;
 		text-align: center;
-		height: .68rem;
-		line-height: .68rem;
+		height: .9rem;
+		line-height: .9rem;
 		font-size: .26rem;
-		color:#ffffff;
+		color: #ffffff;
 	}
 	.goback{
-		margin: 0 auto;
+		margin: .2rem auto 0;
 		border-radius: .08rem;
 		background: #03abff;
-		width: 2.63rem;
+		box-shadow: 0 .02rem .2rem #03abff;
+		width: 100%;
 		text-align: center;
-		height: .68rem;
-		line-height: .68rem;
+		height: .9rem;
+		line-height: .9rem;
 		font-size: .26rem;
-		color:#ffffff;
+		color: #ffffff;
 	}
 }
 // 弹框
@@ -442,12 +478,13 @@
 }
 </style>
 <script>
-import {mapActions, mapGetters} from 'vuex'
-import resource from '../../api/resource.js'
-import back from '../../common/back.vue'
-export default{
-	data(){
-		return{
+	import search from '../../common/search.vue'
+	import {mapActions, mapGetters} from 'vuex'
+	import resource from '../../api/resource.js'
+	import back from '../../common/back.vue'
+	export default{
+		data(){
+			return{
 			pageType: true,		//默认第一页
 			id: "",				//任务id
 			taskDetail:{},		//任务详情对象
@@ -468,6 +505,12 @@ export default{
 			showState: false,	//弹框默认不显示
 			showPrice: false,	//价格区间默认不显示
 			yi: true,			//默认可以点击我已付款
+
+			type:0,				//默认普通任务（0:普通任务；1:搜索任务）
+			listImg: {},		//商品列表图（可传递）
+			showListImg: "",	//商品列表图（展示）
+			detailImg:{},		//商品详情图（可传递）
+			showDetailImg: "",	//商品详情图（展示）
 		}
 	},
 	watch:{
@@ -483,7 +526,6 @@ export default{
 					this.tishi = false;
 				}
 			}
-			
 			// 将用户输入的网址粘贴到输入框内
 			// var arr=n.match(/(http|https):\/\/([A-Za-z0-9.\/]+)/);    
 			// console.log(arr[0]);
@@ -529,6 +571,7 @@ export default{
 			resource.getTask({usertaskid:this.id}).then(res => {
 				if(res.data.code == "0"){
 					this.taskDetail = res.data.data;
+					this.type = res.data.data.task_type;
 					this.keyword = res.data.data.keyword;	//关键词
 					this.wangwang = res.data.data.wangwang;	//淘宝账号
 					let time = res.data.data.end_time;		//任务截止时间
@@ -695,7 +738,7 @@ export default{
 				this.$toast("请先通过验证！");
 			}
 		},
-		//点击我已付款的确定
+		//点击我已付款的确定(第一页)
 		ok(){
 			if(this.yi == true){
 				this.yi = false;
@@ -719,41 +762,58 @@ export default{
 			}
 		},
 		// 下一步
-		// gosub(){
-		// 	if(this.prompt == true){//店铺名和金额都确认通过了
-		// 		this.pageType = false;
-		// 	}else{
-		// 		this.$toast("请先通过验证！");
-		// 	}
-		// },
-		//提交订单
-		// subOrder(){               
-		// 	if(this.orderCode == ""){
-		// 		this.$toast("请输入您付款的订单编号");
-		// 	}else if(!this.judgmentShopNum.test(this.orderCode)){
-		// 		this.$toast("订单编号格式不正确");
-		// 	}else{
-		// 		let orderObj = {
-		// 			usertaskid: this.id,
-		// 			order_sn: this.orderCode
-		// 		}
-		// 		resource.subOrder(orderObj).then(res => {
-		// 			if(res.data.code == "0"){
-		// 				this.set_route("task");
-		// 				this.$router.push("task");
-		// 			}else{
-		// 				this.$toast(res.data.msg);
-		// 			}
-		// 		});
-		// 	}
-		// },
+		next(){
+			if(this.prompt == true){//店铺名和金额都确认通过了
+				this.pageType = false;
+			}else{
+				this.$toast("请先通过验证！");
+			}
+		},
 		//上一步
-		// goback(){
-		// 	this.pageType = true;
-		// }
+		goback(){
+			this.pageType = true;
+		},
+		//上传图片组件回调
+		callback(obj){
+			let val = obj.files;	//图片数组
+			let type = obj.type;	//图片类型（1:正面；2:反面；3:银行卡）
+			for(let i = 0;i < val.length;i ++){
+				let obj = val[i];
+				//请求上传图片接口
+				
+				if(type == "0"){
+					this.listImg = obj;					//商品列表图（可传递）
+				}else if(type == "1"){
+					this.detailImg = obj;				//商品详情图（可传递）
+				}
+			}
+		},
+		//提交订单（第二页）
+		subOrder(){               
+			if(this.orderCode == ""){
+				this.$toast("请输入您付款的订单编号");
+			}else if(!this.judgmentShopNum.test(this.orderCode)){
+				this.$toast("订单编号格式不正确");
+			}else{
+				let orderObj = {
+					usertaskid: this.id,
+					order_sn: this.orderCode
+				}
+				resource.subOrder(orderObj).then(res => {
+					if(res.data.code == "0"){
+						this.set_route("task");
+						this.$router.push("task");
+					}else{
+						this.$toast(res.data.msg);
+					}
+				});
+			}
+		}
+		
 	},
 	components:{
-		back
+		back,
+		search
 	}
 }
 </script>
