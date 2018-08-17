@@ -1,13 +1,16 @@
 <template>
 	<div>
 		<div class="Item">
+			<img class="taskType" src="../assets/task0.png" v-if="taskType == 0">
+			<img class="taskType" src="../assets/task1.png" v-if="taskType == 1">
+			<img class="taskType" src="../assets/task2.png" v-if="taskType == 2">
 			<div class="itemIcon">
 				<slot name="icon"></slot>
 			</div>
 			<div class="itemCon">
 				<div class="name">关键词：<span><slot name="name"></slot></span></div>
-				<div class="name" v-if="taskType == 0">订单编号：<span><slot name="code"></slot></span></div>
-				<div class="name" v-if="taskType == 0">付款金额：<span><slot name="money"></slot></span></div>
+				<div class="name" v-if="taskType == 0 || taskType == 1">订单编号：<span><slot name="code"></slot></span></div>
+				<div class="name" v-if="taskType == 0 || taskType == 1">付款金额：<span><slot name="money"></slot></span></div>
 				<div class="name">佣金：<span><slot name="commission"></slot></span></div>
 				<div class="name">时间：<span><slot name="time"></slot></span></div>
 			</div>
@@ -16,6 +19,7 @@
 </template>
 <style lang="less" scoped>
 .Item{
+	position: relative;
 	border-bottom: 1px solid #e8e8e8;
 	box-sizing: border-box;
 	display: flex;
@@ -53,6 +57,12 @@
 			}
 		}
 	}
+	.taskType{
+		position: absolute;
+		top: 0;
+		right: .5rem;
+		width: .5rem;
+	}
 }
 </style>
 <script>
@@ -62,5 +72,8 @@
 				default: 0 
 			}
 		},
+		mounted(){
+			console.log(this.taskType);
+		}
 	}
 </script>

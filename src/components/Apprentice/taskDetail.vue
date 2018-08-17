@@ -39,12 +39,12 @@
 						<div class="operName1">关键词(不可复制)：</div>	
 						<div class="operSubname1">{{keyword}}</div>
 					</div>
-					<div class="subTie">2. 购买数量</div>
-					<div class="operation">
+					<div class="subTie" v-if="type == 0">2. 购买数量</div>
+					<div class="operation" v-if="type == 0">
 						<div class="operSubname2">订单需购买{{taskDetail.goods_num}}件才能审核通过，请添加到购物车一起付款</div>
 					</div>
 					<!-- 第一条 -->
-					<div class="subTie">3. 筛选条件：</div>
+					<div class="subTie">{{shu}}. 筛选条件：</div>
 					<div class="operation">
 						<div class="operName">排序方式：</div>	
 						<div class="operSubname">{{taskDetail.sort}}</div>
@@ -62,7 +62,7 @@
 						<div class="operSubname">{{taskDetail.arrive_pay}}</div>
 					</div>
 					<!-- 第一条 -->
-					<div class="subTie">4. 输入店铺全称，验证店铺<span @click="$router.push('/shopFull')">如何查看店铺全称>></span></div>
+					<div class="subTie">{{shu + 1}}. 输入店铺全称，验证店铺<span @click="$router.push('/shopFull')">如何查看店铺全称>></span></div>
 					<div class="operation">
 						<div class="inputTxt">
 							<input type="text" v-model="shop">
@@ -72,7 +72,7 @@
 						<div class="confirmation wei" v-if="shopId == 2">失败</div>
 					</div>
 					<!-- 第一条 -->
-					<div class="subTie">5. 输入商品金额，验证金额<span @click="$router.push('/shopMoney')">如何查看商品金额>></span></div>
+					<div class="subTie">{{shu + 2}}. 输入商品金额，验证金额<span @click="$router.push('/shopMoney')">如何查看商品金额>></span></div>
 					<div class="operation">
 						<div class="inputTxt">
 							<input type="number" v-model="money">
@@ -82,7 +82,7 @@
 						<div class="confirmation wei" v-if="moneyId == 2">失败</div>
 					</div>
 					<!-- 提示 -->
-					<div class="prompt" v-if="prompt">请用您的淘宝账号<span>{{wangwang}}</span>,拍下并付款吧！</div>
+					<div class="prompt" v-if="prompt == true && type == 0">请用您的淘宝账号<span>{{wangwang}}</span>,拍下并付款吧！</div>
 					<div class="prompt" v-if="tishi">验证通过，请在淘宝商品页面浏览3分钟</div>
 					<div class="prompt" v-if="tishi">剩余时间：{{time2}}</div>
 				</div>
@@ -97,22 +97,22 @@
 		<!-- 第二页中间详情部分 -->
 		<div v-else>
 			<div class="orderCon">
-				<div class="title">6.上传图片</div>
+				<div class="title">5.上传图片</div>
 				<div class="uploadBox">
 					<div class="imgItem">
 						<div class="img" v-if="showListImg != ''">
-							<img class="cha" src="../../assets/chacha.png" @click="deleteImg('1')">
+							<img class="cha" src="../../assets/chacha.png" @click="deleteImg('0')">
 							<img class="lookimg" :src="showListImg">
 						</div>
-						<search @callbackFn="callback" type="0"></search>
+						<search v-else @callbackFn="callback" type="0"></search>
 						<div class="toast">商品列表图</div>
 					</div>
 					<div class="imgItem">
 						<div class="img" v-if="showDetailImg != ''">
-							<img class="cha" src="../../assets/chacha.png" @click="deleteImg('1')">
+							<img class="cha" src="../../assets/chacha.png" @click="deleteImg('2')">
 							<img class="lookimg" :src="showDetailImg">
 						</div>
-						<search @callbackFn="callback" type="1"></search>
+						<search v-else @callbackFn="callback" type="2"></search>
 						<div class="toast">商品详情图</div>
 					</div>
 				</div>
@@ -134,6 +134,18 @@
 					<div class="ok" @click="ok">确认</div>
 					<div class="close" @click="showState = false">取消</div>
 				</div>
+			</div>
+		</div>
+		<!-- 提交弹框 -->
+		<div class="modelBox" v-if="isload">
+			<div class="toast">正在提交...</div>
+		</div>
+		<!-- 搜索任务提示不需要付款 -->
+		<div class="bulletinBox" v-if="showBull" @click="showBull = false">
+			<div class="bulletin" @click.stop>
+				<div class="bulletinTie">公告</div>
+				<div class="bullTxt">此任务为搜索任务，无需付款</div>
+				<div class="bullBut" @click="showBull = false">我知道了</div>
 			</div>
 		</div>
 	</div>
@@ -344,8 +356,8 @@
 		.imgItem{
 			.img{
 				position: relative;
-				width: 2.9rem;
-				height: 2.22rem;
+				width: 2.84rem;
+				height: 3.76rem;
 				.cha{
 					position: absolute;
 					top: 0;
@@ -476,6 +488,83 @@
 		}
 	}
 }
+.modelBox{
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	display:flex;
+	align-items: center;
+	justify-content:center;
+	.toast{
+		background: rgba(0,0,0,.8);
+		border-radius: .05rem;
+		width: 4rem;
+		text-align: center;
+		height: .8rem;
+		line-height: .8rem;
+		font-size: .28rem;
+		color: #fff;
+	}
+}
+.bulletinBox{
+	background:rgba(0,0,0,.66);
+	position: fixed;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 9999999;
+	.inform{
+		position:absolute;
+		top: 3.1rem;
+		left:.56rem;
+		width:2.36rem;
+		height:2.36rem;
+		img{
+			width:100%;
+			height:100%;
+		}
+	}
+	.bulletin{
+		margin: 4.66rem auto 0;
+		background:#fff;
+		border-radius: .16rem;
+		width: 4.7rem;
+		padding-bottom: .3rem;
+		// height:4.44rem;
+		.bulletinTie{
+			font-size:.3rem;
+			color:#FFF;
+			border-radius: .16rem .16rem 0 0;
+			background:#03abff;
+			width: 4.7rem;
+			text-align:center;
+			height:1.12rem;
+			line-height:1.12rem;
+		}
+		.bullTxt{
+			margin: .6rem auto 0;
+			width:4.2rem;
+			text-align:center;
+			font-size:.28rem;
+			color: #03abff;
+		}
+		.bullBut{
+			margin:.6rem auto .3rem;
+			border-radius:.2rem;
+			background:#03abff;
+			width:3.42rem;
+			text-align:center;
+			height:.46rem;
+			line-height:.46rem;
+			font-size:.26rem;
+			color: #fff;
+		}
+	}
+}
 </style>
 <script>
 	import search from '../../common/search.vue'
@@ -505,12 +594,14 @@
 			showState: false,	//弹框默认不显示
 			showPrice: false,	//价格区间默认不显示
 			yi: true,			//默认可以点击我已付款
-
-			type:0,				//默认普通任务（0:普通任务；1:搜索任务）
+			showBull:false,		//默认提示不需要付款弹框
+			type:0,				//默认普通任务（0:普通任务；2:搜索任务）
 			listImg: {},		//商品列表图（可传递）
 			showListImg: "",	//商品列表图（展示）
 			detailImg:{},		//商品详情图（可传递）
 			showDetailImg: "",	//商品详情图（展示）
+			shu:2,				//任务流程序号
+			isload: false,		//默认正在提交不显示
 		}
 	},
 	watch:{
@@ -572,6 +663,12 @@
 				if(res.data.code == "0"){
 					this.taskDetail = res.data.data;
 					this.type = res.data.data.task_type;
+					if(this.type == 0){
+						this.shu = 3;
+					}else if(this.type == 2){
+						this.showBull = true;
+						this.shu = 2;
+					}
 					this.keyword = res.data.data.keyword;	//关键词
 					this.wangwang = res.data.data.wangwang;	//淘宝账号
 					let time = res.data.data.end_time;		//任务截止时间
@@ -683,7 +780,11 @@
 		//同时验证店铺名和金额控制按钮是否可以显示
 		conPrompt(){
 			if(this.shopId == 1 && this.moneyId == 1){//如果店铺名和金额都通过验证
-				this.CountDown();
+				if(this.type == 0){
+					this.CountDown();
+				}else if(this.type == 2){
+					this.prompt = true;
+				}
 			}else{
 				this.prompt = false;
 				this.tishi = false;
@@ -776,38 +877,53 @@
 		//上传图片组件回调
 		callback(obj){
 			let val = obj.files;	//图片数组
-			let type = obj.type;	//图片类型（1:正面；2:反面；3:银行卡）
+			let type = obj.type;	//图片类型（0:商品列表；2:商品详情）
 			for(let i = 0;i < val.length;i ++){
 				let obj = val[i];
-				//请求上传图片接口
-				
 				if(type == "0"){
 					this.listImg = obj;					//商品列表图（可传递）
-				}else if(type == "1"){
+				}else if(type == "2"){
 					this.detailImg = obj;				//商品详情图（可传递）
 				}
+				let fr = new FileReader();
+				let _this = this;
+				fr.onload=function () {
+					if(type == "0"){
+						_this.showListImg = this.result;//商品列表图片地址
+					}else if(type == "2"){
+						_this.showDetailImg = this.result;//商品详情图片地址
+					}
+				};
+				fr.readAsDataURL(obj);
+			}
+		},
+		//点击删除图片
+		deleteImg(type){
+			if(type == "0"){
+				this.showListImg = "";
+				this.listImg = {};
+			}else if(type == "2"){
+				this.showDetailImg = "";
+				this.detailImg = {};
 			}
 		},
 		//提交订单（第二页）
-		subOrder(){               
-			if(this.orderCode == ""){
-				this.$toast("请输入您付款的订单编号");
-			}else if(!this.judgmentShopNum.test(this.orderCode)){
-				this.$toast("订单编号格式不正确");
-			}else{
-				let orderObj = {
-					usertaskid: this.id,
-					order_sn: this.orderCode
-				}
-				resource.subOrder(orderObj).then(res => {
-					if(res.data.code == "0"){
-						this.set_route("task");
-						this.$router.push("task");
-					}else{
-						this.$toast(res.data.msg);
-					}
-				});
+		subOrder(){           
+			this.isload = true;    
+			let orderObj = {
+				usertaskid: this.id,
+				goods_list_img: this.listImg,
+				goods_detail_img:this.detailImg
 			}
+			resource.subOrder(orderObj).then(res => {
+				this.isload = false; 
+				if(res.data.code == "0"){  
+					this.set_route("task");
+					this.$router.push("task");
+				}else{
+					this.$toast(res.data.msg);
+				}
+			});
 		}
 		
 	},
