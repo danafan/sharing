@@ -60,8 +60,9 @@
 	.taskType{
 		position: absolute;
 		top: 0;
-		right: .5rem;
-		width: .5rem;
+		left: 0;
+		width: 1.2rem;
+		z-index: 9;
 	}
 }
 </style>

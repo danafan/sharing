@@ -30,20 +30,15 @@
 					<div class="title">任务流程</div>
 					<!-- 第一条 -->
 					<div class="subTie">1. 打开淘宝客户端，按照以下步骤操作：</div>
-					<!-- <div class="operation">
-						<div class="operName">点击关键词复制：</div>	
-						<div class="operSubname" v-clipboard="keyword"
-						@success="$toast('复制成功');">{{keyword}}</div>
-					</div> -->
 					<div class="operation">
 						<div class="operName1">关键词(不可复制)：</div>	
 						<div class="operSubname1">{{keyword}}</div>
 					</div>
-					<div class="subTie" v-if="type == 0">2. 购买数量</div>
-					<div class="operation" v-if="type == 0">
+					<div class="subTie" v-if="type == 0 || type == 1">2. 购买数量</div>
+					<div class="operation" v-if="type == 0 || type == 1">
 						<div class="operSubname2">订单需购买{{taskDetail.goods_num}}件才能审核通过，请添加到购物车一起付款</div>
 					</div>
-					<!-- 第一条 -->
+					<!-- 第二条 -->
 					<div class="subTie">{{shu}}. 筛选条件：</div>
 					<div class="operation">
 						<div class="operName">排序方式：</div>	
@@ -61,30 +56,45 @@
 						<div class="operName">货到付款：</div>	
 						<div class="operSubname">{{taskDetail.arrive_pay}}</div>
 					</div>
-					<!-- 第一条 -->
-					<div class="subTie">{{shu + 1}}. 输入店铺全称，验证店铺<span @click="$router.push('/shopFull')">如何查看店铺全称>></span></div>
-					<div class="operation">
-						<div class="inputTxt">
-							<input type="text" v-model="shop">
-						</div>	
-						<div class="confirmation" v-if="shopId == 0" @click="conShop">验证</div>
-						<div class="confirmation through" v-if="shopId == 1">通过</div>
-						<div class="confirmation wei" v-if="shopId == 2">失败</div>
+					<!-- 搜索任务验证淘口令 -->
+					<div v-if="type == 2">
+						<div class="subTie">{{shu + 1}}. 验证淘口令<span @click="$router.push('/shopCode')">如何复制淘口令>></span></div>
+						<div class="operation">
+							<div class="inputTxt">
+								<textarea rows="5" v-model="tao_code"></textarea>
+							</div>	
+							<div class="confirmation" v-if="taoId == 0" @click="conCode">验证</div>
+							<div class="confirmation through" v-if="taoId == 1">通过</div>
+							<div class="confirmation wei" v-if="taoId == 2">失败</div>
+						</div>
 					</div>
-					<!-- 第一条 -->
-					<div class="subTie">{{shu + 2}}. 输入商品金额，验证金额<span @click="$router.push('/shopMoney')">如何查看商品金额>></span></div>
-					<div class="operation">
-						<div class="inputTxt">
-							<input type="number" v-model="money">
-						</div>	
-						<div class="confirmation" v-if="moneyId == 0" @click="conMoney">验证</div>
-						<div class="confirmation through" v-if="moneyId == 1">通过</div>
-						<div class="confirmation wei" v-if="moneyId == 2">失败</div>
+					<!-- 普通任务验证店铺名和商品金额 -->
+					<div v-if="type == 0 || type == 1">
+						<!-- 第三条 -->
+						<div class="subTie">{{shu + 1}}. 输入店铺全称，验证店铺<span @click="$router.push('/shopFull')">如何查看店铺全称>></span></div>
+						<div class="operation">
+							<div class="inputTxt">
+								<input type="text" v-model="shop">
+							</div>	
+							<div class="confirmation" v-if="shopId == 0" @click="conShop">验证</div>
+							<div class="confirmation through" v-if="shopId == 1">通过</div>
+							<div class="confirmation wei" v-if="shopId == 2">失败</div>
+						</div>
+						<!-- 第四条 -->
+						<div class="subTie">{{shu + 2}}. 输入商品金额，验证金额<span @click="$router.push('/shopMoney')">如何查看商品金额>></span></div>
+						<div class="operation">
+							<div class="inputTxt">
+								<input type="number" v-model="money">
+							</div>	
+							<div class="confirmation" v-if="moneyId == 0" @click="conMoney">验证</div>
+							<div class="confirmation through" v-if="moneyId == 1">通过</div>
+							<div class="confirmation wei" v-if="moneyId == 2">失败</div>
+						</div>
+						<!-- 提示 -->
+						<div class="prompt" v-if="tishi">请用您的淘宝账号<span>{{wangwang}}</span>,拍下并付款吧！</div>
+						<div class="prompt" v-if="tishi">验证通过，请在淘宝商品页面浏览3分钟</div>
+						<div class="prompt" v-if="tishi">剩余时间：{{time2}}</div>
 					</div>
-					<!-- 提示 -->
-					<div class="prompt" v-if="prompt == true && type == 0">请用您的淘宝账号<span>{{wangwang}}</span>,拍下并付款吧！</div>
-					<div class="prompt" v-if="tishi">验证通过，请在淘宝商品页面浏览3分钟</div>
-					<div class="prompt" v-if="tishi">剩余时间：{{time2}}</div>
 				</div>
 			</div>
 			<!-- 底部确认按钮 -->
@@ -97,7 +107,7 @@
 		<!-- 第二页中间详情部分 -->
 		<div v-else>
 			<div class="orderCon">
-				<div class="title">5.上传图片</div>
+				<div class="title">4.上传图片</div>
 				<div class="uploadBox">
 					<div class="imgItem">
 						<div class="img" v-if="showListImg != ''">
@@ -286,6 +296,12 @@
 					outline: none;
 					width: 2.16rem;
 					height: .36rem;
+				}
+				textarea{
+					color: #666;
+					outline: none;
+					resize:none;
+					width: 4.6rem;
 				}
 			}
 			.confirmation{
@@ -588,6 +604,9 @@
 			wangwang: "",		//旺旺号
 			orderCode: "",		//订单编号
 			moneyId: 0,			//验证金额按钮状态（0：验证，1:成功，2:失败）
+			tao_code:"",		//输入的淘口令
+			subTaocode:"",		//最终提交通过的淘口令
+			taoId:0,			//验证淘口令按钮状态（0：验证，1:成功，2:失败）
 			maxtime: 180,		//时间
 			tishi: false,		//默认倒数提示不显示
 			time2: "",			//倒数时间
@@ -595,7 +614,7 @@
 			showPrice: false,	//价格区间默认不显示
 			yi: true,			//默认可以点击我已付款
 			showBull:false,		//默认提示不需要付款弹框
-			type:0,				//默认普通任务（0:普通任务；2:搜索任务）
+			type:-1,				//默认普通任务（0:普通任务；2:搜索任务）
 			listImg: {},		//商品列表图（可传递）
 			showListImg: "",	//商品列表图（展示）
 			detailImg:{},		//商品详情图（可传递）
@@ -617,10 +636,6 @@
 					this.tishi = false;
 				}
 			}
-			// 将用户输入的网址粘贴到输入框内
-			// var arr=n.match(/(http|https):\/\/([A-Za-z0-9.\/]+)/);    
-			// console.log(arr[0]);
-			// this.shop=arr[0];
 		},
 		//监听输入的金额
 		money:function(n,o){
@@ -632,6 +647,18 @@
 					this.moneyId = 0;
 					this.prompt = false;
 					this.tishi = false;
+				}
+			}
+		},
+		//监听输入淘口令
+		tao_code:function(n,o){
+			if(n != o){
+				if(n == this.subTaocode && n != ""){//修改后的商品金额和验证通过的商品金额一致
+					this.taoId = 1;
+					this.prompt = true;;
+				}else{
+					this.taoId = 0;
+					this.prompt = false;
 				}
 			}
 		}
@@ -657,13 +684,17 @@
 		...mapActions([
 			'set_route'
 			]),
+		//判断系统
+		pan(){
+			return navigator.userAgent.match(/iPhone|iPad|iPod/i) ? true : false;
+		},
 		//获取任务详情
 		getTaskDetail(){
 			resource.getTask({usertaskid:this.id}).then(res => {
 				if(res.data.code == "0"){
 					this.taskDetail = res.data.data;
 					this.type = res.data.data.task_type;
-					if(this.type == 0){
+					if(this.type == 0 || this.type == 1){
 						this.shu = 3;
 					}else if(this.type == 2){
 						this.showBull = true;
@@ -777,10 +808,39 @@
 				});
 			}
 		},
+		//点击验证淘口令
+		conCode(){
+			if(this.tao_code == ""){
+				this.$toast("请输入淘口令");
+			}else{
+				let obj = {
+					openid:sessionStorage.getItem("openid"),
+					usertaskid: this.id,
+					tao_code: this.tao_code
+				}
+				//判断系统
+				if (this.pan()) {
+					obj.system_type = "ios"; 
+				} else {
+					obj.system_type = "android";
+				}
+				resource.virifytaocode(obj).then(res => {
+					if(res.data.code == "0"){
+						this.taoId = 1;						//修改验证状态（绿色通过）
+						this.subTaocode = this.tao_code;	//验证通过再保存
+						this.prompt = true;					//统一验证提交按钮是否可点击
+					}else{
+						this.taoId = 2;						//修改验证状态（红色未通过）
+						this.prompt = false;
+						this.$toast(res.data.message);
+					}
+				});
+			}
+		},
 		//同时验证店铺名和金额控制按钮是否可以显示
 		conPrompt(){
 			if(this.shopId == 1 && this.moneyId == 1){//如果店铺名和金额都通过验证
-				if(this.type == 0){
+				if(this.type == 0 || this.type == 1){
 					this.CountDown();
 				}else if(this.type == 2){
 					this.prompt = true;

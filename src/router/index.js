@@ -14,6 +14,7 @@ const taskDetail = resolve=>System.import('@/components/Apprentice/taskDetail')
 const activity = resolve=>System.import('@/components/Apprentice/activity')
 const shopFull = resolve=>System.import('@/components/Apprentice/shopFull')
 const shopMoney = resolve=>System.import('@/components/Apprentice/shopMoney')
+const shopCode = resolve=>System.import('@/components/Apprentice/shopCode')
 const orderCode = resolve=>System.import('@/components/Apprentice/orderCode')
 const recordTask = resolve=>System.import('@/components/Apprentice/recordTask')
 const through = resolve=>System.import('@/components/Apprentice/through')
@@ -79,6 +80,10 @@ export default new Router({
   {
     path:'/shopMoney',
     component: shopMoney
+  },
+  {
+    path:'/shopCode',
+    component: shopCode
   },
   {
     path:'/orderCode',

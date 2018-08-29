@@ -599,6 +599,10 @@
 					this.listNull = false;
 					this.shen = false;
 					this.butTxt = "排队中";
+				}else if(res.data.code == "4"){			//三天之内已经接过任务或系统无任务
+					this.listNull = true;				//不显示大按钮
+					this.toastTxt = "1";
+					this.toastxt = res.data.msg;
 				}else{
 					this.$toast(res.data.msg);
 				}
@@ -621,7 +625,7 @@
 						this.$toast(res.data.msg);
 					}
 				});
-			}else{					//排队中
+			}else{					//排队中,放弃任务
 				this.showState = true;
 			}
 		},
@@ -656,9 +660,9 @@
 		}, 
 		//点击确认放弃排队
 		ok(){
-			resource.abandTask().then(res => {
+			resource.abandTask({task_type:this.selTab}).then(res => {
 				if(res.data.code == "0"){
-					this.$toast("放弃成功!");
+					this.$toast("放弃成功");
 					this.showState = false;
 					this.getTaskList();
 				}else{

@@ -34,7 +34,6 @@
 					};
 					
 					this.getAuthurl();
-
 					// sessionStorage.setItem("status","0");
 					// this.$router.push('/navbar');
 					//this.$router.push('/certification');

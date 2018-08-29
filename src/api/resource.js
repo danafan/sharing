@@ -52,6 +52,7 @@ let path = {
 	abandontasks: 'evaluate/abandontask',	//放弃评价任务
 	completeevaluate:'evaluate/completeevaluate',	//完成评价任务
 	tasktotal: 'evaluate/tasktotal',			//评价任务数量
+	virifytaocode:"search/virifytaocode",		//验证淘口令
 }
 export default{
 	//authUrl
@@ -250,5 +251,9 @@ export default{
 	//评价任务数量
 	tasktotal(params){
 		return http.get(path.tasktotal, params)
+	},
+	//验证淘口令
+	virifytaocode(params){
+		return http.post(path.virifytaocode, params)
 	},
 }
