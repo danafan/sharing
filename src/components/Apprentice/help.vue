@@ -4,7 +4,7 @@
 		<back></back>
 		<!-- 上边背景 -->
 		<div class="backImg">
-			<img class="helpimg" src="../../assets/helpcon.png">
+			<img class="helpimg" src="../../assets/Background.png">
 			<div class="shang">
 				<div class="qqimg"><img src="../../assets/Qqq.png"></div>
 				<div class="consultation">QQ咨询</div>

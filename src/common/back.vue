@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div class="back" id="back" @touchstart="start($event)" @touchmove.prevent="move($event)" @touchend="end($event)" @click="back">
-			<img src="../assets/hover button.png">
+			<img src="../assets/back.png">
 		</div>
 	</div>
 </template>

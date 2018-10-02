@@ -5,28 +5,28 @@
 		</div>
 		<div class="navbar">
 			<div class="navbarItem" @click="tab('index')">
-				<img v-if="selected == 'index'" src="../../assets/home page (blue).png">
-				<img v-else src="../../assets/home page(black).png">
+				<img v-if="selected == 'index'" src="../../assets/home(blue).png">
+				<img v-else src="../../assets/home.png">
 				<p class="navbar_txt" :class="{select:selected == 'index'}">首页</p>
 			</div>
 			<div class="navbarItem" @click="tab('goApp')" v-if="showMaster">
-				<img v-if="selected == 'goApp'" src="../../assets/apprentice1.png">
-				<img v-else src="../../assets/apprentice.png">
+				<img v-if="selected == 'goApp'" src="../../assets/apprentice (blue)1.png">
+				<img v-else src="../../assets/apprentice (gray)1.png">
 				<p class="navbar_txt" :class="{select:selected == 'goApp'}">徒弟</p>
 			</div>
 			<div class="navbarItem" @click="tab('activity')">
-				<img v-if="selected == 'activity'" src="../../assets/activitysel.png">
-				<img v-else src="../../assets/activity.png">
+				<img v-if="selected == 'activity'" src="../../assets/activity(blue).png">
+				<img v-else src="../../assets/activity(gray).png">
 				<p class="navbar_txt" :class="{select:selected == 'activity'}">活动</p>
 			</div>
 			<div class="navbarItem" @click="tab('task')">
-				<img v-if="selected == 'task'" src="../../assets/task process1.png">
-				<img v-else src="../../assets/task process.png">
+				<img v-if="selected == 'task'" src="../../assets/duty(blue).png">
+				<img v-else src="../../assets/duty(gray).png">
 				<p class="navbar_txt" :class="{select:selected == 'task'}">进度</p>
 			</div>
 			<div class="navbarItem" @click="tab('mine')">
-				<img v-if="selected == 'mine'" src="../../assets/me(blue).png">
-				<img v-else src="../../assets/me(black).png">
+				<img v-if="selected == 'mine'" src="../../assets/mine(blue).png">
+				<img v-else src="../../assets/mine(gray).png">
 				<p class="navbar_txt" :class="{select:selected == 'mine'}">我的</p>
 			</div>
 		</div>	

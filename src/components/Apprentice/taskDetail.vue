@@ -25,7 +25,7 @@
 				<div class="taskCon">
 					<div class="title">任务要求</div>
 					<div class="operation">
-						<div class="operSubname2">{{taskDetail.task_remark}}</div>
+						<div v-html="taskDetail.task_remark"></div>
 					</div>
 					<div class="title">任务流程</div>
 					<!-- 第一条 -->
@@ -241,10 +241,16 @@
 				color: #03abff;
 			}
 		}
+		/deep/ .operation{
+			img{
+				width: 100%;
+			}
+		}
 		.operation{
 			width:100%;
 			margin-bottom: .12rem;
 			padding-left: .2rem;
+			padding-right: .2rem;
 			display: flex;
 			align-items:center;
 			font-size: .26rem;

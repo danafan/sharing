@@ -4,7 +4,7 @@
 			<!-- 上面背景图片 -->
 			<div class="topImg">
 				<div class="backImg">
-					<img src="../../assets/background (mine).png">
+					<img src="../../assets/background (mine)1.png">
 				</div>	
 				<div class="userIcon">
 					<img :src="wximg">

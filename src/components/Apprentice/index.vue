@@ -533,7 +533,7 @@
 			resource.getBanner({userid:uid}).then(res => {
 				if(res.data.code == "0"){
 					this.banner = res.data.data.res;
-					this.banner.unshift({img_url:require('../../assets/background2.png')});
+					this.banner.unshift({img_url:require('../../assets/Background(home)1.png')});
 					this.message = res.data.copy_code;
 				}else{
 					console.log("无banner");
