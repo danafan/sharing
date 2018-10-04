@@ -224,7 +224,7 @@
 	bottom: 0;
 	width: 100%;
 	height: 100%;
-	z-index: 1;
+	z-index: 999999;
 	.type1{
 		border-radius: .17rem;
 		position: relative;
@@ -291,7 +291,7 @@
 	bottom: 0;
 	width: 100%;
 	height: 100%;
-	z-index: 1;
+	z-index: 999999;
 	.inform{
 		position:absolute;
 		top: 3.1rem;

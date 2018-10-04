@@ -55,6 +55,7 @@
 	height: .98rem;
 	font-size: .26rem;
 	color: #999;
+	z-index: 999;
 	.navbarItem{
 		display: flex;
 		flex-direction: column;
@@ -126,6 +127,7 @@ export default{
 			]),
 		// 点击切换导航
 		tab(tab){
+			console.log("asd");
 			this.selected = tab;
 			this.set_route(tab);
 			this.$router.push(`${tab}`);

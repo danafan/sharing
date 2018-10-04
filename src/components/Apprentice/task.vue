@@ -17,7 +17,10 @@
 			<!-- 上面的框 -->
 			<div class="topBox">
 				<div class="icon">
-					<img :src="baseUrl + statusObj.goods_img">
+					<img class="aaa" :src="baseUrl + statusObj.goods_img">
+					<div class="sha">
+						<img src="../../assets/asd.jpg">
+					</div>
 				</div>
 				<div class="guan">关键词：<span>{{keyword}}</span></div>
 				<div class="orderCode" v-if="statusObj.status == '1' || statusObj.status == '3'">旺旺号：<span>{{statusObj.wangwang}}</span></div>
@@ -185,14 +188,31 @@
 	width: 6.67rem;
 	height: 5.54rem;
 	.icon{
+		position: relative;
 		margin: -1rem auto 0;
 		border-radius: .34rem;
 		width: 2.94rem;
 		height: 2.94rem;
-		img{
+		.aaa{
 			border-radius: .34rem;
 			width: 100%;
 			height: 100%;
+		}
+		.sha{
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			z-index: 999;
+			img{
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%,-50%);
+				width: 1rem;
+				height: 1rem;
+			}
 		}
 	}
 	.guan{
@@ -304,11 +324,11 @@
 
 </style>
 <script>
-import resource from '../../api/resource.js'
-import {mapActions, mapGetters} from 'vuex'
-export default{
-	data(){
-		return{
+	import resource from '../../api/resource.js'
+	import {mapActions, mapGetters} from 'vuex'
+	export default{
+		data(){
+			return{
 			keyword: "",			//关键词
 			showTask: 0,			//默认有任务
 			statusObj: {},			//任务进度对象

@@ -28,6 +28,7 @@
 						<!-- 大图 -->
 						<div class="itemImg">
 							<img class="taskImg" :src="baseUrl + item.goods_img">
+							<div class="sha"></div>
 						</div>
 						<!-- 下面文字部分 -->
 						<div class="itemTxt">
@@ -70,7 +71,7 @@
 		width: .34rem;
 		height: .36rem;
 		display: flex;
-		align-items:center;
+		align-items:center; 
 		img{
 			position: absolute;
 			width: 100%;
@@ -128,15 +129,22 @@
 		.taskItem{
 			margin-bottom: .22rem;
 			width: 3.4rem;
-			// flex-grow: 1;
-			// flex-shrink: 1;
 			.itemImg{
+				position: relative;
 				width: 3.4rem;
 				height: 2.8rem;
-			}
-			.taskImg{
-				width: 100%;
-				height: 100%;
+				.taskImg{
+					width: 100%;
+					height: 100%;
+				}
+				.sha{
+					position: absolute;
+					top: 0;
+					left: 0;
+					width: 100%;
+					height: 100%;
+					z-index: 999;
+				}
 			}
 			.itemTxt{
 				margin-top: .2rem;
@@ -200,12 +208,12 @@
 }
 </style>
 <script>
-import {mapActions, mapGetters} from 'vuex'
-import resource from '../../api/resource.js'
-import { Spinner } from 'mint-ui';
-export default{
-	data(){
-		return{		
+	import {mapActions, mapGetters} from 'vuex'
+	import resource from '../../api/resource.js'
+	import { Spinner } from 'mint-ui';
+	export default{
+		data(){
+			return{		
 			jia: true,							//等到列表接口成功之后再去加载下一页
 			subClick: true,						//默认按钮可点击一次
 			isLoad: true,						//默认可以加载
@@ -228,6 +236,18 @@ export default{
 		...mapActions([
 			'set_route'
 			]),
+		//上拉加载
+		loadMore(){
+			if(this.jia == true){
+				//获取任务列表
+				if(this.isLoad == true){
+					this.page += 1;
+					this.getTaskList(this.page);
+				}else{
+					console.log("没有更多");
+				}
+			}
+		},
 		//获取任务列表
 		getTaskList(page){
 			this.jia = false;
@@ -272,18 +292,6 @@ export default{
 				});
 			}
 		},
-		//上拉加载
-		loadMore(){
-			if(this.jia == true){
-				//获取任务列表
-				if(this.isLoad == true){
-					this.page += 1;
-					this.getTaskList(this.page);
-				}else{
-					console.log("没有更多");
-				}
-			}
-		}
 		//点击刷新
 		// reloads(){
 		// 	if(this.isLoads == true){
