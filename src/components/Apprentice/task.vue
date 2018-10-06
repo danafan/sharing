@@ -18,6 +18,7 @@
 			<div class="topBox">
 				<div class="icon">
 					<img class="aaa" :src="baseUrl + statusObj.goods_img">
+					<div class="sha"></div>
 				</div>
 				<div class="guan">关键词：<span>{{keyword}}</span></div>
 				<div class="orderCode" v-if="statusObj.status == '1' || statusObj.status == '3'">旺旺号：<span>{{statusObj.wangwang}}</span></div>
@@ -194,6 +195,14 @@
 			border-radius: .34rem;
 			width: 100%;
 			height: 100%;
+		}
+		.sha{
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			z-index: 999;
 		}
 	}
 	.guan{

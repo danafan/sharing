@@ -17,6 +17,7 @@
 					<div class="tie">商品主图</div>
 					<div class="taskIcon">
 						<img :src="baseUrl + taskDetail.goods_img">
+						<div class="sha"></div>
 					</div>
 					<div class="taskSubname">请在<span class="txtRed">{{taskDetail.end_time}}</span>前完成以下操作</div>
 					<div class="taskSubname">否则任务将自动作废哦！</div>
@@ -213,6 +214,14 @@
 			img{
 				width: 100%;
 				height: 100%;
+			}
+			.sha{
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				z-index: 999;
 			}
 		}
 		.taskSubname{
