@@ -127,7 +127,6 @@ export default{
 			]),
 		// 点击切换导航
 		tab(tab){
-			console.log("asd");
 			this.selected = tab;
 			this.set_route(tab);
 			this.$router.push(`${tab}`);
