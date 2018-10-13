@@ -1,7 +1,7 @@
 <template>
 	<div class="box">
 		<!-- 返回按钮 -->
-		<back></back>
+		<back v-if="pageType"></back>
 		<!-- 顶部时间 -->
 		<div class="time">
 			<div class="timeIcon">
@@ -10,7 +10,7 @@
 			<div class="conTime">剩余时间：{{time}}</div>
 		</div>
 		<!-- 第一页中间详情部分 -->
-		<div>
+		<div v-if="pageType">
 			<div class="content">
 				<!-- 上面部分 -->
 				<div class="topCon">
@@ -26,7 +26,7 @@
 				<div class="taskCon">
 					<div class="title">任务要求</div>
 					<div class="operation">
-						<div class="operSubname2">{{taskDetail.task_remark}}</div>
+						<div v-html="taskDetail.task_remark"></div>
 					</div>
 					<div class="title">任务流程</div>
 					<!-- 第一条 -->
@@ -64,6 +64,9 @@
 							<div class="inputTxt">
 								<textarea rows="5" v-model="tao_code"></textarea>
 							</div>	
+							<div class="confirmation" v-if="taoId == 0" @click="conCode">验证</div>
+							<div class="confirmation through" v-if="taoId == 1">通过</div>
+							<div class="confirmation wei" v-if="taoId == 2">失败</div>
 						</div>
 					</div>
 					<!-- 普通任务验证店铺名和商品金额 -->
@@ -96,10 +99,40 @@
 				</div>
 			</div>
 			<!-- 底部确认按钮 -->
-			<div class="saveSubmit backGround" v-if="type == 2" @click="subOrder">提交
+			<div class="saveSubmit" v-if="type == 2" :class="{backGround: prompt == true}" @click="next">下一步
 			</div>
 			<!-- 改版的按钮 -->
 			<div class="saveSubmit" v-else :class="{backGround: prompt == true}" @click="gosub">我已付款
+			</div>
+		</div>
+		<!-- 第二页中间详情部分 -->
+		<div v-else>
+			<div class="orderCon">
+				<div class="title">4.上传图片</div>
+				<div class="uploadBox">
+					<div class="imgItem">
+						<div class="img" v-if="showListImg != ''">
+							<img class="cha" src="../../assets/chacha.png" @click="deleteImg('0')">
+							<img class="lookimg" :src="showListImg">
+						</div>
+						<search v-else @callbackFn="callback" type="0"></search>
+						<div class="toast">商品列表图</div>
+					</div>
+					<div class="imgItem">
+						<div class="img" v-if="showDetailImg != ''">
+							<img class="cha" src="../../assets/chacha.png" @click="deleteImg('2')">
+							<img class="lookimg" :src="showDetailImg">
+						</div>
+						<search v-else @callbackFn="callback" type="2"></search>
+						<div class="toast">商品详情图</div>
+					</div>
+				</div>
+				<div class="demon">
+					<img src="../../assets/shi1.png">
+					<img src="../../assets/shi2.png">
+				</div>
+				<div class="submit" @click="subOrder">提交</div>
+				<div class="goback" @click="goback">上一步</div>
 			</div>
 		</div>
 		<!-- 弹框 -->
@@ -143,7 +176,6 @@
 	left: 0;
 	width: 100%;
 	height: .63rem;
-	z-index: 99;
 	.timeIcon{
 		position: relative;
 		margin-right: .1rem;
@@ -216,13 +248,19 @@
 			color:#333333;
 			span{
 				margin-left: .16rem;
-				color: #ff5946;
+				color: #03abff;
+			}
+		}
+		/deep/ .operation{
+			img{
+				width: 100%;
 			}
 		}
 		.operation{
 			width:100%;
 			margin-bottom: .12rem;
 			padding-left: .2rem;
+			padding-right: .2rem;
 			display: flex;
 			align-items:center;
 			font-size: .26rem;
@@ -260,13 +298,13 @@
 			}
 			.replace{
 				margin-left: .3rem;
-				border:1px solid #ff5946;
+				border:1px solid #03abff;
 				border-radius: .04rem;
 				width: .96rem;
 				text-align: center;
 				height: .28rem;
 				line-height: .28rem;
-				color:#ff5946;
+				color:#03abff;
 			}
 			.inputTxt{
 				input{
@@ -285,7 +323,7 @@
 			.confirmation{
 				margin-left: .3rem;
 				border-radius: .04rem;
-				background: #ff5946;
+				background: #03abff;
 				width: 1rem;
 				text-align: center;
 				height: .36rem;
@@ -328,7 +366,92 @@
 	color:#ff5858;
 }
 .backGround{
-	background: #ff5946;
+	background: #03abff;
+}
+//第二页内容
+.orderCon{
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	padding: .64rem;
+	.title{
+		padding-top: .24rem;
+		padding-bottom: .24rem;
+		font-size: .26rem;
+		color: #333;
+	}
+	.uploadBox{
+		display:flex;
+		justify-content: space-between;
+		.imgItem{
+			.img{
+				position: relative;
+				width: 2.84rem;
+				height: 3.76rem;
+				.cha{
+					position: absolute;
+					top: 0;
+					right: 0;
+					z-index: 1;
+				}
+				.lookimg{
+					position: absolute;
+					top: 0;
+					left: 0;
+					width: 100%;
+					height: 100%;
+				}
+			}
+			.toast{
+				margin-top: .14rem;
+				width: 2.9rem;
+				text-align: center;
+				font-size: .28rem;
+				color: #666;
+			}
+		}
+		.demoImgs{
+			img{
+				width: 2.88rem;
+				height: 2.2rem;
+			}
+		}
+	}
+	.demon{
+		margin-top: .42rem;
+		display:flex;
+		justify-content:space-between;
+		img{
+			width: 2.84rem;
+			height: 3.76rem;
+		}
+	}
+	.submit{
+		margin: .5rem auto 0;
+		border-radius: .08rem;
+		background: #03abff;
+		box-shadow: 0 .02rem .2rem #03abff;
+		width: 100%;
+		text-align: center;
+		height: .9rem;
+		line-height: .9rem;
+		font-size: .26rem;
+		color: #ffffff;
+	}
+	.goback{
+		margin: .2rem auto 0;
+		border-radius: .08rem;
+		background: #03abff;
+		box-shadow: 0 .02rem .2rem #03abff;
+		width: 100%;
+		text-align: center;
+		height: .9rem;
+		line-height: .9rem;
+		font-size: .26rem;
+		color: #ffffff;
+	}
 }
 // 弹框
 .stateBox{
@@ -365,7 +488,7 @@
 			width: 100%;
 			text-align: center;
 			font-size: .28rem;
-			color: #ff5946;
+			color: #03abff;
 		}
 		.butss{
 			position: absolute;
@@ -376,7 +499,7 @@
 			.ok{
 				border-radius: .04rem;
 				margin-right: .4rem;
-				background-color: #ff5946;
+				background-color: #03abff;
 				width: 1.1rem;
 				text-align: center;
 				height: .4rem;
@@ -386,13 +509,13 @@
 			}
 			.close{
 				border-radius: .04rem;
-				border:1px solid #ff5946;
+				border:1px solid #03abff;
 				width: 1.1rem;
 				text-align: center;
 				height: .4rem;
 				line-height: .4rem;
 				font-size: .26rem;
-				color:#ff5946;
+				color:#03abff;
 			}
 		}
 	}
@@ -448,7 +571,7 @@
 			font-size:.3rem;
 			color:#FFF;
 			border-radius: .16rem .16rem 0 0;
-			background:#ff5946;
+			background:#03abff;
 			width: 4.7rem;
 			text-align:center;
 			height:1.12rem;
@@ -459,12 +582,12 @@
 			width:4.2rem;
 			text-align:center;
 			font-size:.28rem;
-			color: #ff5946;
+			color: #03abff;
 		}
 		.bullBut{
 			margin:.6rem auto .3rem;
 			border-radius:.2rem;
-			background:#ff5946;
+			background:#03abff;
 			width:3.42rem;
 			text-align:center;
 			height:.46rem;
@@ -483,6 +606,7 @@
 	export default{
 		data(){
 			return{
+			pageType: true,		//默认第一页
 			id: "",				//任务id
 			taskDetail:{},		//任务详情对象
 			keyword: "",		//关键词
@@ -498,6 +622,7 @@
 			moneyId: 0,			//验证金额按钮状态（0：验证，1:成功，2:失败）
 			tao_code:"",		//输入的淘口令
 			subTaocode:"",		//最终提交通过的淘口令
+			taoId:0,			//验证淘口令按钮状态（0：验证，1:成功，2:失败）
 			maxtime: 180,		//时间
 			tishi: false,		//默认倒数提示不显示
 			time2: "",			//倒数时间
@@ -505,7 +630,11 @@
 			showPrice: false,	//价格区间默认不显示
 			yi: true,			//默认可以点击我已付款
 			showBull:false,		//默认提示不需要付款弹框
-			type:-1,			//默认普通任务（0:普通任务；2:搜索任务）
+			type:-1,				//默认普通任务（0:普通任务；2:搜索任务）
+			listImg: {},		//商品列表图（可传递）
+			showListImg: "",	//商品列表图（展示）
+			detailImg:{},		//商品详情图（可传递）
+			showDetailImg: "",	//商品详情图（展示）
 			shu:2,				//任务流程序号
 			isload: false,		//默认正在提交不显示
 		}
@@ -514,7 +643,7 @@
 		//监听输入的店铺名称
 		shop:function(n,o){
 			if(n != o){
-				if(n == this.subShop && n != ""){//修改后的店铺名和验证通过的用户名一致
+				if(n == this.subShop && n != ""){			//修改后的店铺名和验证通过的用户名一致
 					this.shopId = 1;
 					this.conPrompt();
 				}else{
@@ -538,17 +667,17 @@
 			}
 		},
 		//监听输入淘口令
-		// tao_code:function(n,o){
-		// 	if(n != o){
-		// 		if(n == this.subTaocode && n != ""){//修改后的商品金额和验证通过的商品金额一致
-		// 			this.taoId = 1;
-		// 			this.prompt = true;;
-		// 		}else{
-		// 			this.taoId = 0;
-		// 			this.prompt = false;
-		// 		}
-		// 	}
-		// }
+		tao_code:function(n,o){
+			if(n != o){
+				if(n == this.subTaocode && n != ""){//修改后的商品金额和验证通过的商品金额一致
+					this.taoId = 1;
+					this.prompt = true;;
+				}else{
+					this.taoId = 0;
+					this.prompt = false;
+				}
+			}
+		}
 	},
 	computed: {
 		...mapGetters([
@@ -696,13 +825,12 @@
 			}
 		},
 		//点击验证淘口令
-		subOrder(){
+		conCode(){
 			if(this.tao_code == ""){
 				this.$toast("请输入淘口令");
 			}else{
 				let obj = {
 					openid:sessionStorage.getItem("openid"),
-					// openid:"onPBw0vcayppWp-Drb--mFvM9H6c",
 					usertaskid: this.id,
 					tao_code: this.tao_code
 				}
@@ -714,10 +842,12 @@
 				}
 				resource.virifytaocode(obj).then(res => {
 					if(res.data.code == "0"){
-						this.$toast(res.data.message);
-						this.set_route("task");
-		 				this.$router.push("task");
+						this.taoId = 1;						//修改验证状态（绿色通过）
+						this.subTaocode = this.tao_code;	//验证通过再保存
+						this.prompt = true;					//统一验证提交按钮是否可点击
 					}else{
+						this.taoId = 2;						//修改验证状态（红色未通过）
+						this.prompt = false;
 						this.$toast(res.data.message);
 					}
 				});
@@ -808,6 +938,69 @@
 				});
 			}
 		},
+		// 下一步
+		next(){
+			if(this.prompt == true){//店铺名和金额都确认通过了
+				this.pageType = false;
+			}else{
+				this.$toast("请先通过验证！");
+			}
+		},
+		//上一步
+		goback(){
+			this.pageType = true;
+		},
+		//上传图片组件回调
+		callback(obj){
+			let val = obj.files;	//图片数组
+			let type = obj.type;	//图片类型（0:商品列表；2:商品详情）
+			for(let i = 0;i < val.length;i ++){
+				let obj = val[i];
+				if(type == "0"){
+					this.listImg = obj;					//商品列表图（可传递）
+				}else if(type == "2"){
+					this.detailImg = obj;				//商品详情图（可传递）
+				}
+				let fr = new FileReader();
+				let _this = this;
+				fr.onload=function () {
+					if(type == "0"){
+						_this.showListImg = this.result;//商品列表图片地址
+					}else if(type == "2"){
+						_this.showDetailImg = this.result;//商品详情图片地址
+					}
+				};
+				fr.readAsDataURL(obj);
+			}
+		},
+		//点击删除图片
+		deleteImg(type){
+			if(type == "0"){
+				this.showListImg = "";
+				this.listImg = {};
+			}else if(type == "2"){
+				this.showDetailImg = "";
+				this.detailImg = {};
+			}
+		},
+		//提交订单（第二页）
+		subOrder(){           
+			this.isload = true;    
+			let orderObj = {
+				usertaskid: this.id,
+				goods_list_img: this.listImg,
+				goods_detail_img:this.detailImg
+			}
+			resource.subOrder(orderObj).then(res => {
+				this.isload = false; 
+				if(res.data.code == "0"){  
+					this.set_route("task");
+					this.$router.push("task");
+				}else{
+					this.$toast(res.data.msg);
+				}
+			});
+		}
 		
 	},
 	components:{
