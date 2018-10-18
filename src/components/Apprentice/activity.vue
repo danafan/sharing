@@ -292,59 +292,7 @@
 				});
 			}
 		},
-		//点击刷新
-		// reloads(){
-		// 	if(this.isLoads == true){
-		// 		this.isLoads = false;
-		// 		this.reload = false;	//开始转
-		// 		this.page = 1;
-		// 		this.getTaskList(this.page);
-		// 		let _this = this;
-		// 		setTimeout(function(){
-		// 			_this.isLoads = true;
-		// 		},30000);
-		// 	}else{
-		// 		this.$toast("操作频繁，稍后再试！");
-		// 	}
-		// },
-		//获取任务列表
-		// getTaskList(page){
-		// 	this.jia = false;
-		// 	resource.activity({page:page}).then(res => {
-		// 		this.jia = true;
-		// 		this.reload = true;	//结束转
-		// 		if(res.data.code == "0"){
-		// 			this.listNull = false;
-		// 			let taskList = res.data.data.data;
-		// 			let total = res.data.data.total;
-		// 			let lastPage = res.data.data.last_page;
-		// 			if(taskList.length < "6" || total == "6" || lastPage == this.page){	
-		// 			// 某一页不足6条
-		// 			this.isLoad = false;
-		// 			this.taskList = this.taskList.concat(Array.from(taskList));
-		// 			}else{								//正常
-		// 				this.taskList = this.taskList.concat(Array.from(taskList));
-		// 			}
-		// 		}else if(res.data.code == "1"){//三天之内已经接过任务
-		// 			this.isLoad = false;
-		// 			this.listNull = true;
-		// 			this.toastTxt = "1";
-		// 			this.toastxt = res.data.msg;
-		// 		}else if(res.data.code == "2"){//有任务和时间
-		// 			this.isLoad = false;
-		// 			this.listNull = true;
-		// 			this.toastTxt = "0";
-		// 			this.time = res.data.data.start_time;
-		// 			this.could = res.data.data.num;
-		// 		}else if(res.data.code == "3"){//系统无任务
-		// 			this.isLoad = false;
-		// 			this.listNull = true;
-		// 			this.toastTxt = "2";
-		// 		}else{
-		// 			this.$toast(res.data.msg);
-		// 		}
-		// 	})
-		// },
+		
 		
 
 	},

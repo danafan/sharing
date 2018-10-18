@@ -482,9 +482,11 @@
 }
 </style>
 <script>
+	import { Indicator } from 'mint-ui'
 	import {mapActions, mapGetters} from 'vuex'
 	import resource from '../../api/resource.js'
 	import back from '../../common/back.vue'
+	import wx from 'weixin-js-sdk'
 	export default{
 		data(){
 			return{
@@ -557,8 +559,9 @@
 			sessionStorage.removeItem("ordercode");
 		}
 		this.id = this.$route.query.id;
-		//获取任务详情
-		this.getTaskDetail();
+		//获取地理位置
+		this.getlocation();
+		
 	},
 	methods:{
 		...mapActions([
@@ -568,9 +571,58 @@
 		pan(){
 			return navigator.userAgent.match(/iPhone|iPad|iPod/i) ? true : false;
 		},
+		//获取地理位置
+		getlocation(){
+			Indicator.open({
+				text: '加载中...',
+				spinnerType: 'fading-circle'
+			});
+			let url = encodeURIComponent(window.location.href.split('#')[0]);
+			resource.getLocation({url2:url}).then(res => {
+				var that = this;
+				wx.config(res.data);
+				wx.ready(function(){
+					Indicator.close();
+					wx.getLocation({
+						success: function (res) {
+        					var latitude = res.latitude; 	// 纬度
+        					var longitude = res.longitude ; // 经度
+        					wx.getNetworkType({
+        						success: function (res) {
+        							var networkType = res.networkType; //网络类型
+        							let obj = {
+        								usertaskid:that.id,
+        								longitude:longitude,
+        								latitude:latitude,
+        								network:networkType
+        							}
+        							//获取任务详情
+        							that.getTaskDetail(obj);
+        						}
+        					});
+        				},
+        				cancel: function () { 
+        					wx.getNetworkType({
+        						success: function (res) {
+        							var networkType = res.networkType; //网络类型
+        							let obj = {
+        								usertaskid:that.id,
+        								longitude:"",
+        								latitude:"",
+        								network:networkType
+        							}
+        							//获取任务详情
+        							that.getTaskDetail(obj);
+        						}
+        					});
+        				}
+        			});
+				});
+			});
+		},
 		//获取任务详情
-		getTaskDetail(){
-			resource.getTask({usertaskid:this.id}).then(res => {
+		getTaskDetail(obj){
+			resource.getTask(obj).then(res => {
 				if(res.data.code == "0"){
 					this.taskDetail = res.data.data;
 					this.type = res.data.data.task_type;

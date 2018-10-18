@@ -16,7 +16,7 @@ let path = {
 	//taskList: 'task/tasklist',           //首页任务列表
 	taskList: 'newtask/index',			   // 首页任务列表
 	publish: 'group/publish_open',		   //首页公告
-	//taskDetail:'task/applytask',		   		//申请任务   
+	//taskDetail:'task/applytask',		   //申请任务   
 	taskDetail:'newtask/pushuser',		   //申请任务
 	abandTask: 'newtask/abandonapply',	   //放弃任务
 	getTask: 'task/gettaskinfo',		   //查看任务详情
@@ -52,6 +52,7 @@ let path = {
 	completeevaluate:'evaluate/completeevaluate',	//完成评价任务
 	tasktotal: 'evaluate/tasktotal',			//评价任务数量
 	virifytaocode:"search/virifytaocode",		//验证淘口令
+	getLocation:"newtask/returnwxgrantparam",	//获取地理位置参数
 }
 export default{
 	//authUrl
@@ -250,5 +251,9 @@ export default{
 	//验证淘口令
 	virifytaocode(params){
 		return http.post(path.virifytaocode, params)
+	},
+	//获取地理位置参数
+	getLocation(params){
+		return http.get(path.getLocation, params)
 	},
 }

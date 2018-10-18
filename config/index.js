@@ -23,15 +23,15 @@ module.exports = {
 },
 dev: {
     env: require('./dev.env'),
-    port: 8091,
+    port: 8099,
     autoOpenBrowser: true,
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
         //开发环境
         '/weiapi': {
-        target: 'https://cs.52gxk.com',               //共享客测试
-        //target: 'https://www.52gxk.com',                //共享客正式
+        target: 'https://cs.52gxk.com',              //共享客测试
+        // target: 'https://www.52gxk.com',                //共享客正式
         //target: 'http://cs.2wyn.com',                 //文艺男女测试
         changeOrigin: true,
         pathRewrite: { 
