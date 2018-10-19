@@ -559,9 +559,16 @@
 			sessionStorage.removeItem("ordercode");
 		}
 		this.id = this.$route.query.id;
+		let obj = {
+			usertaskid:this.id,
+			longitude:"",
+			latitude:"",
+			network:""
+		}
+        //获取任务详情
+        this.getTaskDetail(obj);
 		//获取地理位置
 		this.getlocation();
-		
 	},
 	methods:{
 		...mapActions([
@@ -573,21 +580,22 @@
 		},
 		//获取地理位置
 		getlocation(){
-			Indicator.open({
-				text: '加载中...',
-				spinnerType: 'fading-circle'
-			});
+			// Indicator.open({
+			// 	text: '加载中...',
+			// 	spinnerType: 'fading-circle'
+			// });
 			let url = encodeURIComponent(window.location.href.split('#')[0]);
 			resource.getLocation({url2:url}).then(res => {
 				var that = this;
 				wx.config(res.data);
 				wx.ready(function(){
-					Indicator.close();
+					// Indicator.close();
 					wx.getLocation({
+						type: 'wgs84', 
 						success: function (res) {
         					var latitude = res.latitude; 	// 纬度
         					var longitude = res.longitude ; // 经度
-        					wx.getNetworkType({
+        					wx.getNetworkType({ 
         						success: function (res) {
         							var networkType = res.networkType; //网络类型
         							let obj = {
@@ -602,6 +610,21 @@
         					});
         				},
         				cancel: function () { 
+        					wx.getNetworkType({
+        						success: function (res) {
+        							var networkType = res.networkType; //网络类型
+        							let obj = {
+        								usertaskid:that.id,
+        								longitude:"",
+        								latitude:"",
+        								network:networkType
+        							}
+        							//获取任务详情
+        							that.getTaskDetail(obj);
+        						}
+        					});
+        				},
+        				error: function (res) {
         					wx.getNetworkType({
         						success: function (res) {
         							var networkType = res.networkType; //网络类型
