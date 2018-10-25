@@ -29,7 +29,6 @@
 						<div v-html="taskDetail.task_remark"></div>
 					</div>
 					<div class="title">任务流程</div>
-					<!-- 第一条 -->
 					<div class="subTie">1. 打开淘宝客户端，按照以下步骤操作：</div>
 					<div class="operation">
 						<div class="operName1">关键词(不可复制)：</div>	
@@ -39,7 +38,6 @@
 					<div class="operation" v-if="type == 0 || type == 1">
 						<div class="operSubname2">订单需购买{{taskDetail.goods_num}}件才能审核通过，请添加到购物车一起付款</div>
 					</div>
-					<!-- 第二条 -->
 					<div class="subTie">{{shu}}. 筛选条件：</div>
 					<div class="operation">
 						<div class="operName">排序方式：</div>	
@@ -58,35 +56,15 @@
 						<div class="operSubname">{{taskDetail.arrive_pay}}</div>
 					</div>
 					<!-- 搜索任务验证淘口令 -->
-					<div v-if="type == 2">
+					<div>
 						<div class="subTie">{{shu + 1}}. 验证淘口令<span @click="$router.push('/shopCode')">如何复制淘口令>></span></div>
 						<div class="operation">
 							<div class="inputTxt">
 								<textarea rows="5" v-model="tao_code"></textarea>
-							</div>	
-						</div>
-					</div>
-					<!-- 普通任务验证店铺名和商品金额 -->
-					<div v-if="type == 0 || type == 1">
-						<!-- 第三条 -->
-						<div class="subTie">{{shu + 1}}. 输入店铺全称，验证店铺<span @click="$router.push('/shopFull')">如何查看店铺全称>></span></div>
-						<div class="operation">
-							<div class="inputTxt">
-								<input type="text" v-model="shop">
-							</div>	
-							<div class="confirmation" v-if="shopId == 0" @click="conShop">验证</div>
-							<div class="confirmation through" v-if="shopId == 1">通过</div>
-							<div class="confirmation wei" v-if="shopId == 2">失败</div>
-						</div>
-						<!-- 第四条 -->
-						<div class="subTie">{{shu + 2}}. 输入商品金额，验证金额<span @click="$router.push('/shopMoney')">如何查看商品金额>></span></div>
-						<div class="operation">
-							<div class="inputTxt">
-								<input type="number" v-model="money">
-							</div>	
-							<div class="confirmation" v-if="moneyId == 0" @click="conMoney">验证</div>
-							<div class="confirmation through" v-if="moneyId == 1">通过</div>
-							<div class="confirmation wei" v-if="moneyId == 2">失败</div>
+							</div>
+							<div class="confirmation" v-if="codeId == 0" @click="yanCode">验证</div>
+							<div class="confirmation through" v-if="codeId == 1">通过</div>
+							<div class="confirmation wei" v-if="codeId == 2">失败</div>
 						</div>
 						<!-- 提示 -->
 						<div class="prompt" v-if="tishi">请用您的淘宝账号<span>{{wangwang}}</span>,拍下并付款吧！</div>
@@ -96,15 +74,11 @@
 				</div>
 			</div>
 			<!-- 底部确认按钮 -->
-			<div class="saveSubmit backGround" v-if="type == 2" @click="conCode">提交
-			</div>
-			<!-- 改版的按钮 -->
-			<div class="saveSubmit" v-else :class="{backGround: prompt == true}" @click="gosub">我已付款
+			<div class="saveSubmit" :class="{backGround: prompt == true}" @click="gosub">{{type == 2 ? "提交" : "我已付款"}}
 			</div>
 		</div>
-		<!-- 弹框 -->
+		<!-- 确认提交弹框 -->
 		<div class="stateBox" v-if="showState" @click="showState = false">
-			<!-- 审核和删除 -->
 			<div class="type1" @click.stop>
 				<div class="icon"><img src="../../assets/warning.png"></div>	
 				<div class="wen">请确保订单付款后再进行提交哦！</div>
@@ -114,11 +88,7 @@
 				</div>
 			</div>
 		</div>
-		<!-- 提交弹框 -->
-		<div class="modelBox" v-if="isload">
-			<div class="toast">正在提交...</div>
-		</div>
-		<!-- 搜索任务提示不需要付款 -->
+		<!-- 搜索任务提示不需要付款弹框 -->
 		<div class="bulletinBox" v-if="showBull" @click="showBull = false">
 			<div class="bulletin" @click.stop>
 				<div class="bulletinTie">公告</div>
@@ -403,26 +373,6 @@
 		}
 	}
 }
-.modelBox{
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	display:flex;
-	align-items: center;
-	justify-content:center;
-	.toast{
-		background: rgba(0,0,0,.8);
-		border-radius: .05rem;
-		width: 4rem;
-		text-align: center;
-		height: .8rem;
-		line-height: .8rem;
-		font-size: .28rem;
-		color: #fff;
-	}
-}
 .bulletinBox{
 	background:rgba(0,0,0,.66);
 	position: fixed;
@@ -503,6 +453,7 @@
 			wangwang: "",		//旺旺号
 			orderCode: "",		//订单编号
 			moneyId: 0,			//验证金额按钮状态（0：验证，1:成功，2:失败）
+			codeId:0,			//验证淘口令按钮状态（0：验证，1:成功，2:失败）
 			tao_code:"",		//输入的淘口令
 			subTaocode:"",		//最终提交通过的淘口令
 			maxtime: 180,		//时间
@@ -512,33 +463,19 @@
 			showPrice: false,	//价格区间默认不显示
 			yi: true,			//默认可以点击我已付款
 			showBull:false,		//默认提示不需要付款弹框
-			type:-1,				//默认普通任务（0:普通任务；2:搜索任务）
+			type:-1,			//默认普通任务（0:普通任务；2:搜索任务）
 			shu:2,				//任务流程序号
 			isload: false,		//默认正在提交不显示
 		}
 	},
 	watch:{
-		//监听输入的店铺名称
-		shop:function(n,o){
+		//监听输入的淘口令
+		tao_code:function(n,o){
 			if(n != o){
-				if(n == this.subShop && n != ""){			//修改后的店铺名和验证通过的用户名一致
-					this.shopId = 1;
-					this.conPrompt();
+				if(n == this.subTaocode && n != ""){//修改后的淘口令和验证通过的淘口令一致
+					this.codeId = 1;
 				}else{
-					this.shopId = 0;
-					this.prompt = false;
-					this.tishi = false;
-				}
-			}
-		},
-		//监听输入的金额
-		money:function(n,o){
-			if(n != o){
-				if(n == this.subMoney && n != ""){//修改后的商品金额和验证通过的商品金额一致
-					this.moneyId = 1;
-					this.conPrompt();
-				}else{
-					this.moneyId = 0;
+					this.codeId = 0;
 					this.prompt = false;
 					this.tishi = false;
 				}
@@ -681,7 +618,7 @@
 				}		
 			});
 		},
-		//时间倒数
+		//时间倒数结束后自动取消任务（1）
 		timeDown(endDateStr) {
 			    //相差的总豪秒数
 			    var totalSeconds = (new Date(endDateStr) - new Date());
@@ -702,13 +639,14 @@
 			    }, 1000);
 			}
 		},
+		//时间倒数结束后自动取消任务（2）
 		checkTime(i){ 
 			if(i<10){ 
 				i = "0" + i; 
 			} 
 			return i; 
 		}, 
-		//时间倒数结束后自动取消任务
+		//时间倒数结束后自动取消任务（3）
 		giving(){
 			resource.abandontask({usertaskid:this.id}).then(res => {
 				if(res.data.code == "0"){
@@ -719,57 +657,14 @@
 				}
 			});
 		},
-		//点击验证店铺名称
-		conShop(){
-			if(this.shop == ""){
-				this.$toast("请输入店铺名称");
-			}else if(this.shop.indexOf(" ") != -1){
-				this.$toast("店铺名不能包含空格");
-			}else{
-				let shopNameObj = {
-					usertaskid: this.id,
-					shop_name: this.shop
-				}
-				resource.firmShopName(shopNameObj).then(res => {
-					if(res.data.code == "0"){
-						this.shopId = 1;			//修改验证状态（绿色通过）
-						this.subShop = this.shop;	//验证通过再保存
-						this.conPrompt();			//统一验证提交按钮是否可点击
-					}else{
-						this.shopId = 2;			//修改验证状态（红色未通过）
-						this.$toast(res.data.msg);
-					}
-				});
-			}
-		},
-		//点击验证金额
-		conMoney(){
-			if(this.money == ""){
-				this.$toast("请输入商品金额");
-			}else{
-				let shopMoneyObj = {
-					usertaskid: this.id,
-					goods_price: this.money
-				}
-				resource.firmShopMoney(shopMoneyObj).then(res => {
-					if(res.data.code == "0"){
-						this.moneyId = 1;			//修改验证状态（绿色通过）
-						this.subMoney = this.money;	//验证通过再保存
-						this.conPrompt();			//统一验证提交按钮是否可点击
-					}else{
-						this.moneyId = 2;			//修改验证状态（红色未通过）
-						this.$toast(res.data.msg);
-					}
-				});
-			}
-		},
-		//点击验证淘口令
-		conCode(){
+		//点击验证淘口令（普通任务和活动任务）
+		yanCode(){
 			if(this.tao_code == ""){
 				this.$toast("请输入淘口令");
 			}else{
 				let obj = {
 					openid:sessionStorage.getItem("openid"),
+					// openid:"okKUgw72tVlt3SM_gVJy32uxGAxE",
 					usertaskid: this.id,
 					tao_code: this.tao_code
 				}
@@ -781,30 +676,23 @@
 				}
 				resource.virifytaocode(obj).then(res => {
 					if(res.data.code == "0"){
-						this.set_route("task");
-						this.$router.push("task");
+						this.codeId = 1;			//验证按钮绿色
+						if(this.type != 2){		//普通任务或活动任务
+							this.tishi = true;		//三分钟提示显示
+							this.CountDown();		//倒计时方法
+						}else{					//搜索任务
+							this.prompt = true;		//底部按钮可点击
+						}
 					}else{
+						this.codeId = 2;			//验证按钮灰色
 						this.$toast(res.data.message);
 					}
 				});
 			}
 		},
-		//同时验证店铺名和金额控制按钮是否可以显示
-		conPrompt(){
-			if(this.shopId == 1 && this.moneyId == 1){//如果店铺名和金额都通过验证
-				if(this.type == 0 || this.type == 1){
-					this.CountDown();
-				}else if(this.type == 2){
-					this.prompt = true;
-				}
-			}else{
-				this.prompt = false;
-				this.tishi = false;
-			}
-		},
-		//单纯分钟和秒倒计时
+		//普通任务和活动任务验证通过后三分钟倒计时（1）
 		CountDown() {
-			if(this.shopId == 1 && this.moneyId == 1){//如果店铺名和金额都通过验证
+			if(this.codeId == 1){//如果淘口令通过验证
 				if(!!localStorage.getItem("maxtime") && this.id == localStorage.getItem("taskid")){
 					this.xia(localStorage.getItem("maxtime"));
 				}else{
@@ -820,6 +708,7 @@
 				}
 			}
 		},
+		//普通任务和活动任务验证通过后三分钟倒计时（2）
 		xia(sheng){
 			//相差的总豪秒数
 			var totalSeconds = (new Date(sheng) - new Date());
@@ -843,15 +732,29 @@
 			    }, 1000);
 			}
 		},
-		//点击我已付款
+		//点击我已付款或提交
 		gosub(){
 			if(this.prompt == true){//店铺名和金额都确认通过了
-				this.showState = true;
+				if(this.type == 2){
+					this.ok();
+				}else{
+					this.showState = true;
+				}
 			}else{
-				this.$toast("请先通过验证！");
+				if(this.type == 2){
+					this.$toast("请先通过验证！");
+				}else{
+					if(this.codeId != 1){
+						this.$toast("请先通过验证！");
+					}else{
+						this.$toast("请先在淘宝页面浏览3分钟");
+					}
+					
+				}
+				
 			}
 		},
-		//点击我已付款的确定(第一页)
+		//点击我已付款弹框的确定（普通任务和活动任务）
 		ok(){
 			if(this.yi == true){
 				this.yi = false;

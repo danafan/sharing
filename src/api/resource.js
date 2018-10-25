@@ -51,7 +51,7 @@ let path = {
 	abandontasks: 'evaluate/abandontask',	//放弃评价任务
 	completeevaluate:'evaluate/completeevaluate',	//完成评价任务
 	tasktotal: 'evaluate/tasktotal',			//评价任务数量
-	virifytaocode:"search/virifytaocode",		//验证淘口令
+	virifytaocode:"task/verifytkliscorrect",		//验证淘口令
 	getLocation:"newtask/returnwxgrantparam",	//获取地理位置参数
 }
 export default{

@@ -1,7 +1,6 @@
 import axios from 'axios'
 
 const baseURL = `${location.origin}/weiapi/`;
-//const baseURL = "http://cs.52gxk.com/weiapi/";
 // 创建axios实例，可以自定义配置
 const instance = axios.create({
   baseURL,
