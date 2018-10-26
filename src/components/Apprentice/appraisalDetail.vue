@@ -317,7 +317,7 @@
 		},
 		//点击下载视频
 		uploadVideo(){
-			window.location.href = "http://www.52gxk.com/weiapi/evaluatetask/download?url=" + this.baseUrl1 + this.video;
+			window.location.href = "http://cs.52gxk.com/weiapi/evaluatetask/download?url=" + this.baseUrl1 + this.video;
 		},
 		//点击放弃或者提交按钮
 		tan(type){
