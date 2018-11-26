@@ -53,6 +53,9 @@ let path = {
 	tasktotal: 'evaluate/tasktotal',			//评价任务数量
 	virifytaocode:"task/verifytkliscorrect",		//验证淘口令
 	getLocation:"newtask/returnwxgrantparam",	//获取地理位置参数
+	getprovinces:"address/getprovinces",		//获取所有省列表
+	getcity:"address/getcity",					//获取市列表
+	getdistrict:"address/getdistrict",			//获取区列表
 }
 export default{
 	//authUrl
@@ -255,5 +258,17 @@ export default{
 	//获取地理位置参数
 	getLocation(params){
 		return http.get(path.getLocation, params)
+	},
+	//获取省
+	getprovinces(params){
+		return http.get(path.getprovinces, params)
+	},
+	//获取市
+	getcity(params){
+		return http.get(path.getcity, params)
+	},
+	//获取区
+	getdistrict(params){
+		return http.get(path.getdistrict, params)
 	},
 }

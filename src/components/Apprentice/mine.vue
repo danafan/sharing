@@ -400,16 +400,17 @@ export default{
 		},
 		//点击实名认证
 		ren(){
-			resource.confirmation().then(res => {
-				if(res.data.code == "0"){
-					this.$toast("您已通过实名认证");
-				}else if(res.data.code == "2"){
-					this.$router.replace('/certification');
-				}else if(res.data.code == "3"){
-					let message = res.data.message;
-					this.$toast(message);
-				}
-			});
+			this.$router.replace('/certification');
+			// resource.confirmation().then(res => {
+			// 	if(res.data.code == "0"){
+			// 		this.$toast("您已通过实名认证");
+			// 	}else if(res.data.code == "2"){
+			// 		this.$router.replace('/certification');
+			// 	}else if(res.data.code == "3"){
+			// 		let message = res.data.message;
+			// 		this.$toast(message);
+			// 	}
+			// });
 		},
 		// 点击评价列表
 		showping(){

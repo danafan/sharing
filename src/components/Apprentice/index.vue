@@ -349,7 +349,7 @@
 	bottom: 0;
 	width: 100%;
 	height: 100%;
-	z-index: 1;
+	z-index: 9999999999999;
 	.type1{
 		border-radius: .17rem;
 		position: relative;
@@ -487,7 +487,7 @@
 		    bulletinTxt: "注意，注意，每月本金可立马提现，佣金每月1-3号可提现哦～",  //公告内容
 		    showBind: false,						 //默认未绑定手机号弹框不显示
 		    message: "",							 //复制的淘链接
-		    showCer: false,						     //未实名认证弹框默认不显示
+		    showCer: false ,						 //未实名认证弹框默认不显示
 		    selTab: 0,								 //默认选中普通任务
 		}
 	},  

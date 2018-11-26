@@ -2,14 +2,14 @@ import axios from './index'
 
 export default {
   post(path, params={}){
-    // let target = {
-    //   userid: "1635"
-    // };
-    let target = {};
-    let uid = sessionStorage.getItem("uid");
-    if(!!uid){
-      target.userid = uid;
-    }
+    let target = {
+      userid: "1635"
+    };
+    // let target = {};
+    // let uid = sessionStorage.getItem("uid");
+    // if(!!uid){
+    //   target.userid = uid;
+    // }
     Object.assign(params, target);
     let form = new FormData();
     let arr = [];
@@ -26,14 +26,14 @@ export default {
     return axios.post(`${path}`, form);
   },
   get(path, params={}){
-    // let target = {
-    //   userid: "1635"
-    // };
-    let target = {};
-    let uid = sessionStorage.getItem("uid");
-    if(!!uid){
-      target.userid = uid;
-    }
+    let target = {
+      userid: "1635"
+    };
+    // let target = {};
+    // let uid = sessionStorage.getItem("uid");
+    // if(!!uid){
+    //   target.userid = uid;
+    // }
     Object.assign(params, target);
     let arr = [];
     let str = '';
