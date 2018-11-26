@@ -99,6 +99,13 @@
 					</div>
 					<img class="infoRight" src="../../assets/advance.png">
 				</div>
+				<div class="infoItem" @click="ren">
+					<div class="infoLeft">
+						<div class="infoIcon"><img src="../../assets/certification1.png"></div>
+						<div class="infoTxt">实名认证</div>
+					</div>
+					<img class="infoRight" src="../../assets/advance.png">
+				</div>
 				<div class="infoItem" @click="$router.push('/guest')">
 					<div class="infoLeft">
 						<div class="infoIcon"><img src="../../assets/call centre.png"></div>
@@ -390,6 +397,19 @@ export default{
 		showtask(){
 			this.showTask = !this.showTask;
 			sessionStorage.setItem("showTask",JSON.stringify(this.showTask));
+		},
+		//点击实名认证
+		ren(){
+			resource.confirmation().then(res => {
+				if(res.data.code == "0"){
+					this.$toast("您已通过实名认证");
+				}else if(res.data.code == "2"){
+					this.$router.replace('/certification');
+				}else if(res.data.code == "3"){
+					let message = res.data.message;
+					this.$toast(message);
+				}
+			});
 		},
 		// 点击评价列表
 		showping(){
