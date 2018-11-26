@@ -517,16 +517,11 @@
 		},
 		//获取地理位置
 		getlocation(){
-			// Indicator.open({
-			// 	text: '加载中...',
-			// 	spinnerType: 'fading-circle'
-			// });
 			let url = encodeURIComponent(window.location.href.split('#')[0]);
 			resource.getLocation({url2:url}).then(res => {
 				var that = this;
 				wx.config(res.data);
 				wx.ready(function(){
-					// Indicator.close();
 					wx.getLocation({
 						type: 'wgs84', 
 						success: function (res) {

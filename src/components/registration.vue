@@ -76,7 +76,7 @@
 			<div class="itemInput"><input type="text" v-model="recomname" placeholder="推荐人用户名"></div>
 		</div>
 		<!-- 注册按钮 -->
-		<div class="registration" @click="registration">立即注册</div>
+		<div class="registration" @click="getlocation">立即注册</div>
 		<!-- 日期选择组件 -->
 		<mt-datetime-picker
 		ref="picker"
@@ -289,6 +289,7 @@
 import back from '../common/back.vue'
 import { DatetimePicker} from 'mint-ui';
 import resource from '../api/resource.js'
+import wx from 'weixin-js-sdk'
 export default{
 	data(){
 		return{
@@ -352,7 +353,7 @@ export default{
 			this.workId = id;
 		},
 		//点击立即注册
-		registration(){
+		registration(latitude,longitude){
 			if(this.username == ""){
 				this.$toast("请填写用户名!");
 			}else if(!this.judgmentName.test(this.username)){
@@ -416,6 +417,8 @@ export default{
 					birth: this.birth,			//生日
 					job_id: this.workId,		//工作
 					identity: this.status,		//身份代号（0师父，1徒弟）
+					latitude:latitude,
+					longitude:longitude
 				}
 				if(this.status == "0"){		 //选择师父
 					userObj.status = "1";
@@ -427,6 +430,30 @@ export default{
 				//请求注册接口
 				this.register(userObj);
 			}
+		},
+		//获取地理位置
+		getlocation(){
+			let url = encodeURIComponent(window.location.href.split('#')[0]);
+			resource.getLocation({url2:url}).then(res => {
+				var that = this;
+				wx.config(res.data);
+				wx.ready(function(){
+					wx.getLocation({
+						type: 'wgs84', 
+						success: function (res) {
+        					var latitude = res.latitude; 	// 纬度
+        					var longitude = res.longitude ; // 经度
+        					that.registration(latitude,longitude);
+        				},
+        				cancel: function () { 
+        					that.$toast("地理位置获取失败!");
+        				},
+        				error: function (res) {
+        					that.$toast("地理位置获取失败!");
+        				}
+        			});
+				});
+			});
 		},
 		//请求注册接口
 		register(userObj){
