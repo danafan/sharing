@@ -332,7 +332,7 @@
 			alipay:"",				//支付宝账号
 			selAddress: "请选择收货地址",	//用户选择的省市县（展示）
 			detailAddress:"",		//详细收货地址（提交）
-			addressId: ""		    //最终提交的地址id（提交）
+			addressId: "",		    //最终提交的地址id（提交）
 			phone:"",				//手机号
 		}
 	},
