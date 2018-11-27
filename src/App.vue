@@ -33,9 +33,9 @@
 						}
 					};
 					
-					// this.getAuthurl();
-					sessionStorage.setItem("status","0");
-					this.$router.push('/navbar');
+					this.getAuthurl();
+					// sessionStorage.setItem("status","0");
+					// this.$router.push('/navbar');
 					// this.$router.push('/registration');
 					// this.$router.push('/certification');
 					// this.$router.push('/taskDetail');

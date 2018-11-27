@@ -97,9 +97,9 @@
 				<div class="icon"><img src="../../assets/certification.png"></div>	
 				<div class="wen">
 					<div>实名认证</div>
-					<div class="ti">根据国家法律规定互联网账号必须经过实名认证，为确保账户正常使用及账户安全请尽快完成实名</div>
+					<div class="ti">{{msg}}</div>
 				</div>
-				<div class="butss">
+				<div class="butss" v-if="status == '0' || status == '3'">
 					<div class="ok" @click="$router.push('/certification')">去认证</div>
 				</div>
 			</div>
@@ -489,6 +489,8 @@
 		    message: "",							 //复制的淘链接
 		    showCer: false ,						 //未实名认证弹框默认不显示
 		    selTab: 0,								 //默认选中普通任务
+		    msg:"",									 //审核提示弹框内容
+		    status:"",							     //审核状态
 		}
 	},  
 	created(){
@@ -502,6 +504,8 @@
 		this.getBanner();
 		//判断用户是否关联了手机号
 		this.isbindphone();
+		//验证用户是否实名认证
+		this.useridentity();
 	},
 	watch:{
 		selTab:function(n){
@@ -547,6 +551,27 @@
 					this.showBind = true;
 				}else{
 					console.log(res.data.msg);
+				}
+			});
+		},
+		//验证用户是否实名认证
+		useridentity(){
+			resource.useridentity().then(res => {
+				if(res.data.code == "1"){
+					//强制、未审核成功
+					if(res.data.check_status != "2" && res.data.is_constraint == "1"){
+						this.showCer = true;
+						this.status = res.data.check_status;
+						if(res.data.check_status == "0"){
+							this.msg = "根据国家法律规定互联网账号必须经过实名认证，为确保账户正常使用及账户安全请尽快完成实名";
+						}else if(res.data.check_status == "1"){
+							this.msg = "管理员正在审核";
+						}else if(res.data.check_status == "3"){
+							this.msg = "认证审核被拒绝，请重新认证";
+						}
+					}
+				}else{
+					this.$toast(res.data.message);
 				}
 			});
 		},

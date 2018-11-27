@@ -56,6 +56,9 @@ let path = {
 	getprovinces:"address/getprovinces",		//获取所有省列表
 	getcity:"address/getcity",					//获取市列表
 	getdistrict:"address/getdistrict",			//获取区列表
+	useridentity:"useridentity/ispassidentityinfo",	//验证用户是否使命认证
+	uploadidentity:"useridentity/uploadidentityinfo",	//上传认证资料
+
 }
 export default{
 	//authUrl
@@ -271,4 +274,13 @@ export default{
 	getdistrict(params){
 		return http.get(path.getdistrict, params)
 	},
+	//验证用户是否实名认证
+	useridentity(params){
+		return http.get(path.useridentity, params)
+	},
+	//上传认证资料
+	uploadidentity(params){
+		return http.post(path.uploadidentity, params)
+	}
+
 }

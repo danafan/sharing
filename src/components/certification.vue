@@ -214,6 +214,8 @@
 }
 </style>
 <script>
+	import { Indicator } from 'mint-ui';
+	import resource from '../api/resource.js'
 	import cerupload from '../common/cerupload.vue'
 	export default{
 		data(){
@@ -273,12 +275,21 @@
 					this.$toast("请上传身份证反面照片");
 				}else{
 					let Obj = {
-						username: this.username,
-						card: this.card,
-						cardTopImg: this.cardTopImg,
-						cardBotImg:this.cardBotImg
+						real_name: this.username,
+						identity_card_num: this.card,
+						identity_cart_img1: this.cardTopImg,
+						identity_cart_img2:this.cardBotImg
 					}
-					console.log(Obj);
+					Indicator.open('正在提交...');
+					resource.uploadidentity(Obj).then(res => {
+						Indicator.close();
+						if(res.data.code == "1"){
+							this.$toast(res.data.message);
+							this.$router.go(-1);
+						}else{
+							this.$toast(res.data.message);
+						}
+					});
 				}
 			}
 		},

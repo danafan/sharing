@@ -333,6 +333,7 @@
 			selAddress: "请选择收货地址",	//用户选择的省市县（展示）
 			detailAddress:"",		//详细收货地址（提交）
 			addressId: ""		    //最终提交的地址id（提交）
+			phone:"",				//手机号
 		}
 	},
 	created(){
@@ -440,6 +441,7 @@
 					wangwang: this.wangCode,	//旺旺号
 					qq: this.qqCode,			//qq号
 					wechat: this.wx,			//微信号
+					phone:this.phone,			//手机号
 					realname: this.name,		//真实姓名
 					sex: this.sex,				//性别
 					birth: this.birth,			//生日
