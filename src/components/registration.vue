@@ -396,20 +396,24 @@
 					this.$toast("请确认密码!");
 				}else if(this.alipay == ""){
 					this.$toast("请填写支付宝账号!");
+				}else if(this.alipay.indexOf(" ") != -1){
+					this.$toast("支付宝账号不能包括空格!");
+				}else if(this.alipay.indexOf("	") != -1){
+					this.$toast("支付宝账号不能包括空格!");
 				}else if(!this.judgmentPassword.test(this.newPass)){
 					this.$toast("密码必须在6-16位之间，且至少包含大小写字母，数字，下划线中的两种");
 				}else if(this.oldPass != this.newPass){
 					this.$toast("两次密码不一致！");
 				}else if(this.wangCode == ""){
 					this.$toast("请填写旺旺号!");
-				}else if(this.selAddress == "请选择收货地址"){
-					this.$toast("请选择收货地址!");
-				}else if(this.detailAddress == ""){
-					this.$toast("请填写详细收货地址!");
 				}else if(this.wangCode.indexOf(" ") != -1){
 					this.$toast("旺旺号不能包括空格!");
 				}else if(this.wangCode.indexOf("	") != -1){
 					this.$toast("旺旺号不能包括空格!");
+				}else if(this.selAddress == "请选择收货地址"){
+					this.$toast("请选择收货地址!");
+				}else if(this.detailAddress == ""){
+					this.$toast("请填写详细收货地址!");
 				}else if(this.qqCode == ""){
 					this.$toast("请填写QQ号!");
 				}else if(!this.judgmentqq.test(this.qqCode)){

@@ -567,7 +567,7 @@
 						}else if(res.data.check_status == "1"){
 							this.msg = "管理员正在审核";
 						}else if(res.data.check_status == "3"){
-							this.msg = "认证审核被拒绝，请重新认证";
+							this.msg = res.data.message;
 						}
 					}
 				}else{
