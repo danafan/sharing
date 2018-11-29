@@ -38,6 +38,31 @@
 					<img src="../assets/example1.png">
 					<img src="../assets/example2.png">
 				</div>
+				<div class="title">请上传截图</div>
+				<div class="imgs">
+					<!-- 支付宝截图 -->
+					<div class="imgItem">
+						<div class="img" v-if="showAlipay != ''">
+							<img class="cha" src="../assets/chacha.png" @click="deleteImg('3')">
+							<img class="lookimg" :src="showAlipay">
+						</div>
+						<cerupload v-else type="3" @callbackFn="callbackFn"></cerupload>
+						<div class="toast">支付宝截图</div>
+					</div>
+					<!-- 收货地址截图 -->
+					<div class="imgItem">
+						<div class="img" v-if="showAddress != ''">
+							<img class="cha" src="../assets/chacha.png" @click="deleteImg('4')">
+							<img class="lookimg" :src="showAddress">
+						</div>
+						<cerupload v-else type="4" @callbackFn="callbackFn"></cerupload>
+						<div class="toast">收货地址截图</div>
+					</div>
+				</div>
+				<div class="demoImg1">
+					<img src="../assets/example3.png">
+					<img src="../assets/example4.png">
+				</div>
 			</div>
 			<div class="next" @click="next">提交</div>
 		</div>
@@ -107,13 +132,12 @@
 	}
 }
 .imgBox{
-	padding-bottom: .3rem;
-	padding-left: .4rem;
-	padding-right: .4rem;
+	padding: 0 .4rem .2rem .4rem;
 	margin-top: .1rem;
 	width: 100%;
 	background:#fff;
 	.title{
+		font-weight: bold;
 		padding-top: .24rem;
 		padding-bottom: .24rem;
 		font-size: .26rem;
@@ -157,12 +181,21 @@
 		}
 	}
 	.demoImg{
-		margin-top: .4rem;
+		margin-top: .2rem;
 		display:flex;
 		justify-content: space-between;
 		img{
 			width: 2.88rem;
 			height: 2.2rem;
+		}
+	}
+	.demoImg1{
+		margin-top: .2rem;
+		display:flex;
+		justify-content: space-between;
+		img{
+			width: 2.88rem;
+			height: 3.8rem;
 		}
 	}
 }
@@ -227,6 +260,10 @@
 				cardTopImg: "",						//传递到后台的身份证正面图片对象
 				showCardBot: "",					//预览的身份证反面图片地址
 				cardBotImg: "",						//传递到后台的身份证反面图片对象
+				showAlipay: "",				    	//预览的支付宝图片地址
+				alipayImg: "",						//传递到后台的支付宝图片对象
+				showAddress: "",					//预览的收货地址图片地址
+				addressImg: "",						//传递到后台的收货地址图片对象
 			}
 		},
 		methods:{
@@ -240,6 +277,10 @@
 						this.cardTopImg = obj;				//传递到后台的身份证正面图片对象
 					}else if(type == "2"){
 						this.cardBotImg = obj;				//传递到后台的身份证反面图片对象
+					}else if(type == "3"){
+						this.alipayImg = obj;				//传递到后台的支付宝图片对象
+					}else if(type == "4"){
+						this.addressImg = obj;				//传递到后台的收货地址图片对象
 					}
 					let fr = new FileReader();
 					let _this = this;
@@ -248,6 +289,10 @@
 							_this.showCardTop = this.result;//预览身份证正面图片地址
 						}else if(type == "2"){
 							_this.showCardBot = this.result;//预览身份证反面图片地址
+						}else if(type == "3"){
+							_this.showAlipay = this.result;//预览身份证反面图片地址
+						}else if(type == "4"){
+							_this.showAddress = this.result;//预览身份证反面图片地址
 						}
 					};
 					fr.readAsDataURL(obj);
@@ -261,6 +306,12 @@
 				}else if(type == "2"){
 					this.showCardBot = "";				    //预览的身份证反面图片地址
 					this.cardBotImg = "";					//传递到后台的身份证反面图片对象
+				}else if(type == "3"){
+					this.showAlipay = "";				    //预览的身份证反面图片地址
+					this.alipayImg = "";					//传递到后台的身份证反面图片对象
+				}else if(type == "4"){
+					this.showAddress = "";				    //预览的身份证反面图片地址
+					this.addressImg = "";					//传递到后台的身份证反面图片对象
 				}
 			},
 			//提交
@@ -273,12 +324,18 @@
 					this.$toast("请上传身份证正面照片");
 				}else if(this.cardBotImg == ""){
 					this.$toast("请上传身份证反面照片");
+				}else if(this.alipayImg == ""){
+					this.$toast("请上传支付宝截图");
+				}else if(this.addressImg == ""){
+					this.$toast("请上传收货地址截图");
 				}else{
 					let Obj = {
 						real_name: this.username,
 						identity_card_num: this.card,
 						identity_cart_img1: this.cardTopImg,
-						identity_cart_img2:this.cardBotImg
+						identity_cart_img2:this.cardBotImg,
+						identity_cart_img3: this.alipayImg,
+						identity_cart_img4:this.addressImg
 					}
 					Indicator.open('正在提交...');
 					resource.uploadidentity(Obj).then(res => {

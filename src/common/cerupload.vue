@@ -2,7 +2,9 @@
 	<div>
 		<div class="imgBox">
 			<img class="camera" src="../assets/Upload.png">
-			<input type="file" ref="imgUpload" class="upload_file" @change="uploadFn">
+			<form>
+				<input type="file" ref="imgUpload" class="upload_file" @change="uploadFn">
+			</form>
 		</div>
 	</div>
 </template>
@@ -30,6 +32,7 @@
 		width: 100%;
 		height: 100%;
 		opacity: 0;
+		z-index: 1;
 	}
 }
 </style>
