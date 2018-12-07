@@ -30,6 +30,22 @@
 				<p class="navbar_txt" :class="{select:selected == 'mine'}">我的</p>
 			</div>
 		</div>	
+		<!-- 未实名认证弹框 -->
+		<div class="bindBox" v-if="showCer">
+			<!-- 审核和删除 -->
+			<div class="type2" @click.stop>
+				<div class="icon"><img src="../../assets/certification.png"></div>	
+				<div class="wen">
+					<div>实名认证</div>
+					<div class="ti">{{msg}}</div>
+				</div>
+				<div class="butss" v-if="status1 == '0' || status1 == '3'">
+					<div class="ok" @click="$router.replace('/certification?status1=' + status1 + '&status2=' + status2)">去认证</div>
+				</div>
+			</div>
+		</div>
+		<!-- 禁止点击弹框 -->
+		<div class="jia" v-if="bi == true"></div>
 	</div>
 </template>
 <style lang="less" scoped>
@@ -78,14 +94,142 @@
 	color: #03abff;
 	font-weight: bold;
 }
+// 取消任务弹框
+.bindBox{
+	background:rgba(0,0,0,.66);
+	position: fixed;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 999999;
+	.type1{
+		border-radius: .17rem;
+		position: relative;
+		margin: 4rem auto 0;
+		background-color: #ffffff;
+		width: 4.71rem;
+		height: 3.2rem;
+		.icon{
+			position: absolute;
+			top: -.88rem;
+			left: 50%;
+			transform: translate(-50%);
+			width: 2rem;
+			height: 1.68rem;
+			img{
+				width: 100%;
+				height: 100%;
+			}
+		}
+		.wen{
+			position: absolute;
+			top: .9rem;
+			width: 100%;
+			text-align: center;
+			font-size: .3rem;
+			color: #03abff;
+			.ti{
+				font-size:.26rem;
+				color: #666;
+			}
+		}
+		.butss{
+			position: absolute;
+			top: 2.3rem;
+			left: 50%;
+			transform: translate(-50%);
+			display: flex;
+			.ok{
+				border-radius: .04rem;
+				background-color: #03abff;
+				width: 1.4rem;
+				text-align: center;
+				height: .45rem;
+				line-height: .45rem;
+				font-size: .26rem;
+				color:#ffffff;
+			}
+		}
+	}
+	.type2{
+		border-radius: .17rem;
+		position: relative;
+		margin: 4rem auto 0;
+		background-color: #ffffff;
+		width: 4.71rem;
+		height: 3.2rem;
+		.icon{
+			position: absolute;
+			top: -.88rem;
+			left: 50%;
+			transform: translate(-50%);
+			width: 2rem;
+			height: 1.68rem;
+			img{
+				width: 100%;
+				height: 100%;
+			}
+		}
+		.wen{
+			position: absolute;
+			top: .9rem;
+			width: 100%;
+			text-align: center;
+			font-size: .3rem;
+			color: #03abff;
+			.ti{
+				margin: .05rem auto 0;
+				width: 90%;
+				font-size:.26rem;
+				color: #666;
+			}
+		}
+		.butss{
+			position: absolute;
+			top: 2.6rem;
+			left: 50%;
+			transform: translate(-50%);
+			display: flex;
+			.ok{
+				border-radius: .04rem;
+				background-color: #03abff;
+				width: 1.4rem;
+				text-align: center;
+				height: .45rem;
+				line-height: .45rem;
+				font-size: .26rem;
+				color:#ffffff;
+			}
+		}
+	}
+}
+//禁止点击弹框
+.jia{
+	background:rgba(0,0,0,0);
+	position: fixed;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 99999;
+}
 </style>
 <script>
-import {mapActions, mapGetters} from 'vuex'
-export default{
-	data(){
-		return{
+	import resource from '../../api/resource.js'
+	import {mapActions, mapGetters} from 'vuex'
+	export default{
+		data(){
+			return{
 			selected: "index",			//默认首页导航高亮
 			showMaster: false,			//默认徒弟身份，下面三个导航
+			showCer:false,
+			msg:"",									 //审核提示弹框内容
+		    status1:"",							     //一审状态
+		    status2:"",							     //二审状态
+		    bi:true
 		}
 	},
 	created(){
@@ -99,6 +243,8 @@ export default{
 		let tab = this.get_route;
 		this.selected = tab;
 		this.$router.push(`${tab}`);
+		//验证用户是否实名认证
+		this.useridentity();
 	},
 	watch: {
 		get_route: function (n, o) {
@@ -130,7 +276,37 @@ export default{
 			this.selected = tab;
 			this.set_route(tab);
 			this.$router.push(`${tab}`);
-		}
+		},
+		//验证用户是否实名认证
+		useridentity(){
+			let openid = sessionStorage.getItem("openid");
+			resource.useridentity({openid:openid}).then(res => {
+				if(res.data.code == "1"){
+					//强制、一审未成功
+					if(res.data.check_status1 != "2" && res.data.is_constraint == "1"){
+						this.showCer = true;
+						this.status1 = res.data.check_status1;
+						this.status2 = res.data.check_status2;
+						if(res.data.check_status1 == "0"){
+							this.msg = "根据国家法律规定互联网账号必须经过实名认证，为确保账户正常使用及账户安全请尽快完成实名";
+						}else if(res.data.check_status1 == "1"){
+							this.msg = "管理员正在审核";
+						}else if(res.data.identity == "1" && res.data.check_status1 == "3"){
+							this.msg = res.data.reject_reason1;
+						}else if(res.data.identity == "1" && res.data.check_status2 == "3"){
+							this.msg = res.data.reject_reason2;
+						}else if((res.data.identity == "0" || res.data.identity == "2") && res.data.check_status1 == "3"){
+							this.msg = res.data.reject_reason1;
+						}
+					}else{
+						this.bi = false;
+					}
+				}else{
+					this.$toast(res.data.message);
+				}
+			});
+		},
+
 	}
 }
 </script>

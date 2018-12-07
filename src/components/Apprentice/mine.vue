@@ -328,11 +328,11 @@
 }
 </style>
 <script>
-import {mapActions, mapGetters} from 'vuex'
-import resource from '../../api/resource.js'
-export default{
-	data(){
-		return{
+	import {mapActions, mapGetters} from 'vuex'
+	import resource from '../../api/resource.js'
+	export default{
+		data(){
+			return{
 			wxname: "",				//微信昵称
 			wximg: "",				//微信头像
 			usercode: "",			//师父代号
@@ -400,15 +400,33 @@ export default{
 		},
 		//点击实名认证
 		ren(){
-			resource.useridentity().then(res => {
+			let openid = sessionStorage.getItem("openid");
+			resource.useridentity({openid:openid}).then(res => {
 				if(res.data.code == "1"){
-					//未提交或审核拒绝
-					if(res.data.check_status == "0" || res.data.check_status == "3"){
-						this.$router.replace('/certification');
-					}else if(res.data.check_status == "1"){
-						this.$toast("您已提交过资料，管理员正在审核");
-					}else if(res.data.check_status == "2"){
-						this.$toast("您已通过实名认证");
+					if(res.data.identity == 1){		//徒弟
+						if(res.data.check_status1 == "2" && res.data.check_status2 == "2"){				   	   //一审二审都通过
+							this.$toast("您已通过实名认证");
+						}else if(res.data.check_status1 == "1" || res.data.check_status2 == "1"){
+							this.$toast("您已提交过资料，管理员正在审核");
+						}else {
+							if(res.data.check_status1 == "3"){
+								this.$toast(res.data.reject_reason1);
+							}else if(res.data.check_status2 == "3"){
+								this.$toast(res.data.reject_reason2);
+							}
+							this.$router.replace('/certification?status1=' + res.data.check_status1 + "&status2=" + res.data.check_status2);
+						}
+					}else{						//师父
+						if(res.data.check_status1 == "2"){	//审核通过			  
+							this.$toast("您已通过实名认证");
+						}else if(res.data.check_status1 == "1"){
+							this.$toast("您已提交过资料，管理员正在审核");
+						}else {
+							if(res.data.check_status1 == "3"){
+								this.$toast(res.data.reject_reason1);
+							}
+							this.$router.replace('/certification?status1=' + res.data.check_status1 + "&status2=" + res.data.check_status2);
+						}
 					}
 				}else{
 					this.$toast(res.data.message);

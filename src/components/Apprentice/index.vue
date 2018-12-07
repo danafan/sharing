@@ -90,20 +90,6 @@
 				</div>
 			</div>
 		</div>
-		<!-- 未实名认证弹框 -->
-		<div class="bindBox" v-if="showCer">
-			<!-- 审核和删除 -->
-			<div class="type2" @click.stop>
-				<div class="icon"><img src="../../assets/certification.png"></div>	
-				<div class="wen">
-					<div>实名认证</div>
-					<div class="ti">{{msg}}</div>
-				</div>
-				<div class="butss" v-if="status == '0' || status == '3'">
-					<div class="ok" @click="$router.push('/certification')">去认证</div>
-				</div>
-			</div>
-		</div>
 	</div>
 </template>
 <style scoped lang="less">
@@ -340,117 +326,7 @@
 		}
 	}
 }
-// 取消任务弹框
-.bindBox{
-	background:rgba(0,0,0,.66);
-	position: fixed;
-	top: 0;
-	left: 0;
-	bottom: 0;
-	width: 100%;
-	height: 100%;
-	z-index: 9999999999999;
-	.type1{
-		border-radius: .17rem;
-		position: relative;
-		margin: 4rem auto 0;
-		background-color: #ffffff;
-		width: 4.71rem;
-		height: 3.2rem;
-		.icon{
-			position: absolute;
-			top: -.88rem;
-			left: 50%;
-			transform: translate(-50%);
-			width: 2rem;
-			height: 1.68rem;
-			img{
-				width: 100%;
-				height: 100%;
-			}
-		}
-		.wen{
-			position: absolute;
-			top: .9rem;
-			width: 100%;
-			text-align: center;
-			font-size: .3rem;
-			color: #03abff;
-			.ti{
-				font-size:.26rem;
-				color: #666;
-			}
-		}
-		.butss{
-			position: absolute;
-			top: 2.3rem;
-			left: 50%;
-			transform: translate(-50%);
-			display: flex;
-			.ok{
-				border-radius: .04rem;
-				background-color: #03abff;
-				width: 1.4rem;
-				text-align: center;
-				height: .45rem;
-				line-height: .45rem;
-				font-size: .26rem;
-				color:#ffffff;
-			}
-		}
-	}
-	.type2{
-		border-radius: .17rem;
-		position: relative;
-		margin: 4rem auto 0;
-		background-color: #ffffff;
-		width: 4.71rem;
-		height: 3.2rem;
-		.icon{
-			position: absolute;
-			top: -.88rem;
-			left: 50%;
-			transform: translate(-50%);
-			width: 2rem;
-			height: 1.68rem;
-			img{
-				width: 100%;
-				height: 100%;
-			}
-		}
-		.wen{
-			position: absolute;
-			top: .9rem;
-			width: 100%;
-			text-align: center;
-			font-size: .3rem;
-			color: #03abff;
-			.ti{
-				margin: .05rem auto 0;
-				width: 90%;
-				font-size:.26rem;
-				color: #666;
-			}
-		}
-		.butss{
-			position: absolute;
-			top: 2.6rem;
-			left: 50%;
-			transform: translate(-50%);
-			display: flex;
-			.ok{
-				border-radius: .04rem;
-				background-color: #03abff;
-				width: 1.4rem;
-				text-align: center;
-				height: .45rem;
-				line-height: .45rem;
-				font-size: .26rem;
-				color:#ffffff;
-			}
-		}
-	}
-}
+
 </style>
 <script>
 	import {mapActions, mapGetters} from 'vuex'
@@ -489,8 +365,6 @@
 		    message: "",							 //复制的淘链接
 		    showCer: false ,						 //未实名认证弹框默认不显示
 		    selTab: 0,								 //默认选中普通任务
-		    msg:"",									 //审核提示弹框内容
-		    status:"",							     //审核状态
 		}
 	},  
 	created(){
@@ -504,8 +378,7 @@
 		this.getBanner();
 		//判断用户是否关联了手机号
 		this.isbindphone();
-		//验证用户是否实名认证
-		this.useridentity();
+		
 	},
 	watch:{
 		selTab:function(n){
@@ -551,27 +424,6 @@
 					this.showBind = true;
 				}else{
 					console.log(res.data.msg);
-				}
-			});
-		},
-		//验证用户是否实名认证
-		useridentity(){
-			resource.useridentity().then(res => {
-				if(res.data.code == "1"){
-					//强制、未审核成功
-					if(res.data.check_status != "2" && res.data.is_constraint == "1"){
-						this.showCer = true;
-						this.status = res.data.check_status;
-						if(res.data.check_status == "0"){
-							this.msg = "根据国家法律规定互联网账号必须经过实名认证，为确保账户正常使用及账户安全请尽快完成实名";
-						}else if(res.data.check_status == "1"){
-							this.msg = "管理员正在审核";
-						}else if(res.data.check_status == "3"){
-							this.msg = res.data.message;
-						}
-					}
-				}else{
-					this.$toast(res.data.message);
 				}
 			});
 		},
