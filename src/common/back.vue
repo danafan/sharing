@@ -9,7 +9,7 @@
 .back{
 	z-index: 3333;
 	position: fixed;
-	top: 45%;
+	top: 40%;
 	transform:translate(-50%);
 	right: -.4rem;
 	width: .84rem;

@@ -276,7 +276,7 @@
 			this.selected = tab;
 			this.set_route(tab);
 			this.$router.push(`${tab}`);
-		},
+		}, 
 		//验证用户是否实名认证
 		useridentity(){
 			let openid = sessionStorage.getItem("openid");
