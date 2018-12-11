@@ -326,6 +326,117 @@
 		}
 	}
 }
+// 取消任务弹框
+.bindBox{
+	background:rgba(0,0,0,.66);
+	position: fixed;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 999999;
+	.type1{
+		border-radius: .17rem;
+		position: relative;
+		margin: 4rem auto 0;
+		background-color: #ffffff;
+		width: 4.71rem;
+		height: 3.2rem;
+		.icon{
+			position: absolute;
+			top: -.88rem;
+			left: 50%;
+			transform: translate(-50%);
+			width: 2rem;
+			height: 1.68rem;
+			img{
+				width: 100%;
+				height: 100%;
+			}
+		}
+		.wen{
+			position: absolute;
+			top: .9rem;
+			width: 100%;
+			text-align: center;
+			font-size: .3rem;
+			color: #03abff;
+			.ti{
+				font-size:.26rem;
+				color: #666;
+			}
+		}
+		.butss{
+			position: absolute;
+			top: 2.3rem;
+			left: 50%;
+			transform: translate(-50%);
+			display: flex;
+			.ok{
+				border-radius: .04rem;
+				background-color: #03abff;
+				width: 1.4rem;
+				text-align: center;
+				height: .45rem;
+				line-height: .45rem;
+				font-size: .26rem;
+				color:#ffffff;
+			}
+		}
+	}
+	.type2{
+		border-radius: .17rem;
+		position: relative;
+		margin: 4rem auto 0;
+		background-color: #ffffff;
+		width: 4.71rem;
+		height: 3.2rem;
+		.icon{
+			position: absolute;
+			top: -.88rem;
+			left: 50%;
+			transform: translate(-50%);
+			width: 2rem;
+			height: 1.68rem;
+			img{
+				width: 100%;
+				height: 100%;
+			}
+		}
+		.wen{
+			position: absolute;
+			top: .9rem;
+			width: 100%;
+			text-align: center;
+			font-size: .3rem;
+			color: #03abff;
+			.ti{
+				margin: .05rem auto 0;
+				width: 90%;
+				font-size:.26rem;
+				color: #666;
+			}
+		}
+		.butss{
+			position: absolute;
+			top: 2.6rem;
+			left: 50%;
+			transform: translate(-50%);
+			display: flex;
+			.ok{
+				border-radius: .04rem;
+				background-color: #03abff;
+				width: 1.4rem;
+				text-align: center;
+				height: .45rem;
+				line-height: .45rem;
+				font-size: .26rem;
+				color:#ffffff;
+			}
+		}
+	}
+}
 
 </style>
 <script>
