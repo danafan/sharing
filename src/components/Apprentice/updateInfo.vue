@@ -18,10 +18,7 @@
 			<!-- 姓名 -->
 			<div class="infoItem">
 				<div class="infoName">姓名</div>
-				<div class="infoTxt">
-					<div class="txt1"><input type="text" v-model="name"></div>
-					<div class="icon"><img src="../../assets/amend.png"></div>	
-				</div>
+				<div class="infoTxt">{{name}}</div>
 			</div>
 			<!-- 师父代号 -->
 			<div class="infoItem" v-if="showMaster == false">
@@ -31,21 +28,12 @@
 			<!-- 性别 -->
 			<div class="infoItem">
 				<div class="infoName">性别</div>
-				<div class="infoTxt">
-					<div class="radio">
-						<div>
-							<input type="radio" id="radio-1" v-model="gender" value="0"/><label for="radio-1"></label><span>男</span></div>
-							<div><input type="radio" id="radio-2" v-model="gender" value="1"/><label for="radio-2"></label><span>女</span></div>
-						</div>	
-					</div>
+				<div class="infoTxt">{{gender == '0'?"男":"女"}}</div>
 				</div>
 				<!-- 出生日期 -->
 				<div class="infoItem">
 					<div class="infoName">出生日期</div>
-					<div class="infoTxt">
-						<div class="txt">{{birth}}</div>
-						<div class="icon" @click="openPicker"><img src="../../assets/amend.png"></div>	
-					</div>
+					<div class="infoTxt">{{birth}}</div>
 				</div>
 				<!-- 职业 -->
 				<div class="infoItem" @click="showWork = true">
@@ -367,19 +355,12 @@ export default{
 		},
 		//点击提交信息
 		subInfo(){
-			if(this.name == ""){
-				this.$toast("请填写姓名!");
-			}else if(this.birth == ""){
-				this.$toast("请选择出生日期!");
-			}else if(this.WXcode == ""){
+			if(this.WXcode == ""){
 				this.$toast("请填写微信号!");
 			}else if(!this.judgmentWeixin.test(this.WXcode)){
 				this.$toast("微信号格式不正确!");
 			}else{
 				let userInfo = {
-					username: this.name,
-					sex: this.gender,
-					birth: this.birth,
 					job_id: this.work,
 					wechat: this.WXcode
 				}

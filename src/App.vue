@@ -35,6 +35,7 @@
 					
 					this.getAuthurl();
 					// sessionStorage.setItem("status","0");
+					// this.$router.push('/updateInfo');
 					// this.$router.push('/connection');
 					// this.$router.replace('/navbar');
 					// this.$router.push('/registration');
