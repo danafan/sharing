@@ -2,7 +2,7 @@
 	<div class="box">
 		<!-- 身份证 -->
 		<div class="idCard">
-			<div class="inputInfo" v-if="status != '1' || isHome == true">
+			<div class="inputInfo" v-if="isHome == true">
 				<div class="infoItem">
 					<img class="usericon" src="../assets/username.png">
 					<input type="text" placeholder="请输入真实姓名" v-model="username">
@@ -13,8 +13,8 @@
 				</div>
 			</div>
 			<div class="imgBox">
-				<div class="title" v-if="status != '1' || isHome == true">请上传身份证照片</div>
-				<div class="imgs" v-if="status != '1' || isHome == true">
+				<div class="title" v-if="isHome == true">请上传身份证照片</div>
+				<div class="imgs" v-if="isHome == true">
 					<!-- 身份证正面图片 -->
 					<div class="imgItem">
 						<div class="img" v-if="showCardTop != ''">
@@ -34,12 +34,12 @@
 						<div class="toast">身份证反面</div>
 					</div>
 				</div>
-				<div class="demoImg" v-if="status != '1' || isHome == true">
+				<div class="demoImg" v-if="isHome == true">
 					<img src="../assets/example1.png">
 					<img src="../assets/example2.png">
 				</div>
-				<div class="title" v-if="status != '1' || isHome == false">请上传截图</div>
-				<div class="imgs" v-if="status != '1' || isHome == false">
+				<div class="title" v-if="isHome == false">请上传截图</div>
+				<div class="imgs" v-if="isHome == false">
 					<!-- 支付宝截图 -->
 					<div class="imgItem">
 						<div class="img" v-if="showAlipay != ''">
@@ -59,7 +59,7 @@
 						<div class="toast">收货地址截图</div>
 					</div>
 				</div>
-				<div class="demoImg1" v-if="status != '1' || isHome == false">
+				<div class="demoImg1" v-if="isHome == false">
 					<img src="../assets/example3.png">
 					<img src="../assets/example4.png">
 				</div>
@@ -267,21 +267,19 @@
 				alipayImg: "",						//传递到后台的支付宝图片对象
 				showAddress: "",					//预览的收货地址图片地址
 				addressImg: "",						//传递到后台的收货地址图片对象
-				isHome:false,						//默认徒弟二审未通过（上面四个未显示）
+				isHome:false,						//默认二审未通过（上面四个未显示）
 				l1:"",								//一审状态
 				l2:"",								//二审状态
 			}
 		},
 		created(){
-			this.status = sessionStorage.getItem("status");
+			// this.status = sessionStorage.getItem("status");
 			this.l1 = this.$route.query.status1;
 			this.l2 = this.$route.query.status2;
-			if(this.status == "1"){		//徒弟
-				if(this.l1 == "0" || this.l1 == "3"){			// 一审未通过
-					this.isHome = false;
-				}else if(this.l2 == "0" || this.l2 == "3"){		// 二审未通过
-					this.isHome = true;
-				}
+			if(this.l1 == "0" || this.l1 == "3"){			// 一审未通过
+				this.isHome = false;
+			}else if(this.l2 == "0" || this.l2 == "3"){		// 二审未通过
+				this.isHome = true;
 			}
 		},
 		methods:{
@@ -334,7 +332,15 @@
 			},
 			//提交
 			next(){
-				if(this.status != "1"){			//师父
+				if(this.l1 == "0" || this.l1 == "3"){
+					if(this.alipayImg == ""){
+						this.$toast("请上传支付宝截图");
+					}else if(this.addressImg == ""){
+						this.$toast("请上传收货地址截图");
+					}else{
+						this.submit();
+					}
+				}else if(this.l2 == "0" || this.l2 == "3"){
 					if(this.username == ""){
 						this.$toast("请输入真实姓名");
 					}else if(!this.judgmentCard.test(this.card)){
@@ -343,34 +349,8 @@
 						this.$toast("请上传身份证正面照片");
 					}else if(this.cardBotImg == ""){
 						this.$toast("请上传身份证反面照片");
-					}else if(this.alipayImg == ""){
-						this.$toast("请上传支付宝截图");
-					}else if(this.addressImg == ""){
-						this.$toast("请上传收货地址截图");
 					}else{
 						this.submit();
-					}
-				}else{
-					if(this.l1 == "0" || this.l1 == "3"){
-						if(this.alipayImg == ""){
-							this.$toast("请上传支付宝截图");
-						}else if(this.addressImg == ""){
-							this.$toast("请上传收货地址截图");
-						}else{
-							this.submit();
-						}
-					}else if(this.l2 == "0" || this.l2 == "3"){
-						if(this.username == ""){
-							this.$toast("请输入真实姓名");
-						}else if(!this.judgmentCard.test(this.card)){
-							this.$toast("请输入正确的身份证号");
-						}else if(this.cardTopImg == ""){
-							this.$toast("请上传身份证正面照片");
-						}else if(this.cardBotImg == ""){
-							this.$toast("请上传身份证反面照片");
-						}else{
-							this.submit();
-						}
 					}
 				}
 			},

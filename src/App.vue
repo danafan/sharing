@@ -32,7 +32,6 @@
 							sessionStorage.setItem("appType",it);
 						}
 					};
-					
 					this.getAuthurl();
 					// sessionStorage.setItem("status","0");
 					// this.$router.push('/updateInfo');
@@ -58,36 +57,36 @@
 					}
 				})
 			},
-		//callback
-		callback(code){
-			resource.callback({code:code}).then(res => {
-				if(res.data.code == "0"){
-					sessionStorage.setItem("callback","1");
-					let openid = res.data.data.data.openid;
-					let wxname = res.data.data.data.nickname;
-					let wxIcon = res.data.data.data.headimgurl;
-					this.unionid = res.data.data.data.unionid;
-					sessionStorage.setItem("openid",openid);
-					sessionStorage.setItem("wxname",wxname);
-					sessionStorage.setItem("wxIcon",wxIcon);
-					//根据openid获取用户状态
-					this.getserstate(openid,wxname,wxIcon);
-				}else if(res.data.code == "1"){
-					this.$router.replace('/attention');
-				}else{
-					this.$toast(res.data.message);
+			//callback
+			callback(code){
+				resource.callback({code:code}).then(res => {
+					if(res.data.code == "0"){
+						sessionStorage.setItem("callback","1");
+						let openid = res.data.data.data.openid;
+						let wxname = res.data.data.data.nickname;
+						let wxIcon = res.data.data.data.headimgurl;
+						this.unionid = res.data.data.data.unionid;
+						sessionStorage.setItem("openid",openid);
+						sessionStorage.setItem("wxname",wxname);
+						sessionStorage.setItem("wxIcon",wxIcon);
+						//根据openid获取用户状态
+						this.getserstate(openid,wxname,wxIcon);
+					}else if(res.data.code == "1"){
+						this.$router.replace('/attention');
+					}else{
+						this.$toast(res.data.message);
+					}
+				})
+			},
+			//根据openid获取用户状态
+			getserstate(openid,wxname,wxIcon){
+				let wxObj = {
+					openid: openid,
+					nickname: wxname,
+					headimgurl: wxIcon,
+					unionid: this.unionid
 				}
-			})
-		},
-		//根据openid获取用户状态
-		getserstate(openid,wxname,wxIcon){
-			let wxObj = {
-				openid: openid,
-				nickname: wxname,
-				headimgurl: wxIcon,
-				unionid: this.unionid
-			}
-			resource.getUserState(wxObj).then(res => {
+				resource.getUserState(wxObj).then(res => {
 				if(res.data.code == "0"){							//关联过,跳转首页
 					//获取用户id和身份
 					let uid = res.data.data.userinfo.id;
@@ -116,12 +115,12 @@
 					this.$router.replace('/verification?mess=' + message + '&username=' + username);
 				}
 			})
+			}
+
 		}
 
+
 	}
-
-
-}
 </script>
 
 <style>

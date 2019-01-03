@@ -469,29 +469,34 @@
 				//请求注册接口
 				this.register(userObj);
 			}
-			},
+		},
 			//获取地理位置
 			getlocation(){
 				let url = encodeURIComponent(window.location.href.split('#')[0]);
 				resource.getLocation({url2:url}).then(res => {
-					var that = this;
-					wx.config(res.data);
-					wx.ready(function(){
-						wx.getLocation({
-							type: 'wgs84', 
-							success: function (res) {
-        					var latitude = res.latitude; 	// 纬度
-        					var longitude = res.longitude ; // 经度
-        					that.registration(latitude,longitude);
-        				},
-        				cancel: function () { 
-        					that.$toast("地理位置获取失败!");
-        				},
-        				error: function (res) {
-        					that.$toast("地理位置获取失败!");
-        				}
-        			});
-					});
+					if(res.data.code == "0"){
+						var that = this;
+						wx.config(res.data);
+						wx.ready(function(){
+							wx.getLocation({
+								type: 'wgs84', 
+								success: function (res) {
+        						var latitude = res.latitude; 	// 纬度
+        						var longitude = res.longitude ; // 经度
+        						that.registration(latitude,longitude);
+        					},
+        					cancel: function () { 
+        						that.$toast("地理位置获取失败!");
+        					},
+        					error: function (res) {
+        						that.$toast("地理位置获取失败!");
+        					}
+        				});
+						});
+					}else{
+						this.$toast(res.data.message);
+					}
+					
 				});
 			},
 			//请求注册接口
