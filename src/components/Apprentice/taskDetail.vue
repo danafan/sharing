@@ -29,7 +29,7 @@
 						<div v-html="taskDetail.task_remark"></div>
 					</div>
 					<div class="title">任务流程</div>
-					<div class="subTie">1. 打开淘宝客户端，按照以下步骤操作：</div>
+					<div class="subTie">1. 按照以下步骤操作：</div>
 					<div class="operation">
 						<div class="operName1">关键词(不可复制)：</div>	
 						<div class="operSubname1">{{keyword}}</div>
@@ -67,8 +67,8 @@
 							<div class="confirmation wei" v-if="codeId == 2">失败</div>
 						</div>
 						<!-- 提示 -->
-						<div class="prompt" v-if="tishi">请用您的淘宝账号<span>{{wangwang}}</span>,拍下并付款吧！</div>
-						<div class="prompt" v-if="tishi">验证通过，请在淘宝商品页面浏览3分钟</div>
+						<div class="prompt" v-if="tishi">请用您的购买账号<span>{{wangwang}}</span>,拍下并付款吧！</div>
+						<div class="prompt" v-if="tishi">验证通过，请在商品页面浏览3分钟</div>
 						<div class="prompt" v-if="tishi">剩余时间：{{time2}}</div>
 					</div>
 				</div>
