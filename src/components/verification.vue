@@ -1,7 +1,5 @@
 <template>
 	<div>
-		<!-- 返回按钮 -->
-		<back></back>
 		<div class="img">
 			<img src="../assets/pictue.png">
 		</div>
@@ -31,7 +29,6 @@
 }
 </style>
 <script>
-import back from '../common/back.vue'
 export default{
 	data(){
 		return{
@@ -42,9 +39,6 @@ export default{
 	created(){
 		this.mess = this.$route.query.mess;
 		this.username = this.$route.query.username;
-	},
-	components:{
-		back
 	}
 }
 </script>

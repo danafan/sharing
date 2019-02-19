@@ -3,7 +3,7 @@
 		<div>
 			<div class="banner">
 				<swiper :options="swiperOption" ref="mySwiper">
-					<swiper-slide v-for="(item,index) in banner">
+					<swiper-slide v-for="(item,index) in banner" :key="index">
 						<img v-if="index == 0" :src="item.img_url" @click="$router.push('/taskRole')">
 						<img v-else :src="item.img_url">
 					</swiper-slide>

@@ -28,16 +28,16 @@
 			<div class="itemInput"><input type="text" v-model="wangCode" placeholder="旺旺号(淘宝会员名)"></div>
 		</div>
 		<!-- 收货地址 -->
-		<div class="item">
+		<!-- <div class="item">
 			<div class="itemIcon"><img src="../assets/dizhi.png"></div>
 			<div class="itemInput" @click="showAddress = true">{{selAddress}}
 			</div>
-		</div>
+		</div> -->
 		<!-- 详细收货地址 -->
-		<div class="item">
+		<!-- <div class="item">
 			<div class="itemIcon"><img src="../assets/dizhi.png"></div>
 			<div class="itemInput"><input type="text" v-model="detailAddress" placeholder="详细收货地址"></div>
-		</div>
+		</div> -->
 		<!-- QQ号 -->
 		<div class="item">
 			<div class="itemIcon"><img src="../assets/QQ.png"></div>
@@ -105,7 +105,7 @@
 		</div>
 	</div>
 	<!-- 地址选择弹框 -->
-	<addresss :isAdd="showAddress" @update="change" @ok="save"></addresss>
+	<!-- <addresss :isAdd="showAddress" @update="change" @ok="save"></addresss> -->
 </div>
 </template>
 <style lang="less" scoped>
@@ -410,11 +410,13 @@
 					this.$toast("旺旺号不能包括空格!");
 				}else if(this.wangCode.indexOf("	") != -1){
 					this.$toast("旺旺号不能包括空格!");
-				}else if(this.selAddress == "请选择收货地址"){
-					this.$toast("请选择收货地址!");
-				}else if(this.detailAddress == ""){
-					this.$toast("请填写详细收货地址!");
-				}else if(this.qqCode == ""){
+				}
+				// else if(this.selAddress == "请选择收货地址"){
+				// 	this.$toast("请选择收货地址!");
+				// }else if(this.detailAddress == ""){
+				// 	this.$toast("请填写详细收货地址!");
+				// }
+				else if(this.qqCode == ""){
 					this.$toast("请填写QQ号!");
 				}else if(!this.judgmentqq.test(this.qqCode)){
 					this.$toast("QQ号格式不正确!");
@@ -439,7 +441,14 @@
 				}else if(this.status == "1" && this.recomname.indexOf(" ") != -1){
 					this.$toast("推荐人用户名不能包括空格!");
 				}else{
+					//获取openid
+					let openid = sessionStorage.getItem("openid");
+					let headimgurl = sessionStorage.getItem("wxIcon");
+					let nickname = sessionStorage.getItem("wxname");
 					let userObj = {
+					openid: openid,        		//openid
+            		headimgurl: headimgurl,		//微信头像
+            		nickname: nickname,    		//微信昵称
 					username: this.username,	//用户名
 					password: this.newPass,		//确认后的密码
 					wangwang: this.wangCode,	//旺旺号
@@ -454,10 +463,10 @@
 					latitude:latitude,			//经度
 					longitude:longitude,		//纬度
 					alipay_account:this.alipay,	//支付宝账号
-					province_id:this.addressId.split("-")[0],		//省id
-					city_id:this.addressId.split("-")[1],		//市id
-					district_id:this.addressId.split("-")[2],		//区id
-					receive_address:this.detailAddress,		//详细地址
+					// province_id:this.addressId.split("-")[0],		//省id
+					// city_id:this.addressId.split("-")[1],		//市id
+					// district_id:this.addressId.split("-")[2],		//区id
+					// receive_address:this.detailAddress,		//详细地址
 				}
 				if(this.status == "0"){		 //选择师父
 					userObj.status = "1";
@@ -506,8 +515,10 @@
 					resource.register(userObj).then(res => {
 						this.ke = true;
 						if(res.data.code == '0'){	
-							this.$toast("注册成功，审核通过后才能登录哦～");
-							this.$router.replace('/connection');
+							let msg = "注册成功，审核通过后才能登录哦～";
+							let nickname = sessionStorage.getItem("wxname");
+							// this.$router.replace('/connection');
+							this.$router.replace('/verification?mess=' + msg + '&username=' + nickname);
 						}else{
 							this.$toast(res.data.message);
 						}

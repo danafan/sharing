@@ -22,7 +22,7 @@ let path = {
 	getTask: 'task/gettaskinfo',		   //查看任务详情
 	firmShopName: 'task/verifyshopname',   //验证店铺名称
 	firmShopMoney: 'task/verifygoodsprice',//验证商品金额
-	taskStatus: 'task/taskcondition',	   //任务进度
+	taskStatus: 'task/taskprogresslist',	   //任务进度
 	abandontask: 'task/abandontask',	   //放弃任务
 	waitTab: 'prentice/waitmastercheck',   //待审核的徒弟		
 	checkpass: 'prentice/checkpass',	   //已激活的徒弟
