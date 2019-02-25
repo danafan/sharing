@@ -229,7 +229,7 @@
 			msg:"",									 //审核提示弹框内容
 		    status1:"",							     //一审状态
 		    status2:"",							     //二审状态
-		    bi:true
+		    bi:true,
 		}
 	},
 	created(){

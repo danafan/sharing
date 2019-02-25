@@ -181,16 +181,20 @@
 				}
 			}
 			.content{
+				flex:1;
 				.txt{
 					display: flex;
 					font-size: .28rem;
 					.titles{
+						max-width: 1.5rem;
 						color: #000;
 					}
 					.cons{
+						flex:1;
 						color: #666666;
 					}
 					.consred{
+						flex:1;
 						color: #ff5858;
 					}
 				}

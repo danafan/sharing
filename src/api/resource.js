@@ -58,6 +58,8 @@ let path = {
 	getdistrict:"address/getdistrict",			//获取区列表
 	useridentity:"useridentity/ispassidentityinfo",	//验证用户是否使命认证
 	uploadidentity:"useridentity/uploadidentityinfo",	//上传认证资料
+	commonquestion:"message/commonquestion",			//用户需知列表
+	setread:"message/setread",							//标记已读用户须知
 
 }
 export default{
@@ -281,6 +283,14 @@ export default{
 	//上传认证资料
 	uploadidentity(params){
 		return http.post(path.uploadidentity, params)
-	}
+	},
+	//用户需知列表
+	commonquestion(params){
+		return http.get(path.commonquestion, params)
+	},
+	//标记已读用户须知
+	setread(params){
+		return http.get(path.setread, params)
+	},
 
 }

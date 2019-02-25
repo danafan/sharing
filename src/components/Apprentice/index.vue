@@ -90,6 +90,20 @@
 				</div>
 			</div>
 		</div>
+		<!-- 新人提示框 -->
+		<div class="bindBox" v-if="toast">
+			<!-- 审核和删除 -->
+			<div class="type1" @click.stop>
+				<div class="icon1"><img src="../../assets/tip.png"></div>	
+				<div class="wen">
+					<div class="ti">请先阅读完新人须知，方可进行</div>
+					<div class="ti">下列任务，点击进入。</div>
+				</div>
+				<div class="butss">
+					<div class="ok" @click="$router.push('/question')">进入了解</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </template>
 <style scoped lang="less">
@@ -355,6 +369,18 @@
 				height: 100%;
 			}
 		}
+		.icon1{
+			position: absolute;
+			top: -1.4rem;
+			left: 50%;
+			transform: translate(-50%);
+			width: 2rem;
+			height: 2.1rem;
+			img{
+				width: 100%;
+				height: 100%;
+			}
+		}
 		.wen{
 			position: absolute;
 			top: .9rem;
@@ -473,6 +499,7 @@
 		    showBull: false,						 //公告默认不显示
 		    bulletinTxt: "注意，注意，每月本金可立马提现，佣金每月1-3号可提现哦～",  //公告内容
 		    showBind: false,						 //默认未绑定手机号弹框不显示
+		    toast:false,								 //
 		    message: "",							 //复制的淘链接
 		    showCer: false ,						 //未实名认证弹框默认不显示
 		    selTab: 0,								 //默认选中普通任务
@@ -489,6 +516,8 @@
 		this.getBanner();
 		//判断用户是否关联了手机号
 		this.isbindphone();
+		//判断用户是否需要阅读新人须知
+		this.getKnow();
 		
 	},
 	watch:{
@@ -537,6 +566,14 @@
 					console.log(res.data.msg);
 				}
 			});
+		},
+		//判断用户是否需要阅读新人须知
+		getKnow(){
+			resource.commonquestion().then(res => {
+				if(res.data.code === 2){
+					this.toast = true;
+				}
+			})
 		},
 		//获取公告
 		publishs(){

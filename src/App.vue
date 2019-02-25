@@ -37,6 +37,7 @@
 					// this.$router.push('/updateInfo');
 					// this.$router.push('/connection');
 					// this.$router.replace('/navbar');
+					// this.$router.replace('/question');
 					// this.$router.push('/registration');
 					// this.$router.push('/certification');
 					// this.$router.push('/taskDetail');
