@@ -8,7 +8,7 @@
 						<img class="type" src="../../assets/task0.png" v-if="item.task_type === 0">
 						<img class="type" src="../../assets/task1.png" v-if="item.task_type === 1">
 						<img class="type" src="../../assets/task2.png" v-if="item.task_type === 2">
-						<img class="icons" :src="baseUrl + item.goods_img">
+						<img class="icons" :src="item.goods_img">
 					</div>
 					<div class="content">
 						<div class="txt">
