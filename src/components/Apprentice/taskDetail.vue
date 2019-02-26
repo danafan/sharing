@@ -16,7 +16,7 @@
 				<div class="topCon">
 					<div class="tie">商品主图</div>
 					<div class="taskIcon">
-						<img :src="baseUrl + taskDetail.goods_img">
+						<img :src="taskDetail.goods_img">
 						<div class="sha"></div>
 					</div>
 					<div class="taskSubname">请在<span class="txtRed">{{taskDetail.end_time}}</span>前完成以下操作</div>
