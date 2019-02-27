@@ -27,7 +27,7 @@
 					<div class="taskItem" v-for="item in taskList">
 						<!-- 大图 -->
 						<div class="itemImg">
-							<img class="taskImg" :src="baseUrl + item.goods_img">
+							<img class="taskImg" :src="item.goods_img">
 							<div class="sha"></div>
 						</div>
 						<!-- 下面文字部分 -->

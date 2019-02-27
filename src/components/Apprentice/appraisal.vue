@@ -4,7 +4,7 @@
 		<back></back>
 		<div class="appraisalBox">
 			<div class="appItem" v-for="item in appList">
-				<div class="img"><img :src="baseUrl + item.goods_img"></div>
+				<div class="img"><img :src="item.goods_img"></div>
 				<div class="txt">
 					<div class="code">订单编号：{{item.order_sn}}</div>
 					<div class="time">时间：{{item.updated_time | updateTime}}</div>
