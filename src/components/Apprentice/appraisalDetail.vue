@@ -22,7 +22,7 @@
 			<div class="imgbox">
 				<div class="title">评价图片或视频（图片长按保存）</div>
 				<div class="imglist">
-					<div class="img" v-for = "item in imgList"><img :src="baseUrl1 + item"></div>
+					<div class="img" v-for = "item in imgList"><img :src="item"></div>
 					<div class="video" v-if="video != ''" @click="uploadVideo">下载视频</div>  
 				</div>
 			</div>
@@ -317,7 +317,7 @@
 		},
 		//点击下载视频
 		uploadVideo(){
-			window.location.href = "http://cs.52gxk.com/weiapi/evaluatetask/download?url=" + this.baseUrl1 + this.video;
+			window.location.href = "http://cs.52gxk.com/weiapi/evaluatetask/download?url=" + this.video;
 		},
 		//点击放弃或者提交按钮
 		tan(type){
