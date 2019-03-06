@@ -2,14 +2,26 @@
 	<div>
 		<div class="minebox">
 			<!-- 上面背景图片 -->
-			<div class="topImg">
-				<div class="backImg">
-					<img src="../../assets/background (mine)1.png">
-				</div>	
+			<div class="topImg">	
 				<div class="userIcon">
 					<img :src="wximg">
 				</div>
 				<div class="userName">{{wxname}}<span v-if="showMaster">({{usercode}})</span></div>
+				<div class="income" v-if="showMaster">
+					<div class="incomeItem">
+						<div class="incomeTitle">本月预估收入（元）
+							<img src="../../assets/problem.png" @click="showMo(1)">
+						</div>
+						<div class="incomeMoney">¥<span>{{income.awards1}}</span></div>
+					</div>
+					<div class="line"></div>
+					<div class="incomeItem">
+						<div class="incomeTitle">本月实际收入（元）
+							<img src="../../assets/problem.png" @click="showMo(2)">
+						</div>
+						<div class="incomeMoney">¥<span>{{income.awards2}}</span></div>
+					</div>
+				</div>
 			</div>
 			<!-- 信息 -->
 			<div class="infoList">
@@ -129,6 +141,12 @@
 				</div>
 			</div>	
 		</div>	
+		<div class="modelBox" v-if="showModel">
+			<div class="contentBox">
+				<div class="text">{{modelTxt}}</div>
+				<div class="but" @click="showModel = false">我明白啦</div>
+			</div>
+		</div>
 	</div>
 </template>
 <style lang="less" scoped>
@@ -136,26 +154,12 @@
 	margin-bottom: .98rem;
 	height: 100%;
 	.topImg{
+		padding-top: .74rem;
 		box-sizing: border-box;
-		position: relative;
 		width: 100%;
-		height: 3.6rem;
-		.backImg{
-			position: absolute;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
-			img{
-				width: 100%;
-				height: 100%;
-			}
-		}
+		background: #03abff;
 		.userIcon{
-			position: absolute;
-			top: .74rem;
-			left: 50%;
-			transform:translate(-50%);
+			margin: 0 auto;
 			border-radius: 50%;
 			width: 1.64rem;
 			height: 1.64rem;
@@ -166,12 +170,46 @@
 			}
 		}
 		.userName{
-			position: absolute;
-			top: 2.64rem;
-			left: 50%;
-			transform:translate(-50%);
+			margin: .28rem auto .4rem;
+			width: 100%;
+			text-align:center;
 			font-size: .3rem;
 			color:#ffffff;
+		}
+		.income{
+			background:rgb(52,151,234);
+			display: flex;
+			align-items: center;
+			width: 100%;
+			height: 1.14rem;
+			.incomeItem{
+				width: 50%;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				color: #fff;
+				.incomeTitle{
+					font-size: .3rem;
+					display: flex;
+					align-items: center;
+					img{
+						display: block;
+						width: .26rem;
+						height: .26rem;
+					}
+				}
+				.incomeMoney{
+					font-size: .24rem;
+					span{
+						font-size: .32rem;
+					}
+				}
+			}
+			.line{
+				height: .8rem;
+				border-left: 1px solid #fff;
+			}
 		}
 	}
 	.infoList{
@@ -326,6 +364,41 @@
 .botline{
 	border-bottom:1px solid #f4f4f4;
 }
+//弹框
+.modelBox{
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0,0,0,.6);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 9999;
+	.contentBox{
+		border-radius: .18rem;
+		padding: .46rem .24rem;
+		background: #fff;
+		width: 4.06rem;
+		font-size: .24rem;
+		color: #03abff;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		.but{
+			margin-top: .6rem;
+			border-radius: .2rem;
+			background: #03abff;
+			width: 3.44rem;
+			text-align:center;
+			height: .48rem;
+			line-height: .48rem;
+			color:#fff;
+			font-size: .2rem;
+		}
+	}
+}
 </style>
 <script>
 	import {mapActions, mapGetters} from 'vuex'
@@ -346,6 +419,9 @@
 			principal: "",			//本金
 			freeze:"",				//冻结资金
 			isFreeze: false,		//默认冻结资金栏不展示
+			income:{},				//师父的预计收入金额
+			showModel:false,		//默认说明弹框不显示
+			modelTxt:"",			//显示的说明
 		}
 	},
 	created(){
@@ -357,6 +433,8 @@
 		//判断用户身份佣金排行榜是否显示
 		let status = sessionStorage.getItem("status");
 		if(status == "0" || status == "2"){
+			//获取师父预计收入金额
+			this.getMyInfo();
 			this.showMaster = true;
 		}else if(status == '1'){
 			this.showMaster = false;
@@ -393,6 +471,25 @@
 		...mapActions([
 			'set_route'
 			]),
+		//点击显示说明
+		showMo(type){
+			this.showModel = true;
+			if(type === 1){
+				this.modelTxt = "本月预估收入指的是本月的最大化分佣收入（即如果所有徒弟都按时完成任务的情况下的分佣收入），加油努力达到目标哦！";
+			}else{
+				this.modelTxt = "本月实际收入指的是本月实际的分佣收入（即所有徒弟已经完成的任务获取的分佣收入）";
+			}
+		},
+		//获取师父预计收入金额
+		getMyInfo(){
+			resource.myinfo().then(res => {
+				if(res.data.code == "0"){
+					this.income = res.data;
+				}else{
+					this.$toast(res.data.message);
+				}
+			})
+		},
 		// 点击我的任务
 		showtask(){
 			this.showTask = !this.showTask;

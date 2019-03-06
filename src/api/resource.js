@@ -33,6 +33,7 @@ let path = {
 	prentice: 'prentice/checkprentice',		//师父审核徒弟
 	updatePass: 'index/changepassword',		//用户修改密码
 	getUserInfo: 'index/getuserinfo',		//获取用户信息
+	myinfo:"my/myinfo",						//我的页面获取预计收入金额
 	updateUserInfo: 'index/changepersonziliao',	//修改用户信息
 	getUserTask: 'index/usertask',			//获取用户任务列表（已完成或已取消）
 	userPay: 'pay/pay',						//用户提现
@@ -184,6 +185,10 @@ export default{
 	//获取用户信息
 	getUserInfo(params){
 		return http.get(path.getUserInfo, params)
+	},
+	//我的页面获取预计收入金额
+	myinfo(params){
+		return http.get(path.myinfo, params)
 	},
 	//修改用户信息
 	updateUserInfo(params){

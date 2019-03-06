@@ -24,7 +24,8 @@
 				</div>
 				<!-- 下面部分 -->
 				<div class="taskCon">
-					<div class="title">任务要求</div>
+					<div class="title">任务要求（没有特殊说明的默认拍最低价
+					）</div>
 					<div class="operation">
 						<div v-html="taskDetail.task_remark"></div>
 					</div>
