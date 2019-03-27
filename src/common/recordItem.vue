@@ -1,7 +1,8 @@
 <template>
 	<div>
 		<div class="Item">
-			<img class="taskType" src="../assets/task0.png" v-if="taskType == 0">
+			<img class="taskType" src="../assets/task0.png" v-if="taskType == 0 && mjx == 0">
+			<img class="taskType" src="../assets/buyer.png" v-if="taskType == 0 && mjx == 1">
 			<img class="taskType" src="../assets/task1.png" v-if="taskType == 1">
 			<img class="taskType" src="../assets/task2.png" v-if="taskType == 2">
 			<div class="itemIcon">
@@ -70,6 +71,9 @@
 	export default{
 		props:{
 			taskType:{
+				default: 0 
+			},
+			mjx:{
 				default: 0 
 			}
 		},

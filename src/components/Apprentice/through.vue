@@ -4,7 +4,7 @@
 		<back></back>
 		<div class="title" v-show="showTask">已完成<span>({{count}})</span></div>
 		<div class="loadmore" v-infinite-scroll="loadMore" v-if="showTask">
-			<recordItem v-for="(item,index) in recordList" :key="index" :taskType="item.task_type">
+			<recordItem v-for="(item,index) in recordList" :key="index" :taskType="item.task_type" :mjx="item.mjx">
 				<div slot="icon"><img :src="item.goods_img"></div>
 				<span slot="name">{{item.keyword}}</span>
 				<span slot="code">{{item.order_sn}}</span>

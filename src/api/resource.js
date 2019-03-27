@@ -61,6 +61,9 @@ let path = {
 	uploadidentity:"useridentity/uploadidentityinfo",	//上传认证资料
 	commonquestion:"message/commonquestion",			//用户需知列表
 	setread:"message/setread",							//标记已读用户须知
+	getTaskInfo:"mjx/getusertaskinfo",					//买家秀获取任务详情
+	mjxUploadImg:"mjx/uploadimgandvideo",				//买家秀上传图片和视频
+	submitExpressInfo:"mjx/commitbackexpressinfo",		//提交快递信息
 
 }
 export default{
@@ -297,5 +300,17 @@ export default{
 	setread(params){
 		return http.get(path.setread, params)
 	},
+	//买家秀获取任务详情
+	getTaskInfo(params){
+		return http.get(path.getTaskInfo, params)
+	},
+	//买家秀上传图片和视频
+	mjxUploadImg(params){
+		return http.post(path.mjxUploadImg, params)
+	},
+	//提交快递信息
+	submitExpressInfo(params){
+		return http.post(path.submitExpressInfo, params)
+	}
 
 }

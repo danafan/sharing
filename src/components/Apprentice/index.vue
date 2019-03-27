@@ -14,6 +14,7 @@
 				<!-- 普通任务或搜索任务 -->
 				<div class="tabBox">
 					<div class="item" :class="{'selItem':selTab == 0}" @click="selTab = 0">普通任务</div>
+					<div class="item" :class="{'selItem':selTab == 3}" @click="selTab = 3">买家秀</div>
 					<div class="item" :class="{'selItem':selTab == 2}" @click="selTab = 2">搜索任务</div>
 				</div>
 				<div class="listNull" v-if="listNull == true">
@@ -599,7 +600,14 @@
 		},
 		//获取任务列表
 		getTaskList(){
-			resource.taskList({task_type:this.selTab}).then(res => {
+			let obj = {
+				task_type:this.selTab
+			}
+			if(this.selTab == 3){
+				obj.task_type = 0,
+				obj.mjx = 1
+			}
+			resource.taskList(obj).then(res => {
 				this.reload = true;						//结束转
 				if(res.data.code == "0"){				//可以申请任务
 					this.listNull = false;
@@ -636,7 +644,14 @@
 		//点击中间大按钮
 		application(){
 			if(this.shen == true){	//申请任务
-				resource.taskDetail({task_type:this.selTab}).then(res => {
+				let obj = {
+					task_type:this.selTab
+				}
+				if(this.selTab == 3){
+					obj.task_type = 0,
+					obj.mjx = 1
+				}
+				resource.taskDetail(obj).then(res => {
 					if(res.data.code == "0"){
 						//排队成功的时间
 						this.applyTime = res.data.apply_time;

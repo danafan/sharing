@@ -17,7 +17,8 @@
 			if(!sessionStorage.getItem("callback")){
 				if(!!sessionStorage.getItem("authUrl")){ //有authurl过
 					let url = window.location.href;
-					let code = url.split("?")[1].split("&")[0].split("=")[1];	// 获取code
+					let code = url.split("?")[1].split("&")[0].split("=")[1];	
+					// 获取code
 					this.callback(code);
 				}else{
 					let str = window.location.href;
@@ -37,6 +38,7 @@
 					// this.$router.push('/updateInfo');
 					// this.$router.push('/connection');
 					// this.$router.replace('/navbar');
+					// this.$router.replace('/buyer');
 					// this.$router.replace('/mine');
 					// this.$router.replace('/question');
 					// this.$router.push('/registration');

@@ -659,8 +659,6 @@
 				this.$toast("请输入淘口令");
 			}else{
 				let obj = {
-					openid:sessionStorage.getItem("openid"),
-					// openid:"okKUgw72tVlt3SM_gVJy32uxGAxE",
 					usertaskid: this.id,
 					tao_code: this.tao_code
 				}

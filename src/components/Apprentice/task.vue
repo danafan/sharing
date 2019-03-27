@@ -5,7 +5,8 @@
 			<div class="taskItem" v-for="item in taskList">
 				<div class="top">
 					<div class="imgs">
-						<img class="type" src="../../assets/task0.png" v-if="item.task_type === 0">
+						<img class="type" src="../../assets/task0.png" v-if="item.task_type === 0 && item.mjx === 0">
+						<img class="type" src="../../assets/buyer.png" v-if="item.task_type === 0 && item.mjx === 1">
 						<img class="type" src="../../assets/task1.png" v-if="item.task_type === 1">
 						<img class="type" src="../../assets/task2.png" v-if="item.task_type === 2">
 						<img class="icons" :src="item.goods_img">
@@ -17,11 +18,15 @@
 						</div>
 						<div class="txt">
 							<div class="titles">状态：</div>
-							<div class="consred">{{item.status_name}}</div>
+							<div class="consred">{{(item.mjx == 1 && item.status == 2)?item.mjx_status_name:item.status_name}}</div>
 						</div>
-						<div class="txt" v-if="item.status === 3">
+						<div class="txt" v-if="item.status == 3">
 							<div class="titles">原因：</div>
 							<div class="cons">{{item.reason}}</div>
+						</div>
+						<div class="txt" v-if="item.status == 2 && (item.mjx_status == 3 || item.mjx_status == 6 || item.mjx_status == 9)">
+							<div class="titles">原因：</div>
+							<div class="cons">{{item.refuse_reason}}</div>
 						</div>
 						<div class="txt">
 							<div class="titles">申请时间：</div>
@@ -29,7 +34,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="center" v-if="item.status !== 1">
+				<div class="center" v-if="item.status !== 1 && item.status !== 2">
 					请在 <span>{{item.end_time}}</span> 前完成提交任务，否则将自动放弃！
 				</div>
 				<div class="buts" v-if="item.status === 3">
@@ -38,6 +43,11 @@
 				</div>
 				<div class="buts" v-if="item.status === 1">
 					<div class="but haha">待审核</div>
+				</div>
+				<div class="buts" v-if="item.status === 2">
+					<div class="but rightBut" v-if="item.mjx_status === 0 || item.mjx_status === 2 || item.mjx_status === 5" @click="$router.push(`/buyer?status=${item.mjx_status}&taskid=${item.usertaskid}`)">继续任务</div>
+					<div class="but haha" v-if="item.mjx_status === 1 || item.mjx_status === 4 || item.mjx_status === 7">待审核</div>
+					<div class="but rightBut" v-if="item.mjx_status === 3 || item.mjx_status === 6 || item.mjx_status === 9" @click="$router.push(`/buyer?status=${item.mjx_status}&taskid=${item.usertaskid}`)">重新提交</div>
 				</div>
 				<div class="buts" v-if="item.status === 0">
 					<div class="but leftBut" @click="giving(1,item.usertaskid)">放弃任务</div>

@@ -29,6 +29,7 @@ const updatePass = resolve=>System.import('@/components/Apprentice/updatePass')
 const guest = resolve=>System.import('@/components/Apprentice/guest')
 const taskRole = resolve=>System.import('@/components/Apprentice/taskRole')
 const help = resolve=>System.import('@/components/Apprentice/help')
+const buyer = resolve=>System.import('@/components/Apprentice/buyer')
 const about = resolve=>System.import('@/components/about')
 const verification = resolve=>System.import('@/components/verification')
 const attention = resolve=>System.import('@/components/attention')
@@ -136,6 +137,10 @@ export default new Router({
   {
     path:'/help',
     component: help
+  },
+  {
+    path:'/buyer',
+    component: buyer
   },
   {
     path:'/about',
