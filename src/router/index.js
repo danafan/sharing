@@ -20,8 +20,11 @@ const recordTask = resolve=>System.import('@/components/Apprentice/recordTask')
 const through = resolve=>System.import('@/components/Apprentice/through')
 const mine = resolve=>System.import('@/components/Apprentice/mine')
 const cash = resolve=>System.import('@/components/Apprentice/cash')
+const newCash = resolve=>System.import('@/components/Apprentice/newCash')
+const cashRecord = resolve=>System.import('@/components/Apprentice/cashRecord')
 const property = resolve=>System.import('@/components/Apprentice/property')
 const raking = resolve=>System.import('@/components/Apprentice/raking')
+const bindBank = resolve=>System.import('@/components/Apprentice/bindBank')
 const appraisal = resolve=>System.import('@/components/Apprentice/appraisal')
 const appraisalDetail = resolve=>System.import('@/components/Apprentice/appraisalDetail')
 const updateInfo = resolve=>System.import('@/components/Apprentice/updateInfo')
@@ -103,12 +106,24 @@ export default new Router({
     component: cash
   },
   {
+    path:'/newCash',
+    component: newCash
+  },
+  {
+    path:'/cashRecord',
+    component: cashRecord
+  },
+  {
     path:'/property',
     component: property
   },
   {
     path:'/raking',
     component: raking
+  },
+  {
+    path:'/bindBank',
+    component: bindBank
   },
   {
     path:'/appraisal',

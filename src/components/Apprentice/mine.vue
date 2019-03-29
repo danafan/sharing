@@ -86,6 +86,14 @@
 						</div>
 						<div class="cash" @click="goaward">提现</div>
 					</div>
+					<div class="taskItem taskItems" @click="$router.push('/newCash')">
+						提现
+						<img class="infoRight" src="../../assets/advance.png">
+					</div>
+					<div class="taskItem taskItems" @click="$router.push('/cashRecord')">
+						提现记录
+						<img class="infoRight" src="../../assets/advance.png">
+					</div>
 					<div class="taskItem taskItems" :class="{sd:isFreeze == false}" @click="$router.push('/property')">
 						资产明细
 						<img class="infoRight" src="../../assets/advance.png">
@@ -115,6 +123,13 @@
 					<div class="infoLeft">
 						<div class="infoIcon"><img src="../../assets/certification1.png"></div>
 						<div class="infoTxt">实名认证</div>
+					</div>
+					<img class="infoRight" src="../../assets/advance.png">
+				</div>
+				<div class="infoItem" @click="$router.push('/bindBank')">
+					<div class="infoLeft">
+						<div class="infoIcon"><img src="../../assets/new_bank.png"></div>
+						<div class="infoTxt">绑定银行卡</div>
 					</div>
 					<img class="infoRight" src="../../assets/advance.png">
 				</div>
