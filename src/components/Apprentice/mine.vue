@@ -96,14 +96,6 @@
 							<span class="money">¥{{freeze}}</span>
 						</div>
 					</div>
-					<div class="taskItem taskItems" :class="{sd:isFreeze == false}" @click="$router.push('/property')">
-						提现
-						<img class="infoRight" src="../../assets/advance.png">
-					</div>
-					<div class="taskItem taskItems" :class="{sd:isFreeze == false}" @click="$router.push('/property')">
-						提现记录
-						<img class="infoRight" src="../../assets/advance.png">
-					</div>
 				</div>
 				<div class="infoItem" @click="$router.push('/raking')" v-if="showMaster">
 					<div class="infoLeft">
