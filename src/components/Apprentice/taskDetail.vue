@@ -518,64 +518,72 @@
 		},
 		//获取地理位置
 		getlocation(){
-			let url = encodeURIComponent(window.location.href.split('#')[0]);
-			resource.getLocation({url2:url}).then(res => {
-				var that = this;
-				wx.config(res.data);
-				wx.ready(function(){
-					wx.getLocation({
-						type: 'wgs84', 
-						success: function (res) {
-        					var latitude = res.latitude; 	// 纬度
-        					var longitude = res.longitude ; // 经度
-        					wx.getNetworkType({ 
-        						success: function (res) {
-        							var networkType = res.networkType; //网络类型
-        							let obj = {
-        								usertaskid:that.id,
-        								longitude:longitude,
-        								latitude:latitude,
-        								network:networkType
-        							}
-        							//获取任务详情
-        							that.getTaskDetail(obj);
-        						}
-        					});
-        				},
-        				cancel: function () { 
-        					wx.getNetworkType({
-        						success: function (res) {
-        							var networkType = res.networkType; //网络类型
-        							let obj = {
-        								usertaskid:that.id,
-        								longitude:"",
-        								latitude:"",
-        								network:networkType
-        							}
-        							//获取任务详情
-        							that.getTaskDetail(obj);
-        						}
-        					});
-        				},
-        				error: function (res) {
-        					wx.getNetworkType({
-        						success: function (res) {
-        							var networkType = res.networkType; //网络类型
-        							let obj = {
-        								usertaskid:that.id,
-        								longitude:"",
-        								latitude:"",
-        								network:networkType
-        							}
-        							//获取任务详情
-        							that.getTaskDetail(obj);
-        						}
-        					});
-        				}
-        			});
-				});
-			});
-		},
+			let obj = {
+				usertaskid:that.id,
+				longitude:"",
+				latitude:"",
+				network:""
+			}
+        	//获取任务详情
+        	this.getTaskDetail(obj);
+        	// let url = encodeURIComponent(window.location.href.split('#')[0]);
+        	// resource.getLocation({url2:url}).then(res => {
+        	// 	var that = this;
+        	// 	wx.config(res.data);
+        	// 	wx.ready(function(){
+        	// 		wx.getLocation({
+        	// 			type: 'wgs84', 
+        	// 			success: function (res) {
+        	// 				var latitude = res.latitude; 	// 纬度
+        	// 				var longitude = res.longitude ; // 经度
+        	// 				wx.getNetworkType({ 
+        	// 					success: function (res) {
+        	// 						var networkType = res.networkType; //网络类型
+        	// 						let obj = {
+        	// 							usertaskid:that.id,
+        	// 							longitude:longitude,
+        	// 							latitude:latitude,
+        	// 							network:networkType
+        	// 						}
+        	// 						//获取任务详情
+        	// 						that.getTaskDetail(obj);
+        	// 					}
+        	// 				});
+        	// 			},
+        	// 			cancel: function () { 
+        	// 				wx.getNetworkType({
+        	// 					success: function (res) {
+        	// 						var networkType = res.networkType; //网络类型
+        	// 						let obj = {
+        	// 							usertaskid:that.id,
+        	// 							longitude:"",
+        	// 							latitude:"",
+        	// 							network:networkType
+        	// 						}
+        	// 						//获取任务详情
+        	// 						that.getTaskDetail(obj);
+        	// 					}
+        	// 				});
+        	// 			},
+        	// 			error: function (res) {
+        	// 				wx.getNetworkType({
+        	// 					success: function (res) {
+        	// 						var networkType = res.networkType; //网络类型
+        	// 						let obj = {
+        	// 							usertaskid:that.id,
+        	// 							longitude:"",
+        	// 							latitude:"",
+        	// 							network:networkType
+        	// 						}
+        	// 						//获取任务详情
+        	// 						that.getTaskDetail(obj);
+        	// 					}
+        	// 				});
+        	// 			}
+        	// 		});
+        	// 	});
+        	// });
+        },
 		//获取任务详情
 		getTaskDetail(obj){
 			resource.getTask(obj).then(res => {

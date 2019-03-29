@@ -87,7 +87,7 @@
 			<div class="itemInput"><input type="text" v-model="recomname" placeholder="推荐人用户名"></div>
 		</div>
 		<!-- 注册按钮 -->
-		<div class="registration" @click="getlocation">立即注册</div>
+		<div class="registration" @click="registration()">立即注册</div>
 		<!-- 日期选择组件 -->
 		<mt-datetime-picker
 		ref="picker"
@@ -383,7 +383,7 @@
 				this.workId = id;
 			},
 			//点击立即注册
-			registration(latitude,longitude){
+			registration(){
 				if(this.username == ""){
 					this.$toast("请填写用户名!");
 				}else if(!this.judgmentName.test(this.username)){
@@ -460,8 +460,8 @@
 					birth: this.birth,			//生日
 					job_id: this.workId,		//工作
 					identity: this.status,		//身份代号（0师父，1徒弟）
-					latitude:latitude,			//经度
-					longitude:longitude,		//纬度
+					latitude:"0",				//经度
+					longitude:"0",				//纬度
 					alipay_account:this.alipay,	//支付宝账号
 					// province_id:this.addressId.split("-")[0],		//省id
 					// city_id:this.addressId.split("-")[1],		//市id
@@ -517,8 +517,8 @@
 						if(res.data.code == '0'){	
 							let msg = "注册成功，审核通过后才能登录哦～";
 							let nickname = sessionStorage.getItem("wxname");
-							// this.$router.replace('/connection');
-							this.$router.replace('/verification?mess=' + msg + '&username=' + nickname);
+							this.$router.replace('/connection');
+							// this.$router.replace('/verification?mess=' + msg + '&username=' + nickname);
 						}else{
 							this.$toast(res.data.message);
 						}

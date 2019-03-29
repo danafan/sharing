@@ -29,7 +29,7 @@
       </div>
     </div>
     
-    <div class="login" @click="login">登录</div>
+    <div class="login" @click="login">立即登录</div>
   </div>
 </template>
 
@@ -155,7 +155,7 @@
     }
   },
   created(){
-    document.title = "登录账号";
+    document.title = "登录";
     //获取openid
     this.openid = sessionStorage.getItem("openid");
     this.headimgurl = sessionStorage.getItem("wxIcon");
@@ -170,31 +170,18 @@
           }else if(this.password == ""){
             this.$toast("密码不能为空!");
           }else{
-            let userInfo = {
-            openid: this.openid,        //openid
-            headimgurl: this.headimgurl,//微信头像
-            nickname: this.nickname,    //微信昵称
-            username: this.username,    //用户名
-            password: this.password     //密码
+            this.isLogin = true;    //获取过验证码，可点击登录
+            //用户关联
+            this.phoneLogin(1);
           }
-          //用户关联
-          this.connection(userInfo);
-        }
-      }else{
-        if(!this.judgmentPhone.test(this.phone)){
-          this.$toast("手机号格式不正确!");
-        }else if(this.code == ""){
-          this.$toast("验证码不能为空!");
         }else{
-          let userInfo = {
-            openid: this.openid,          //openid
-            headimgurl: this.headimgurl,  //微信头像
-            nickname: this.nickname,      //微信昵称
-            phone: this.phone,            //手机号
-            code: this.code               //密码
-          }
+          if(!this.judgmentPhone.test(this.phone)){
+            this.$toast("手机号格式不正确!");
+          }else if(this.code == ""){
+            this.$toast("验证码不能为空!");
+          }else{
           //手机号登录
-          this.phoneLogin(userInfo);
+          this.phoneLogin(2);
         }
       }
 
@@ -206,17 +193,29 @@
       }else{
         if(this.notBut == true){//如果按钮可以点击
           let userInfo = {
-            openid: this.openid,
             phone: this.phone
           }
-          resource.sendcode(userInfo).then(res => {
-            if(res.data.code == '0'){ //发送成功
+          resource.new_send_sms(userInfo).then(res => {
+            if(res.data.code == 1){ //发送成功
+              this.$toast("发送成功...");
               this.isLogin = true;    //获取过验证码，可点击登录
               this.timeDown();
             }else{
               this.$toast(res.data.msg);
             }
           });
+          // let userInfo = {
+          //   openid: this.openid,
+          //   phone: this.phone
+          // }
+          // resource.sendcode(userInfo).then(res => {
+          //   if(res.data.code == '0'){ //发送成功
+          //     this.isLogin = true;    //获取过验证码，可点击登录
+          //     this.timeDown();
+          //   }else{
+          //     this.$toast(res.data.msg);
+          //   }
+          // });
         }else{
           this.$toast("操作频繁");
         }
@@ -236,9 +235,9 @@
         _this.codebutTxt = "获取验证码";
       }
     },
-      //用户关联
-      connection(userInfo){
-        resource.connection(userInfo).then(res => {
+    //用户关联
+    connection(userInfo){
+      resource.connection(userInfo).then(res => {
           if(res.data.code == '0'){ //关联成功
             //获取用户ID和身份
             let uid = res.data.data.id;
@@ -257,24 +256,64 @@
             this.$toast(res.data.message);
           }
         });
-      },
-      //手机号登录
-      phoneLogin(userInfo){
+    },
+    //手机号登录
+    phoneLogin(type){
         if(this.isLogin == true){ // 如果获取过验证码请求登录接口
-          resource.phonejoin(userInfo).then(res => {
-            if(res.data.code == '0'){ //关联成功
+          // let userInfo = {
+          //   openid: this.openid,          //openid
+          //   headimgurl: this.headimgurl,  //微信头像
+          //   nickname: this.nickname,      //微信昵称
+          //   phone: this.phone,            //手机号
+          //   code: this.code               //密码
+          // }
+          // resource.phonejoin(userInfo).then(res => {
+          //   if(res.data.code == '0'){ //关联成功
+          //       //获取用户ID和身份
+          //       let uid = res.data.data.id;
+          //       let status = res.data.data.identity;
+          //       let usercode = res.data.data.code;
+          //       sessionStorage.setItem("uid",uid);
+          //       sessionStorage.setItem("status",status);
+          //       sessionStorage.setItem("usercode",usercode);
+          //       this.$toast("关联成功！");
+          //       this.$router.replace('/navbar');
+          //   }else if(res.data.code == '4'){//正在审核
+          //     let msg = res.data.msg;
+          //     let username = res.data.username;
+          //     this.$router.push('/verification?mess=' + msg + '&username=' + username);
+          //   }else{
+          //     this.$toast(res.data.msg);
+          //   }
+          // });
+          if(type == 1){
+            var userInfo = {
+              login_method:1,
+              username: this.username,    //用户名
+              password: this.password     //密码
+            }
+          }else if(type == 2){
+            var userInfo = {
+              login_method:2,
+              phone: this.phone,            //手机号
+              code: this.code               //密码
+            }
+          }
+          
+          resource.new_login(userInfo).then(res => {
+            if(res.data.code == 1){ //关联成功
                 //获取用户ID和身份
-                let uid = res.data.data.id;
-                let status = res.data.data.identity;
-                let usercode = res.data.data.code;
+                let uid = res.data.user_info.id;
+                let status = res.data.user_info.identity;
+                let usercode = res.data.user_info.code;
                 sessionStorage.setItem("uid",uid);
                 sessionStorage.setItem("status",status);
                 sessionStorage.setItem("usercode",usercode);
-                this.$toast("关联成功！");
+                this.$toast("登录成功");
                 this.$router.replace('/navbar');
             }else if(res.data.code == '4'){//正在审核
               let msg = res.data.msg;
-              let username = res.data.username;
+              let username = res.data.user_info.username;
               this.$router.push('/verification?mess=' + msg + '&username=' + username);
             }else{
               this.$toast(res.data.msg);

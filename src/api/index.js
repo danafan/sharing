@@ -1,4 +1,6 @@
 import axios from 'axios'
+import router from '../router/index.js'
+import { Toast } from 'mint-ui';
 
 const baseURL = `${location.origin}/weiapi/`;
 // 创建axios实例，可以自定义配置
@@ -8,8 +10,10 @@ const instance = axios.create({
 
 instance.interceptors.response.use(function (response) {
   switch (response.data.code) {
-    case 300:
-    window.alert('用户未登陆');
+    case -1:
+    Toast("请先登录")
+    sessionStorage.clear();
+    router.replace("/login");
   }
   return response;
 },function (error) {

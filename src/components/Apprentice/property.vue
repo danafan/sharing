@@ -83,7 +83,6 @@ export default{
 			page: 0,				//页码
 			isLoad: true,			//默认可以翻页
 			property:[],			//明细列表
-			openid: "",				//用户openid
 		}
 	},
 	created(){

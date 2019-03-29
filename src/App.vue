@@ -14,116 +14,44 @@
 			}
 		},
 		created(){
-			if(!sessionStorage.getItem("callback")){
-				if(!!sessionStorage.getItem("authUrl")){ //有authurl过
-					let url = window.location.href;
-					let code = url.split("?")[1].split("&")[0].split("=")[1];	
-					// 获取code
-					this.callback(code);
-				}else{
-					let str = window.location.href;
-					//判断是否进入任务详情或评价任务列表
-					if(str.indexOf("?") > 0){
-						let one = str.split("?");
-						if(one[1].indexOf("&")){
-							let arr = one[1].split("&");
-							let tab = arr[0].split("=")[1];
-							let it = arr[1].split("=")[1].split("#")[0];
-							sessionStorage.setItem("appTab",tab);
-							sessionStorage.setItem("appType",it);
-						}
-					};
-					this.getAuthurl();
-					// sessionStorage.setItem("status","0");
-					// this.$router.push('/updateInfo');
-					// this.$router.push('/connection');
-					// this.$router.replace('/navbar');
-					// this.$router.replace('/buyer');
-					// this.$router.replace('/mine');
-					// this.$router.replace('/question');
-					// this.$router.push('/registration');
-					// this.$router.push('/certification');
-					// this.$router.push('/taskDetail');
-				}
-			}else{
-				console.log("授权过");
-			}
+			//新增验证用户状态
+			this.new_loginCheck();
 		},
 		methods:{
-			//获取authUrl
-			getAuthurl(){
-				resource.authUrl().then(res => {
-					if(res.data.code == "0"){
-						sessionStorage.setItem("authUrl","1");
-						window.location.href = res.data.data.url;
-					}else{
-						this.$toast(res.data.message);
-					}
-				})
-			},
-			//callback
-			callback(code){
-				resource.callback({code:code}).then(res => {
-					if(res.data.code == "0"){
-						sessionStorage.setItem("callback","1");
-						let openid = res.data.data.data.openid;
-						let wxname = res.data.data.data.nickname;
-						let wxIcon = res.data.data.data.headimgurl;
-						this.unionid = res.data.data.data.unionid;
-						sessionStorage.setItem("openid",openid);
-						sessionStorage.setItem("wxname",wxname);
-						sessionStorage.setItem("wxIcon",wxIcon);
-						//根据openid获取用户状态
-						this.getserstate(openid,wxname,wxIcon);
-					}else if(res.data.code == "1"){
-						this.$router.replace('/attention');
-					}else{
-						this.$toast(res.data.message);
-					}
-				})
-			},
-			//根据openid获取用户状态
-			getserstate(openid,wxname,wxIcon){
-				let wxObj = {
-					openid: openid,
-					nickname: wxname,
-					headimgurl: wxIcon,
-					unionid: this.unionid
-				}
-				resource.getUserState(wxObj).then(res => {
-				if(res.data.code == "0"){							//关联过,跳转首页
-					//获取用户id和身份
-					let uid = res.data.data.userinfo.id;
-					let status = res.data.data.userinfo.identity;
-					let usercode = res.data.data.userinfo.code;
-					sessionStorage.setItem("uid",uid);				//用户id
-					sessionStorage.setItem("status",status);		//用户身份
-					sessionStorage.setItem("usercode",usercode);	//用户身份
-					//判断跳转
-					let appTab = sessionStorage.getItem("appTab");
-					let appType = sessionStorage.getItem("appType");
-					if(!!appTab){
-						if(appTab == "taskDetail"){
-							this.$router.replace('/taskDetail?id=' + appType);
-						}else if(appTab == "appraisal"){
-							this.$router.replace('/appraisal?type=' + appType);
+			//新增验证用户状态
+			new_loginCheck(){
+				resource.new_loginCheck().then(res => {
+					if(res.data.code == 1){
+						//获取用户id和身份
+						let uid = res.data.user_info.id;
+						let status = res.data.user_info.identity;
+						let usercode = res.data.user_info.code;
+						sessionStorage.setItem("uid",uid);				//用户id
+						sessionStorage.setItem("status",status);		//用户身份
+						sessionStorage.setItem("usercode",usercode);	//用户身份
+						//判断跳转
+						let appTab = sessionStorage.getItem("appTab");
+						let appType = sessionStorage.getItem("appType");
+						if(!!appTab){
+							if(appTab == "taskDetail"){
+								this.$router.replace('/taskDetail?id=' + appType);
+							}else if(appTab == "appraisal"){
+								this.$router.replace('/appraisal?type=' + appType);
+							}
+						}else{
+							this.$router.replace('/navbar');	
 						}
-					}else{
-						this.$router.replace('/navbar');	
+					}else if(res.data.code == 4){
+						let message = res.data.msg;
+						let username = res.data.user_info.username;
+						this.$router.replace('/verification?mess=' + message + '&username=' + username);
+					}else if(res.data.code == -1) {
+						this.$router.replace('/connection');
+						this.$toast(res.data.msg);
 					}
-				}else if(res.data.code == "2"){					//未关联,跳转关联或注册页
-					this.$router.replace('/connection');
-				}else{											//异常，跳转提示页
-					let message = res.data.message;
-					let username = res.data.username;
-					this.$router.replace('/verification?mess=' + message + '&username=' + username);
-				}
-			})
-			}
-
+				})
+			},
 		}
-
-
 	}
 </script>
 

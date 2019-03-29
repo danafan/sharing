@@ -1,9 +1,9 @@
 <template>
 	<div class="box">
 		<div v-if="showCon">
-			<div class="userImg"><img :src="wxIcon"></div>
-			<div class="regards">亲爱的微信用户：{{wxName}}</div>
-			<div class="toast">为了给您更好的服务，请关联一个账号</div>
+			<!-- <div class="userImg"><img :src="wxIcon"></div>
+			<div class="regards">亲爱的微信用户：{{wxName}}</div> -->
+			<!-- <div class="toast">为了给您更好的服务，请关联一个账号</div> -->
 			<div class="buts">
 				<div class="wen">已有账号？</div>
 				<div class="but" @click="$router.push('/login')">立即关联</div>
@@ -48,7 +48,7 @@
 	color: #999999;
 }
 .buts{
-	border-top:1px solid #cdcdcd;
+	// border-top:1px solid #cdcdcd;
 	margin-top: .36rem;
 	padding-top: .36rem;
 	.wen{

@@ -1,69 +1,71 @@
 import http from './request.js'
 let path = {	
-	authUrl: 'index/api',             	   //authUrl
-	callback: 'index/getUserOpenId',  	   //callback
-	getUserState: 'index/logincheck', 	   //根据openid获取用户状态
-	register: 'index/register',		  	   //用户注册
-	connection: 'index/guanlian',	  	   //用户关联
-	sendcode: 'sms/joinsendsms',		   //获取验证码
-	phonejoin: 'index/virifysms',	  	   //手机号关联
-	isbindphone: 'sms/isbindphone',		   //判断用户是否绑定了手机号
-	sendsms: 'sms/sendsms',				   //发送短信注册
-	bindsendsms: 'sms/bindsendsms',		   //发送短信绑定
-	virifysms: 'sms/virifysms',			   //手机号验证码
-	getWorklist: 'index/getworklist', 	   //获取工作类型列表
-	getBanner: 'banner/get_banner',	   		//获取首页banner
-	//taskList: 'task/tasklist',           //首页任务列表
-	taskList: 'newtask/index',			   // 首页任务列表
-	publish: 'group/publish_open',		   //首页公告
-	//taskDetail:'task/applytask',		   //申请任务   
-	taskDetail:'newtask/pushuser',		   //申请任务
-	abandTask: 'newtask/abandonapply',	   //放弃任务
-	getTask: 'task/gettaskinfo',		   //查看任务详情
-	firmShopName: 'task/verifyshopname',   //验证店铺名称
-	firmShopMoney: 'task/verifygoodsprice',//验证商品金额
-	taskStatus: 'task/taskprogresslist',	   //任务进度
-	abandontask: 'task/abandontask',	   //放弃任务
-	waitTab: 'prentice/waitmastercheck',   //待审核的徒弟		
-	checkpass: 'prentice/checkpass',	   //已激活的徒弟
-	blackTab: 'prentice/blacklist',		   //黑名单
-	notTab: 'prentice/maytask',				//未接单
-	notice: 'prentice/notice',				//通知徒弟来接单
-	getApprenticeDetail:'prentice/getuserinfo',	//师父查看徒弟详情
-	prentice: 'prentice/checkprentice',		//师父审核徒弟
-	updatePass: 'index/changepassword',		//用户修改密码
-	getUserInfo: 'index/getuserinfo',		//获取用户信息
-	myinfo:"my/myinfo",						//我的页面获取预计收入金额
-	updateUserInfo: 'index/changepersonziliao',	//修改用户信息
-	getUserTask: 'index/usertask',			//获取用户任务列表（已完成或已取消）
-	userPay: 'pay/pay',						//用户提现
-	redPay: 'hongbao/sendhb',				//用户红包提现
-	payHistory: 'my/assetchange',			//用户交易明细
-	hieho: 'prentice/waitblacklist',		//待拉黑
-	getMasterList: 'index/ranking_list',	//师父排行榜
-	verify: 'task/wwverify',				//改版之后的提交订单
-	activity: 'task/activity',				//活动任务列表
-	applyActiviity: 'task/applyactivetask',	//申请活动任务
-	AppraisalList:'evaluate/ableevaluate',	//可接任务列表
-	applytask: 'evaluate/applytask',		//接取任务
-	completedTask: 'evaluate/accepttask',	//已接任务列表
-	evaluatedetail: 'evaluate/userevaluatedetail',	//任务详情
-	uploadvideo:"evaluatetask/download",		//下载视频
-	abandontasks: 'evaluate/abandontask',	//放弃评价任务
-	completeevaluate:'evaluate/completeevaluate',	//完成评价任务
-	tasktotal: 'evaluate/tasktotal',			//评价任务数量
-	virifytaocode:"task/verifytkliscorrect",		//验证淘口令
-	getLocation:"newtask/returnwxgrantparam",	//获取地理位置参数
-	getprovinces:"address/getprovinces",		//获取所有省列表
-	getcity:"address/getcity",					//获取市列表
-	getdistrict:"address/getdistrict",			//获取区列表
-	useridentity:"useridentity/ispassidentityinfo",	//验证用户是否使命认证
+	authUrl: 'index/api',             	   				//authUrl
+	callback: 'index/getUserOpenId',  	   				//callback
+	getUserState: 'index/logincheck', 	   				//根据openid获取用户状态
+	register: 'index/register',		  	   				//用户注册
+	connection: 'index/guanlian',	  	   				//用户关联
+	sendcode: 'sms/joinsendsms',		   				//获取验证码
+	phonejoin: 'index/virifysms',	  	   				//手机号关联
+	isbindphone: 'sms/isbindphone',		   				//判断用户是否绑定了手机号
+	sendsms: 'sms/sendsms',				   				//发送短信注册
+	bindsendsms: 'sms/bindsendsms',		   				//发送短信绑定
+	virifysms: 'sms/virifysms',			   				//手机号验证码
+	getWorklist: 'index/getworklist', 	   				//获取工作类型列表
+	getBanner: 'banner/get_banner',	   	   				//获取首页banner
+	taskList: 'newtask/index',			   				//首页任务列表
+	publish: 'group/publish_open',		   				//首页公告
+	taskDetail:'newtask/pushuser',		   				//申请任务
+	abandTask: 'newtask/abandonapply',	   				//放弃任务
+	getTask: 'task/gettaskinfo',		   				//查看任务详情
+	firmShopName: 'task/verifyshopname',   					//验证店铺名称
+	firmShopMoney: 'task/verifygoodsprice',					//验证商品金额
+	taskStatus: 'task/taskprogresslist',   				//任务进度
+	abandontask: 'task/abandontask',	   				//放弃任务
+	waitTab: 'prentice/waitmastercheck',   				//待审核的徒弟		
+	checkpass: 'prentice/checkpass',	   				//已激活的徒弟
+	blackTab: 'prentice/blacklist',		   				//黑名单
+	notTab: 'prentice/maytask',							//未接单
+	notice: 'prentice/notice',							//通知徒弟来接单
+	getApprenticeDetail:'prentice/getuserinfo',			//师父查看徒弟详情
+	prentice: 'prentice/checkprentice',					//师父审核徒弟
+	updatePass: 'index/changepassword',					//用户修改密码
+	getUserInfo: 'index/getuserinfo',					//获取用户信息
+	myinfo:"my/myinfo",									//我的页面获取预计收入金额
+	updateUserInfo: 'index/changepersonziliao',			//修改用户信息
+	getUserTask: 'index/usertask',						//获取用户任务列表（已完成或已取消）
+	userPay: 'pay/pay',									//用户提现
+	redPay: 'hongbao/sendhb',							//用户红包提现
+	payHistory: 'my/assetchange',						//用户交易明细
+	hieho: 'prentice/waitblacklist',					//待拉黑
+	getMasterList: 'index/ranking_list',				//师父排行榜
+	verify: 'task/wwverify',							//改版之后的提交订单
+	activity: 'task/activity',							//活动任务列表
+	applyActiviity: 'task/applyactivetask',				//申请活动任务
+	AppraisalList:'evaluate/ableevaluate',				//可接任务列表
+	applytask: 'evaluate/applytask',					//接取任务
+	completedTask: 'evaluate/accepttask',				//已接任务列表
+	evaluatedetail: 'evaluate/userevaluatedetail',		//任务详情
+	uploadvideo:"evaluatetask/download",				//下载视频
+	abandontasks: 'evaluate/abandontask',				//放弃评价任务
+	completeevaluate:'evaluate/completeevaluate',		//完成评价任务
+	tasktotal: 'evaluate/tasktotal',					//评价任务数量
+	virifytaocode:"task/verifytkliscorrect",			//验证淘口令
+	getLocation:"newtask/returnwxgrantparam",			//获取地理位置参数
+	getprovinces:"address/getprovinces",				//获取所有省列表
+	getcity:"address/getcity",							//获取市列表
+	getdistrict:"address/getdistrict",					//获取区列表
+	useridentity:"useridentity/ispassidentityinfo",		//验证用户是否使命认证
 	uploadidentity:"useridentity/uploadidentityinfo",	//上传认证资料
 	commonquestion:"message/commonquestion",			//用户需知列表
 	setread:"message/setread",							//标记已读用户须知
 	getTaskInfo:"mjx/getusertaskinfo",					//买家秀获取任务详情
 	mjxUploadImg:"mjx/uploadimgandvideo",				//买家秀上传图片和视频
 	submitExpressInfo:"mjx/commitbackexpressinfo",		//提交快递信息
+
+	new_loginCheck:"login/login_check",					//新增的判断用户是否登录
+	new_send_sms:"login/send_sms",						//新增的登录发送验证码
+	new_login:"login/login",							//新增登录
 
 }
 export default{
@@ -311,6 +313,18 @@ export default{
 	//提交快递信息
 	submitExpressInfo(params){
 		return http.post(path.submitExpressInfo, params)
+	},
+	//新增的验证是否登录
+	new_loginCheck(params){
+		return http.get(path.new_loginCheck, params)
+	},
+	//新增的登录发送验证码
+	new_send_sms(params){
+		return http.post(path.new_send_sms, params)
+	},
+	//新增登录
+	new_login(params){
+		return http.post(path.new_login, params)
 	}
 
 }
