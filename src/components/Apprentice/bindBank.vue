@@ -3,14 +3,18 @@
 		<!-- 银行卡 -->
 		<div class="bankCard">
 			<div class="inputInfo">
-				<div class="infoItem">
-					<img class="icon" src="../../assets/card.png">
-					<input type="text" placeholder="请输入银行卡号" v-model="bandCode">
-				</div>
 				<div class="infoItem" @click="showBox = true">
 					<img class="icon" src="../../assets/bank.png">
 					<span>{{bankTxt}}</span>
 					<img class="jian" src="../../assets/advance.png">
+				</div>
+				<div class="infoItem">
+					<img class="icon" src="../../assets/card.png">
+					<input type="text" placeholder="请输入银行卡号" v-model="bandCode">
+				</div>
+				<div class="infoItem">
+					<img class="icon" src="../../assets/card1.png">
+					<input type="text" placeholder="请输入您的开户姓名" v-model="username">
 				</div>
 			</div>
 			<div class="imgBox">
@@ -22,7 +26,7 @@
 							<img class="cha" src="../../assets/chacha.png" @click="deleteImg('3')">
 							<img class="lookimg" :src="showExample">
 						</div>
-						<!-- <cerupload v-else type="3" @callbackFn="callbackFn"></cerupload> -->
+						<cerupload v-else @callbackFn="callbackFn"></cerupload>
 					</div>
 					<!-- 身份证反面图片 -->
 					<div class="demoImgs">
@@ -35,8 +39,8 @@
 		<!-- 选择银行卡弹框 -->
 		<div class="toastBox" v-if="showBox" @click="showBox = false">
 			<div class="content">
-				<div class="item line" v-for="item in bandList" @click="bankTxt = item">
-					<div class="txt">{{item}}</div>
+				<div class="item line" v-for="item in bandList" @click="selBank(item)">
+					<div class="txt">{{item.bank_name}}</div>
 				</div>
 			</div>
 		</div>
@@ -176,8 +180,8 @@
 .next{
 	margin: .5rem auto;
 	border-radius: .08rem;
-	background: #ff5946;
-	box-shadow: 0 .02rem .2rem #ff5946;
+	background: #03abff;
+	box-shadow: 0 .02rem .2rem #03abff;
 	width: 6.54rem;
 	text-align: center;
 	height: .9rem;
@@ -279,16 +283,16 @@
 
 </style>
 <script>
-	// import band from '../api/band.js'
-	// import bandlist from '../api/bandList.js'
-	// import back from '../common/back.vue'
-	// import cerupload from '../common/cerupload.vue'
+	import cerupload from '../../common/cerupload.vue'
 	import resource from '../../api/resource.js'
+	import { Indicator } from 'mint-ui';
 	export default{
 		data(){
 			return{
 				bankTxt:"请选择银行",					//银行名称
+				bankId:"",							//选中的银行卡id
 				bandCode:"",						//银行卡号
+				username:"",						//开户姓名
 				showExample:"",						//预览的银行卡图片地址
 				exampleImg: "",						//传递到后台的银行卡图片对象
 				showBox: false,						//默认选择银行框不显示
@@ -299,71 +303,80 @@
 		},
 		created(){
 			document.title = "绑定银行卡";
+			//获取银行卡列表
+			this.getBanks();
 		},
 		methods:{
+			//获取银行卡列表
+			getBanks(){
+				resource.getBanks().then(res => {
+					if(res.data.code == 1){
+						this.bandList = res.data.data;
+					}else{
+						this.$toast(res.data.msg)
+					}
+				});
+			},
+			//选择某一个银行
+			selBank(item){
+				this.bankTxt = item.bank_name;
+				this.bankId = item.id;
+			},
 			//上传图片成功回调
 			callbackFn:function(obj){
 				let val = obj.files;	//图片数组
-				let type = obj.type;	//图片类型（1:正面；2:反面；3:银行卡）
 				for(let i = 0;i < val.length;i ++){
 					let obj = val[i];
-					if(type == "1"){
-						this.cardTopImg = obj;				//传递到后台的身份证正面图片对象
-					}else if(type == "2"){
-						this.cardBotImg = obj;				//传递到后台的身份证反面图片对象
-					}else if(type == "3"){
-						this.exampleImg = obj;				//传递到后台的银行卡图片对象
-					}
+					this.exampleImg = obj;				//传递到后台的银行卡图片对象
 					let fr = new FileReader();
 					let _this = this;
 					fr.onload=function () {
-						if(type == "1"){
-							_this.showCardTop = this.result;//预览身份证正面图片地址
-						}else if(type == "2"){
-							_this.showCardBot = this.result;//预览身份证反面图片地址
-						}else if(type == "3"){
-							_this.showExample = this.result;//预览的银行卡图片地址
-						}
-						
+						_this.showExample = this.result;//预览的银行卡图片地址
 					};
 					fr.readAsDataURL(obj);
 				}
 			},
 			//删除图片的方法
 			deleteImg(type){
-				if(type == "1"){
-					this.showCardTop = "";				    //预览的身份证正面图片地址
-					this.cardTopImg = "";					//传递到后台的身份证正面图片对象
-				}else if(type == "2"){
-					this.showCardBot = "";				    //预览的身份证反面图片地址
-					this.cardBotImg = "";					//传递到后台的身份证反面图片对象
-				}else if(type == "3"){
-					this.showExample = "";				    //预览的银行卡图片地址
-					this.exampleImg = "";					//传递到后台的银行卡图片对象
-				}
+				this.showExample = "";				    //预览的银行卡图片地址
+				this.exampleImg = "";					//传递到后台的银行卡图片对象
 			},
 			//绑定
 			bind(){
-				if(this.bandCode == ""){
-					this.$toast("请输入银行卡号");
-				}else if(this.bankTxt == "请选择银行"){
+				if(this.bankId == ""){
 					this.$toast("请选择银行");
+				}else if(this.bandCode == ""){
+					this.$toast("请输入银行卡号");
+				}else if (this.username == ""){
+					this.$toast("请输入开户姓名");
 				}else if(this.exampleImg == ""){
 					this.$toast("请上传银行卡照片");
 				}else{
 					let Obj = {
-						real_name: this.username,
-						identity_card_no: this.card,
-						identity_cart_img1: this.cardTopImg,
-						identity_cart_img2:this.cardBotImg,
-						bank_name:this.bankTxt,
-						bank_card_no:this.bandCode,
+						bank_id:this.bankId,
+						bank_card_number:this.bandCode,
+						open_account_name:this.username,
 						bank_card_img:this.exampleImg
 					}
-					this.cerUser(Obj);
+					Indicator.open({
+						text: '正在提交...',
+						spinnerType: 'fading-circle'
+					});
+					resource.bindBank(Obj).then(res => {
+						Indicator.close();
+						if(res.data.code == 1){
+							this.$toast("提交成功！");
+							this.$router.go(-1);
+						}else{
+							this.$toast(res.data.msg);
+						}
+					});
 				}
 			}
 			
+		},
+		components:{
+			cerupload
 		}
 	}
 </script>

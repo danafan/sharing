@@ -66,6 +66,12 @@ let path = {
 	new_loginCheck:"login/login_check",					//新增的判断用户是否登录
 	new_send_sms:"login/send_sms",						//新增的登录发送验证码
 	new_login:"login/login",							//新增登录
+	getBanks:"userinfo/get_banks",						//获取银行卡列表
+	bindBank:"userinfo/bind_bank_card",					//绑定银行卡
+	getUserCash:"userinfo/get_userinfo",				//获取用户银行卡和月信息
+	applyCash:"bank_pay/apply_pay",						//申请提现
+	cashList:"my/pay_list",								//提现记录列表
+	cashDetail:"my/pay_detail",							//提现记录详情
 
 }
 export default{
@@ -325,6 +331,30 @@ export default{
 	//新增登录
 	new_login(params){
 		return http.post(path.new_login, params)
+	},
+	//获取银行卡列表
+	getBanks(params){
+		return http.get(path.getBanks, params)
+	},
+	//绑定银行卡
+	bindBank(params){
+		return http.post(path.bindBank, params)
+	},
+	//获取用户账户和银行卡信息
+	getUserCash(params){
+		return http.get(path.getUserCash, params)
+	},
+	//申请提现
+	applyCash(params){
+		return http.post(path.applyCash, params)
+	},
+	//提现记录列表
+	cashList(params){
+		return http.get(path.cashList, params)
+	},
+	//提现记录详情
+	cashDetail(params){
+		return http.get(path.cashDetail, params)
 	}
 
 }

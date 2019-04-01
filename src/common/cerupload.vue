@@ -38,18 +38,12 @@
 </style>
 <script>
 	export default{
-		props: {
-			type: {
-				type: String,
-				default: '0'
-			},
-		},
 		methods:{
 			// 上传图片
 			uploadFn(){
 				if (this.$refs.imgUpload.files.length > 0) {
 					var files = this.$refs.imgUpload.files;
-					this.$emit('callbackFn',{files:files,type:this.type});
+					this.$emit('callbackFn',{files:files});
 				}
 			}
 

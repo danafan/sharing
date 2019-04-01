@@ -86,7 +86,7 @@
 						</div>
 						<div class="cash" @click="goaward">提现</div>
 					</div>
-					<div class="taskItem taskItems" @click="$router.push('/newCash')">
+					<div class="taskItem taskItems" @click="getUserCash(1)">
 						提现
 						<img class="infoRight" src="../../assets/advance.png">
 					</div>
@@ -126,7 +126,7 @@
 					</div>
 					<img class="infoRight" src="../../assets/advance.png">
 				</div>
-				<div class="infoItem" @click="$router.push('/bindBank')">
+				<div class="infoItem" @click="getUserCash(2)">
 					<div class="infoLeft">
 						<div class="infoIcon"><img src="../../assets/new_bank.png"></div>
 						<div class="infoTxt">绑定银行卡</div>
@@ -486,6 +486,31 @@
 		...mapActions([
 			'set_route'
 			]),
+		//点击提现或绑定银行卡先验证是否已绑定银行卡
+		getUserCash(type){
+			resource.getUserCash().then(res => {
+				if(res.data.code == 1){
+					if(res.data.data.bank_card_status == 0){
+						this.$toast("请先绑定银行卡信息！");
+						this.$router.push('/bindBank')
+					}else if(res.data.data.bank_card_status == 1){
+						this.$toast("后台正在审核您的银行卡信息！")
+					}else if(res.data.data.bank_card_status == 2){
+						if(type == 1){	//提现
+							this.$router.push('/newCash');
+						}else{			//绑定银行卡
+							this.$toast("您已绑定过银行卡！")
+						}
+					}else if(res.data.data.bank_card_status == 3){
+						this.$toast("您上传的银行卡信息未通过，请重新提交！")
+						this.$router.push('/bindBank')
+					}
+
+				}else{
+					this.$toast(res.data.msg);
+				}
+			});
+		},
 		//点击显示说明
 		showMo(type){
 			this.showModel = true;

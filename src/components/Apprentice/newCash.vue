@@ -2,9 +2,9 @@
 	<div class="box">
 		<div class="cashBox">
 			<div class="title">提现金额</div>
-			<div class="money">¥ 58</div>
+			<div class="money">¥ {{userInfo.total}}</div>
 			<div class="line"></div>
-			<div class="desc">当前可用金额¥262.00（本金¥200，佣金¥62）</div>
+			<div class="desc">当前可用金额¥{{userInfo.total}}（本金¥{{userInfo.principal}}，佣金¥{{userInfo.award}}）</div>
 			<div class="cash" @click="cash">提现</div>
 		</div>
 	</div>
@@ -59,21 +59,47 @@
 }	
 </style>
 <script>
+	import resource from '../../api/resource.js'
 	import { MessageBox } from 'mint-ui';
 	export default{
+		data(){
+			return{
+				userInfo:{},				//用户信息
+			}
+		},
+		created(){
+			//获取用户账户和银行卡信息
+			this.getUserCash();
+		},
 		methods:{
-			//点击提现按钮
-			cash(){
-				MessageBox.confirm('确认提现到【中国邮政】尾号【8888】的账户上?').then(action => {
-					if(action == 'confirm'){
-						//提现接口
-						this.deposit();
+			//获取用户账户和银行卡信息
+			getUserCash(){
+				resource.getUserCash().then(res => {
+					if(res.data.code == 1){
+						this.userInfo = res.data.data;
+					}else{
+						this.$toast(res.data.msg);
 					}
 				});
 			},
-			//提现接口
-			deposit(){
-				console.log("提现")
+			//点击提现按钮
+			cash(){
+				MessageBox.confirm('确认提现到【'+ this.userInfo.bank_name +'】尾号【'+ this.userInfo.last_four +'】的账户上?').then(action => {
+					if(action == 'confirm'){
+						let obj = {
+							username:this.userInfo.username,
+							money:this.userInfo.total
+						}
+						resource.applyCash(obj).then(res => {
+							if(res.data.code == 1){
+								this.$toast(res.data.msg);
+								this.$router.replace('/cashRecord');
+							}else{
+								this.$toast(res.data.msg)
+							}
+						});
+					}
+				});
 			}
 		}
 	}

@@ -24,7 +24,8 @@
 				</div>
 				<!-- 下面部分 -->
 				<div class="taskCon">
-					<div class="title">任务要求（没有特殊说明的默认拍最低价
+					<div class="title" v-if="type == 2">任务要求（</div>
+					<div class="title" v-if="type != 2">任务要求（没有特殊说明的默认拍最低价
 					）</div>
 					<div class="operation">
 						<div v-html="taskDetail.task_remark"></div>
@@ -37,7 +38,7 @@
 					</div>
 					<div class="subTie" v-if="type == 0 || type == 1">2. 购买数量</div>
 					<div class="operation" v-if="type == 0 || type == 1">
-						<div class="operSubname2">订单需购买{{taskDetail.goods_num}}件才能审核通过，请添加到购物车一起付款</div>
+						<div class="operSubname2">订单需购买{{taskDetail.goods_num}}件才能审核通过，请选择正确的数量</div>
 					</div>
 					<div class="subTie">{{shu}}. 筛选条件：</div>
 					<div class="operation">
@@ -526,63 +527,6 @@
 			}
         	//获取任务详情
         	this.getTaskDetail(obj);
-        	// let url = encodeURIComponent(window.location.href.split('#')[0]);
-        	// resource.getLocation({url2:url}).then(res => {
-        	// 	var that = this;
-        	// 	wx.config(res.data);
-        	// 	wx.ready(function(){
-        	// 		wx.getLocation({
-        	// 			type: 'wgs84', 
-        	// 			success: function (res) {
-        	// 				var latitude = res.latitude; 	// 纬度
-        	// 				var longitude = res.longitude ; // 经度
-        	// 				wx.getNetworkType({ 
-        	// 					success: function (res) {
-        	// 						var networkType = res.networkType; //网络类型
-        	// 						let obj = {
-        	// 							usertaskid:that.id,
-        	// 							longitude:longitude,
-        	// 							latitude:latitude,
-        	// 							network:networkType
-        	// 						}
-        	// 						//获取任务详情
-        	// 						that.getTaskDetail(obj);
-        	// 					}
-        	// 				});
-        	// 			},
-        	// 			cancel: function () { 
-        	// 				wx.getNetworkType({
-        	// 					success: function (res) {
-        	// 						var networkType = res.networkType; //网络类型
-        	// 						let obj = {
-        	// 							usertaskid:that.id,
-        	// 							longitude:"",
-        	// 							latitude:"",
-        	// 							network:networkType
-        	// 						}
-        	// 						//获取任务详情
-        	// 						that.getTaskDetail(obj);
-        	// 					}
-        	// 				});
-        	// 			},
-        	// 			error: function (res) {
-        	// 				wx.getNetworkType({
-        	// 					success: function (res) {
-        	// 						var networkType = res.networkType; //网络类型
-        	// 						let obj = {
-        	// 							usertaskid:that.id,
-        	// 							longitude:"",
-        	// 							latitude:"",
-        	// 							network:networkType
-        	// 						}
-        	// 						//获取任务详情
-        	// 						that.getTaskDetail(obj);
-        	// 					}
-        	// 				});
-        	// 			}
-        	// 		});
-        	// 	});
-        	// });
         },
 		//获取任务详情
 		getTaskDetail(obj){
