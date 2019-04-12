@@ -11,7 +11,7 @@ const instance = axios.create({
 instance.interceptors.response.use(function (response) {
   switch (response.data.code) {
     case -1:
-    Toast("请先登录")
+    Toast(response.data.msg)
     sessionStorage.clear();
     router.replace("/login");
   }

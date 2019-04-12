@@ -321,7 +321,7 @@ export default{
 					this.gender = this.userInfo.sex;		//性别
 					this.masterCode = this.userInfo.master_code;			//师父代号
 					this.WXcode = this.userInfo.wechat;		//微信号
-					this.work = this.userInfo.job_id;		//工作
+					this.work = this.userInfo.job_name;		//工作
 					this.birth = this.userInfo.birth;
 				}else{
 					this.$toast(res.data.message);
@@ -361,7 +361,7 @@ export default{
 				this.$toast("微信号格式不正确!");
 			}else{
 				let userInfo = {
-					job_id: this.work,
+					job_id: this.workId,
 					wechat: this.WXcode
 				}
 				this.updateInfo(userInfo);

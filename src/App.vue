@@ -41,6 +41,10 @@
 						}else{
 							this.$router.replace('/navbar');	
 						}
+					}else if(res.data.code == 2){
+						let uid = res.data.user_info.id;
+						sessionStorage.setItem("uid",uid);
+						this.$router.push('/rejectUpdateInfo');
 					}else if(res.data.code == 4){
 						let message = res.data.msg;
 						let username = res.data.user_info.username;

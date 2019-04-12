@@ -285,7 +285,6 @@
 		methods:{
 			//上传图片成功回调
 			callbackFn:function(obj){
-				console.log()
 				let val = obj.files;	//图片数组
 				let type = obj.type;	//图片类型（1:正面；2:反面）
 				for(let i = 0;i < val.length;i ++){

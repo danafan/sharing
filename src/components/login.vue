@@ -28,8 +28,8 @@
         <div class="butCode" @click="getCode" :class="{'selbutCode':notBut == false}">{{codebutTxt}}</div>
       </div>
     </div>
-    
     <div class="login" @click="login">立即登录</div>
+    
   </div>
 </template>
 
@@ -131,6 +131,7 @@
   font-size: .26rem;
   color: #ffffff;
 }
+
 </style>
 
 <script>
@@ -141,25 +142,19 @@
       return{
       tabList:["账号登录","手机号登录"], //导航列表
       tabId: 0,                       //默认选中的是第一个导航
-      openid: "",                     //openid
-      headimgurl: "",                 //微信头像
-      nickname: "",                   //微信昵称
       username: "",                   //用户名
       password: "",                   //密码
       phone:"",                       //手机号
       code:"",                        //验证码
       notBut: true,                   //默认获取验证码按钮可点击
-      codebutTxt: "获取验证码",        //按钮文字
+      codebutTxt: "获取验证码",         //按钮文字
       time:90,                        //默认倒数90秒
       isLogin: false,                 //默认不可请求接口
+      
     }
   },
   created(){
     document.title = "登录";
-    //获取openid
-    this.openid = sessionStorage.getItem("openid");
-    this.headimgurl = sessionStorage.getItem("wxIcon");
-    this.nickname = sessionStorage.getItem("wxname");
   },
   methods:{
       //点击登录
@@ -180,17 +175,16 @@
           }else if(this.code == ""){
             this.$toast("验证码不能为空!");
           }else{
-          //手机号登录
-          this.phoneLogin(2);
+            //手机号登录
+            this.phoneLogin(2);
+          }
         }
-      }
-
-    },
-    //点击获取验证码
-    getCode(){
-      if(!this.judgmentPhone.test(this.phone)){
-        this.$toast("请输入正确的手机号");
-      }else{
+      },
+      //点击获取验证码
+      getCode(){
+        if(!this.judgmentPhone.test(this.phone)){
+          this.$toast("请输入正确的手机号");
+        }else{
         if(this.notBut == true){//如果按钮可以点击
           let userInfo = {
             phone: this.phone
@@ -204,18 +198,6 @@
               this.$toast(res.data.msg);
             }
           });
-          // let userInfo = {
-          //   openid: this.openid,
-          //   phone: this.phone
-          // }
-          // resource.sendcode(userInfo).then(res => {
-          //   if(res.data.code == '0'){ //发送成功
-          //     this.isLogin = true;    //获取过验证码，可点击登录
-          //     this.timeDown();
-          //   }else{
-          //     this.$toast(res.data.msg);
-          //   }
-          // });
         }else{
           this.$toast("操作频繁");
         }
@@ -235,57 +217,9 @@
         _this.codebutTxt = "获取验证码";
       }
     },
-    //用户关联
-    connection(userInfo){
-      resource.connection(userInfo).then(res => {
-          if(res.data.code == '0'){ //关联成功
-            //获取用户ID和身份
-            let uid = res.data.data.id;
-            let status = res.data.data.identity;
-            let usercode = res.data.data.code;
-            sessionStorage.setItem("uid",uid);
-            sessionStorage.setItem("status",status);
-            sessionStorage.setItem("usercode",usercode);
-            this.$toast("关联成功！");
-            this.$router.replace('/navbar');
-          }else if(res.data.code == '4'){//正在审核
-            let msg = res.data.message;
-            let username = res.data.username;
-            this.$router.push('/verification?mess=' + msg + '&username=' + username);
-          }else{
-            this.$toast(res.data.message);
-          }
-        });
-    },
     //手机号登录
     phoneLogin(type){
         if(this.isLogin == true){ // 如果获取过验证码请求登录接口
-          // let userInfo = {
-          //   openid: this.openid,          //openid
-          //   headimgurl: this.headimgurl,  //微信头像
-          //   nickname: this.nickname,      //微信昵称
-          //   phone: this.phone,            //手机号
-          //   code: this.code               //密码
-          // }
-          // resource.phonejoin(userInfo).then(res => {
-          //   if(res.data.code == '0'){ //关联成功
-          //       //获取用户ID和身份
-          //       let uid = res.data.data.id;
-          //       let status = res.data.data.identity;
-          //       let usercode = res.data.data.code;
-          //       sessionStorage.setItem("uid",uid);
-          //       sessionStorage.setItem("status",status);
-          //       sessionStorage.setItem("usercode",usercode);
-          //       this.$toast("关联成功！");
-          //       this.$router.replace('/navbar');
-          //   }else if(res.data.code == '4'){//正在审核
-          //     let msg = res.data.msg;
-          //     let username = res.data.username;
-          //     this.$router.push('/verification?mess=' + msg + '&username=' + username);
-          //   }else{
-          //     this.$toast(res.data.msg);
-          //   }
-          // });
           if(type == 1){
             var userInfo = {
               login_method:1,
@@ -299,7 +233,6 @@
               code: this.code               //密码
             }
           }
-          
           resource.new_login(userInfo).then(res => {
             if(res.data.code == 1){ //关联成功
                 //获取用户ID和身份
@@ -311,6 +244,10 @@
                 sessionStorage.setItem("usercode",usercode);
                 this.$toast("登录成功");
                 this.$router.replace('/navbar');
+            }else if(res.data.code == '2'){//审核拒绝
+              let uid = res.data.user_info.id;
+              sessionStorage.setItem("uid",uid);
+              this.$router.push('/rejectUpdateInfo');
             }else if(res.data.code == '4'){//正在审核
               let msg = res.data.msg;
               let username = res.data.user_info.username;
@@ -320,7 +257,8 @@
             }
           });
         }
-      }
+      },
+    
 
     },
     components:{

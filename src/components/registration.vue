@@ -27,17 +27,6 @@
 			<div class="itemIcon"><img src="../assets/wangwang.png"></div>
 			<div class="itemInput"><input type="text" v-model="wangCode" placeholder="旺旺号(淘宝会员名)"></div>
 		</div>
-		<!-- 收货地址 -->
-		<!-- <div class="item">
-			<div class="itemIcon"><img src="../assets/dizhi.png"></div>
-			<div class="itemInput" @click="showAddress = true">{{selAddress}}
-			</div>
-		</div> -->
-		<!-- 详细收货地址 -->
-		<!-- <div class="item">
-			<div class="itemIcon"><img src="../assets/dizhi.png"></div>
-			<div class="itemInput"><input type="text" v-model="detailAddress" placeholder="详细收货地址"></div>
-		</div> -->
 		<!-- QQ号 -->
 		<div class="item">
 			<div class="itemIcon"><img src="../assets/QQ.png"></div>
@@ -299,7 +288,6 @@
 }
 </style>
 <script>
-	import addresss from '../common/address.vue'
 	import back from '../common/back.vue'
 	import { DatetimePicker} from 'mint-ui';
 	import resource from '../api/resource.js'
@@ -315,7 +303,6 @@
 			wx: "",					//微信号
 			name: "",				//真实姓名
 			sex: "0",				//性别（默认男）
-			showPick:false,			//地址选择器磨人不展示
 			pickerVisible: "1980-01-01",		//日期
 			birth: "选择出生日期",		//显示的出生日期
 			startDate: new Date('1980-01-01'),	//最小日期
@@ -410,13 +397,7 @@
 					this.$toast("旺旺号不能包括空格!");
 				}else if(this.wangCode.indexOf("	") != -1){
 					this.$toast("旺旺号不能包括空格!");
-				}
-				// else if(this.selAddress == "请选择收货地址"){
-				// 	this.$toast("请选择收货地址!");
-				// }else if(this.detailAddress == ""){
-				// 	this.$toast("请填写详细收货地址!");
-				// }
-				else if(this.qqCode == ""){
+				}else if(this.qqCode == ""){
 					this.$toast("请填写QQ号!");
 				}else if(!this.judgmentqq.test(this.qqCode)){
 					this.$toast("QQ号格式不正确!");
@@ -442,71 +423,32 @@
 					this.$toast("推荐人用户名不能包括空格!");
 				}else{
 					//获取openid
-					let openid = sessionStorage.getItem("openid");
-					let headimgurl = sessionStorage.getItem("wxIcon");
-					let nickname = sessionStorage.getItem("wxname");
 					let userObj = {
-					openid: openid,        		//openid
-            		headimgurl: headimgurl,		//微信头像
-            		nickname: nickname,    		//微信昵称
-					username: this.username,	//用户名
-					password: this.newPass,		//确认后的密码
-					wangwang: this.wangCode,	//旺旺号
-					qq: this.qqCode,			//qq号
-					wechat: this.wx,			//微信号
-					phone:this.phone,			//手机号
-					realname: this.name,		//真实姓名
-					sex: this.sex,				//性别
-					birth: this.birth,			//生日
-					job_id: this.workId,		//工作
-					identity: this.status,		//身份代号（0师父，1徒弟）
-					latitude:"0",				//经度
-					longitude:"0",				//纬度
-					alipay_account:this.alipay,	//支付宝账号
-					// province_id:this.addressId.split("-")[0],		//省id
-					// city_id:this.addressId.split("-")[1],		//市id
-					// district_id:this.addressId.split("-")[2],		//区id
-					// receive_address:this.detailAddress,		//详细地址
-				}
-				if(this.status == "0"){		 //选择师父
-					userObj.status = "1";
-				}else　if(this.status == "1"){//选择徒弟
-					userObj.status = "0";
-					userObj.master_code = this.recomcode;
-					userObj.master_name = this.recomname;
-				}
-				//请求注册接口
-				this.register(userObj);
-			}
-		},
-			//获取地理位置
-			getlocation(){
-				let url = encodeURIComponent(window.location.href.split('#')[0]);
-				resource.getLocation({url2:url}).then(res => {
-					if(res.data.code == "0"){
-						var that = this;
-						wx.config(res.data);
-						wx.ready(function(){
-							wx.getLocation({
-								type: 'wgs84', 
-								success: function (res) {
-        						var latitude = res.latitude; 	// 纬度
-        						var longitude = res.longitude ; // 经度
-        						that.registration(latitude,longitude);
-        					},
-        					cancel: function () { 
-        						that.$toast("地理位置获取失败!");
-        					},
-        					error: function (res) {
-        						that.$toast("地理位置获取失败!");
-        					}
-        				});
-						});
-					}else{
-						this.$toast(res.data.message);
+						username: this.username,	//用户名
+						password: this.newPass,		//确认后的密码
+						wangwang: this.wangCode,	//旺旺号
+						qq: this.qqCode,			//qq号
+						wechat: this.wx,			//微信号
+						phone:this.phone,			//手机号
+						realname: this.name,		//真实姓名
+						sex: this.sex,				//性别
+						birth: this.birth,			//生日
+						job_id: this.workId,		//工作
+						identity: this.status,		//身份代号（0师父，1徒弟）
+						latitude:"0",				//经度
+						longitude:"0",				//纬度
+						alipay_account:this.alipay	//支付宝账号
 					}
-					
-				});
+					if(this.status == "0"){		 //选择师父
+						userObj.status = "1";
+					}else　if(this.status == "1"){//选择徒弟
+						userObj.status = "0";
+						userObj.master_code = this.recomcode;
+						userObj.master_name = this.recomname;
+					}
+					//请求注册接口
+					this.register(userObj);
+				}
 			},
 			//请求注册接口
 			register(userObj){
@@ -518,7 +460,6 @@
 							let msg = "注册成功，审核通过后才能登录哦～";
 							let nickname = sessionStorage.getItem("wxname");
 							this.$router.replace('/connection');
-							// this.$router.replace('/verification?mess=' + msg + '&username=' + nickname);
 						}else{
 							this.$toast(res.data.message);
 						}
@@ -528,8 +469,7 @@
 		},
 		components:{
 			back,
-			DatetimePicker,
-			addresss
+			DatetimePicker
 		}
 	}
 </script>

@@ -118,7 +118,6 @@
 			}else{				//跳转任务详情
 				this.$router.push('/appraisalDetail?id=' + id); 
 			}
-			
 		}
 	},
 	filters:{

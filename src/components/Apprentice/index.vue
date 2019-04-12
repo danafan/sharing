@@ -4,8 +4,8 @@
 			<div class="banner">
 				<swiper :options="swiperOption" ref="mySwiper">
 					<swiper-slide v-for="(item,index) in banner" :key="index">
-						<img v-if="index == 0" :src="item.img_url" @click="$router.push('/taskRole')">
-						<img v-else :src="item.img_url">
+						<!-- <img v-if="index == 0" :src="item.img_url" @click="$router.push('/taskRole')"> -->
+						<img :src="item.img_url">
 					</swiper-slide>
 					<div class="swiper-pagination" slot="pagination"></div>
 				</swiper>
@@ -551,7 +551,7 @@
 			resource.getBanner({userid:uid}).then(res => {
 				if(res.data.code == "0"){
 					this.banner = res.data.data.res;
-					this.banner.unshift({img_url:require('../../assets/Background(home)1.png')});
+					// this.banner.unshift({img_url:require('../../assets/Background(home)1.png')});
 					this.message = res.data.copy_code;
 				}
 			})

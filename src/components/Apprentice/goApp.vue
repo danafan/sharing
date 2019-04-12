@@ -50,7 +50,8 @@
 			<!-- 审核和删除 -->
 			<div class="type1" v-if="type1">
 				<div class="icon"><img :src="stateImg"></div>	
-				<div class="wen">{{toast}}</div>
+				<div v-if="isJu == false" class="wen">{{toast}}</div>
+				<textarea v-if="isJu" class="yuan" rows="3" placeholder="请输入拒绝原因" v-model="reason"></textarea>
 				<div class="butss">
 					<div class="ok" @click="ok">确认</div>
 					<div class="close" @click="showState = false">取消</div>
@@ -289,9 +290,19 @@
 			font-size: .28rem;
 			color: #03abff;
 		}
+		.yuan{
+			outline: none;
+			border:1px solid #f5f5f5;
+			position: absolute;
+			top: 1.28rem;
+			left: 50%;
+			transform: translate(-50%);
+			width: 80%;
+			font-size: .24rem;
+		}
 		.butss{
 			position: absolute;
-			top: 2rem;
+			top: 2.5rem;
 			left: 50%;
 			transform: translate(-50%);
 			display: flex;
@@ -373,6 +384,8 @@ export default{
 			orderlist:[],			//徒弟列表
 			verType: 1,				//默认审核通过
 			toast: "",				//点击通过或拒绝的提示
+			isJu:true,				//默认点击的不是拒绝，拒绝原因的框
+			reason:"",				//拒绝原因
 			showState: false,		//弹框默认不显示
 			type1: true,			//默认显示审核或删除的框
 			butType: "",			//默认点击审核
@@ -393,7 +406,6 @@ export default{
 			}
 		},
 		colorId:function(n,o){
-			
 			this.orderlist = [];
 			this.page = 1;
 			if(n == 1){
@@ -554,6 +566,7 @@ export default{
 			this.type1 = true;		//显示通过或拒绝的框
 			this.butType = "1";		//改变状态（通过）
 			this.oktype = "0";		//师父审核徒弟
+			this.isJu = false;
 			//改变弹框图片
 			this.stateImg = require('../../assets/audit.png');
 			this.toast = "确认通过？";
@@ -564,6 +577,7 @@ export default{
 			this.showState = true;	//弹框显示
 			this.type1 = true;		//显示审核或删除的框
 			this.butType = "0";		//改变状态（拒绝）
+			this.isJu = true;
 			this.oktype = "0";		//师父审核徒弟
 			//改变弹框图片
 			this.stateImg = require('../../assets/delete.png');
@@ -575,6 +589,7 @@ export default{
 			this.showState = true;	//弹框显示
 			this.type1 = true;		//显示审核或删除的框
 			this.oktype = "1";		//一键提醒
+			this.isJu = false;
 			//改变弹框图片
 			this.stateImg = require('../../assets/remind.png');
 			this.toast = "确认提醒？";
@@ -585,6 +600,7 @@ export default{
 			this.showState = true;	//弹框显示
 			this.type1 = true;		//显示审核或删除的框
 			this.oktype = "2";		//申请拉黑
+			this.isJu = false;
 			//改变弹框图片
 			this.stateImg = require('../../assets/heiho.png');
 			this.toast = "确认申请拉黑该徒弟？";
@@ -594,7 +610,15 @@ export default{
 			if(this.oktype == "0"){				//师父审核徒弟
 				let preObj = {
 					p_userid: this.id,
-					status: this.butType
+					is_pass: this.butType
+				}
+				if(this.butType == '0'){
+					if(this.reason == ''){
+						this.$toast("请填写拒绝原因");
+						return;
+					}else{
+						preObj.reject_reason = this.reason;
+					}
 				}
 				resource.prentice(preObj).then(res => {
 					if(res.data.code == "0"){

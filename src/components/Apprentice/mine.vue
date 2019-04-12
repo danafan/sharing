@@ -25,24 +25,6 @@
 			</div>
 			<!-- 信息 -->
 			<div class="infoList">
-				<div class="myTask" :class="{botline:showTask == false}" @click="showtask">
-					<div class="infoLeft">
-						<div class="infoIcon"><img src="../../assets/my task.png"></div>
-						<div class="infoTxt">我的任务</div>
-					</div>
-					<img v-if="showTask == false" class="infoRight" src="../../assets/advance.png">
-					<img v-else class="infoRight" src="../../assets/pull-down.png">
-				</div>
-				<div class="taskInfo" v-if="showTask">
-					<div class="taskItem taskItems" @click="$router.push('/through')">
-						已完成
-						<img class="infoRight" src="../../assets/advance.png">
-					</div>
-					<div class="taskItem taskItems sd" @click="$router.push('/recordTask')">
-						已取消
-						<img class="infoRight" src="../../assets/advance.png">
-					</div>
-				</div>
 				<!-- 评价任务 -->
 				<div class="myTask" :class="{botline:showPing == false}" @click="showping">
 					<div class="infoLeft">
@@ -60,6 +42,24 @@
 					<div class="taskItem taskItems sd" @click="gooAppraisal(1)">
 						<div class="key">历史</div>
 						<div class="val">{{acceptTasksCount}}个</div>
+					</div>
+				</div>
+				<div class="myTask" :class="{botline:showTask == false}" @click="showtask">
+					<div class="infoLeft">
+						<div class="infoIcon"><img src="../../assets/my task.png"></div>
+						<div class="infoTxt">我的任务</div>
+					</div>
+					<img v-if="showTask == false" class="infoRight" src="../../assets/advance.png">
+					<img v-else class="infoRight" src="../../assets/pull-down.png">
+				</div>
+				<div class="taskInfo" v-if="showTask">
+					<div class="taskItem taskItems" @click="$router.push('/through')">
+						已完成
+						<img class="infoRight" src="../../assets/advance.png">
+					</div>
+					<div class="taskItem taskItems sd" @click="$router.push('/recordTask')">
+						已取消
+						<img class="infoRight" src="../../assets/advance.png">
 					</div>
 				</div>
 				<!-- 我的金库 -->
@@ -425,7 +425,7 @@
 			wximg: "",				//微信头像
 			usercode: "",			//师父代号
 			showTask: false,		//我的任务默认不展开
-			showPing: false,		//评价任务默认不展开
+			showPing: true,		//评价任务默认不展开
 			ableTasksCount: 0,		//可接评价任务
 			acceptTasksCount: 0,	//评价任务记录
 			showMoney: false,		//我的金库默认不展开

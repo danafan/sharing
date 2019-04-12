@@ -1,26 +1,21 @@
 <template>
 	<div class="box">
-		<div v-if="showCon">
-			<!-- <div class="userImg"><img :src="wxIcon"></div>
-			<div class="regards">亲爱的微信用户：{{wxName}}</div> -->
-			<!-- <div class="toast">为了给您更好的服务，请关联一个账号</div> -->
-			<div class="buts">
-				<div class="wen">已有账号？</div>
-				<div class="but" @click="$router.push('/login')">立即关联</div>
-				<div class="wen">还没有账号？</div>
-				<div class="but" @click="$router.push('/code?tab=res')">快速注册</div>
-			</div>
+		<div class="buts">
+			<div class="wen">已有账号？</div>
+			<div class="but" @click="$router.push('/login')">立即关联</div>
+			<div class="wen">还没有账号？</div>
+			<div class="but" @click="$router.push('/code?tab=res')">快速注册</div>
 		</div>
 	</div>
 </template>
 <style lang="less" scoped>
 .box{
-  position:absolute;
-  top: 0;
-  left: 0;
-  width:100%;
-  height:100%;
-  background:#f3f4f5;
+	position:absolute;
+	top: 0;
+	left: 0;
+	width:100%;
+	height:100%;
+	background:#f3f4f5;
 }
 .userImg{
 	margin: .96rem auto 0;
@@ -73,11 +68,10 @@
 }
 </style>
 <script>
-import resource from '../api/resource.js'
-export default{
-	data(){
-		return{
-			showCon: true,			//默认不显示	
+	import resource from '../api/resource.js'
+	export default{
+		data(){
+			return{
 			wxName: "",				//微信名	
 			wxIcon: "",				//用户头像
 		}

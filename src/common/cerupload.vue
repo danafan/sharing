@@ -2,9 +2,7 @@
 	<div>
 		<div class="imgBox">
 			<img class="camera" src="../assets/Upload.png">
-			<form>
-				<input type="file" ref="imgUpload" class="upload_file" @change="uploadFn">
-			</form>
+			<input type="file" ref="imgUpload" class="upload_file" @change="uploadFn">
 		</div>
 	</div>
 </template>
@@ -32,18 +30,23 @@
 		width: 100%;
 		height: 100%;
 		opacity: 0;
-		z-index: 1;
 	}
 }
 </style>
 <script>
 	export default{
+		props: {
+			type: {
+				type: String,
+				default: '0'
+			},
+		},
 		methods:{
 			// 上传图片
 			uploadFn(){
 				if (this.$refs.imgUpload.files.length > 0) {
 					var files = this.$refs.imgUpload.files;
-					this.$emit('callbackFn',{files:files});
+					this.$emit('callbackFn',{files:files,type:this.type});
 				}
 			}
 
